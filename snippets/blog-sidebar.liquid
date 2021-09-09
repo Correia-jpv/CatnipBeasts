@@ -1,0 +1,107 @@
+<div class="nav-container">
+  {% for block in section.blocks %}
+    {% if block.type == 'image' %}
+      {% if block.settings.link != blank %}
+        <a href="{{ block.settings.link }}" class="blog-sidebar-image-wrapper" {{ block.shopify_attributes }}>
+      {% else %}
+        <div class="blog-sidebar-image-wrapper" {{ block.shopify_attributes }}>
+      {% endif %}
+      {% if block.settings.image != blank %}
+        <img src="{{ block.settings.image | img_url: '300x' }}" alt="{{ block.settings.image.alt | escape }}" class="blog-sidebar-image">
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg blog-sidebar-image' }}
+      {% endif %}
+      {% if block.settings.link != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    {% endif %}
+    {% if block.type == 'recent_posts' %}
+      <nav class="recent-posts" aria-labelledby="nav-recent-posts" {{ block.shopify_attributes }}>
+        {% if block.settings.title != blank %}
+          <h5 id="nav-recent-posts">{{ block.settings.title | escape }}</h5>
+          {% assign article_count = block.settings.article_count_range %}
+          <ul>
+            {% for article in blogs[blog.handle].articles limit:article_count %}
+              <li>
+                <a href="{{ article.url }}">
+                  {% if block.settings.show_date %}
+                    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>
+                  {% endif %}
+                  <span class="title">{{ article.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </nav>
+    {% endif %}
+    {% if block.type == 'menu' %}
+      <nav class="link-list" role="navigation" aria-labelledby="nav-{{ linklists[block.settings.linklist].title | handle }}" {{ block.shopify_attributes }}>
+        <h5 id="nav-{{ linklists[block.settings.linklist].title | handle }}">{{ linklists[block.settings.linklist].title }}</h5>
+        <ul class="nested-menu">
+          {% for link in linklists[block.settings.linklist].links %}
+            <li class="{% if link.active %}active {% endif %}{% if link.links != blank %}has-dropdown {% endif %}">
+              <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ link.title | escape }}</a>
+              {% if link.links != blank %}
+                <ul class="dropdown" aria-hidden="true">
+                  {% comment %}
+                    sub_link - Second level menu
+                  {% endcomment %}
+                  {% for sub_link in link.links %}
+                    <li class="{% if sub_link.active %}active {% endif %}{% if sub_link.links != blank %}has-sub-dropdown {% endif %}">
+                      <a href="{{ sub_link.url }}" tabindex="-1" {% if sub_link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ sub_link.title | escape }}</a>
+                      {% if sub_link.links != blank %}
+                        <ul class="sub-dropdown" aria-hidden="true">
+                          {% comment %}
+                            sub_sub_link - Third level menu
+                          {% endcomment %}
+                          {% for sub_sub_link in sub_link.links %}
+                            <li class="sub-dropdown-item {% if sub_sub_link.active %}active {% endif %}">
+                              <a href="{{ sub_sub_link.url }}">{{ sub_sub_link.title | escape }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+    {% if block.type == 'tags' and blog.all_tags.size > 0 %}
+      <nav class="categories tags" {{ block.shopify_attributes }}>
+        {% if block.settings.title %}
+          <h5>{{ block.settings.title | escape }}</h5>
+        {% endif %}
+        <ul>
+          {% for tag in blog.all_tags %}
+            {% if current_tags contains tag %}
+            <li class="active close">{{ tag | capitalize | link_to_remove_tag: tag }}</li>
+            {% else %}
+            <li>{{ tag | capitalize | link_to_tag: tag }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+    {% if block.type == 'rss' %}
+      <nav {{ block.shopify_attributes }}>
+        <a class="util" href="{{ shop.url | append: blog.url | append: '.atom' }}">{{ block.settings.title | escape }}</a>
+      </nav>
+    {% endif %}
+    {% if block.type == 'html' %}
+      {% if block.settings.code != blank %}
+      <nav {{ block.shopify_attributes }}>
+        <div class="raw-html rte">
+          {{ block.settings.code }}
+        </div>
+      </nav>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</div>

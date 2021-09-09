@@ -1,0 +1,271 @@
+<div data-section-id="{{ section.id }}" data-section-type="footer-section">
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div class="grid">
+      {% for block in section.blocks %}
+        {%- capture box_classes -%}box box-{{ forloop.index }} {% if forloop.first == true %}box-first{% endif %} {% if forloop.last == true %}box-last{% endif %} layout-{{ section.blocks.size }}{%- endcapture -%}
+        {% comment %}
+          Menu column
+        {% endcomment %}
+        {% if block.type == 'menu' %}
+          <div class="{{ box_classes }} menu" role="navigation"
+            {%- if block.settings.title != blank -%}
+              aria-labelledby="nav-{{ block.settings.title | handle }}"
+            {%- else -%}
+              aria-label="{{ linklists[block.settings.footer_linklist].title }}"
+            {%- endif -%}
+            {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              <h2 id="nav-{{ block.settings.title | handle }}">{{ block.settings.title | escape }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <p>{{ block.settings.text | escape }}</p>
+            {% endif %}
+            <ul {% if linklists[block.settings.footer_linklist].levels > 1 %}class="nested-menu"{% endif %}>
+              {% for link in linklists[block.settings.footer_linklist].links %}
+                <li class="{% if link.active %}active {% endif %}{% if link.links != blank %}has-dropdown {% endif %}">
+                  <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ link.title | escape }}</a>
+                  {% if link.links != blank %}
+                    <ul class="dropdown" aria-hidden="true">
+                      {% comment %}
+                        sub_link - Second level menu
+                      {% endcomment %}
+                      {% for sub_link in link.links %}
+                        <li class="{% if sub_link.active %}active {% endif %}{% if sub_link.links != blank %}has-sub-dropdown {% endif %}">
+                          <a href="{{ sub_link.url }}" tabindex="-1" {% if sub_link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ sub_link.title | escape }}</a>
+                          {% if sub_link.links != blank %}
+                            <ul class="sub-dropdown" aria-hidden="true">
+                              {% comment %}
+                                sub_sub_link - Third level menu
+                              {% endcomment %}
+                              {% for sub_sub_link in sub_link.links %}
+                                <li class="sub-dropdown-item {% if sub_sub_link.active %}active {% endif %}">
+                                  <a href="{{ sub_sub_link.url }}" tabindex="-1">{{ sub_sub_link.title | escape }}</a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% comment %}
+          Newsletter column
+        {% endcomment %}
+        {% if block.type == 'newsletter' %}
+          <div class="{{ box_classes }} newsletter" {{ block.shopify_attributes }}>
+            <div class="offer-message">
+              {% if block.settings.title != blank %}
+                <h2>{{ block.settings.title | escape }}</h2>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <p>{{ block.settings.text | escape }}</p>
+              {% endif %}
+            </div>
+            <div class="offer-email">
+              {% include 'newsletter-subscribe', subscribe_source: 'footer' %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% comment %}
+          Contact and social column
+        {% endcomment %}
+        {% if block.type == 'contact' %}
+          <div class="{{ box_classes }} social" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              <h2>{{ block.settings.title | escape }}</h2>
+            {% endif %}
+            {% if block.settings.show_contact %}
+              <p>
+                {% if block.settings.phone != blank %}
+                  <span class="phone">{{ block.settings.phone | escape }}</span>
+                {% endif %}
+                {% if block.settings.phone != blank and block.settings.contact_text != blank %}&bull;{% endif %}
+                {% if block.settings.contact_text != blank %}
+                  {% if block.settings.contact_link != blank %}
+                    <a class="contact" href="{{ block.settings.contact_link }}">{{ block.settings.contact_text | escape }}</a>
+                  {% else %}
+                    <span class="contact">{{ block.settings.contact_text | escape }}</span>
+                  {% endif %}
+                {% endif %}
+              </p>
+            {% endif %}
+            {% if block.settings.address != blank %}
+              <div class="richtext rte content">
+                {{ block.settings.address }}
+              </div>
+            {% endif %}
+            {% if block.settings.show_social %}
+              {% include 'social-icons' %}
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+      {% endfor %}
+      </div>
+
+      {% unless section.settings.payment_icons == "hidden" %}
+        <div class="box payment-types">
+          {% comment %}
+            Loop through available payment methods and show their icons.
+          {% endcomment %}
+          {% unless shop.enabled_payment_types == empty %}
+            <p>{{ 'layout.footer.accepted_payments' | t }}</p>
+
+            {% if section.settings.payment_icons == "bw" %}
+              {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,cirrus,dankort,diners_club,discover,dwolla,forbrugsforeningen,google_pay,interac,klarna,maestro,master,paypal,shopify_pay,visa' | split: ',' -%}
+              <ul>
+                {% for type in shop.enabled_payment_types %}
+                  {% if payment_icons_available contains type %}
+                  <li>
+                    {%- assign icon_name = type | prepend: 'icon-' -%}
+                    {% include icon_name %}
+                  </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if section.settings.payment_icons == "color" %}
+              {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,cirrus,dankort,discover,dwolla,forbrugsforeningen,google_pay,interac,klarna,litecoin,maestro,master,paypal,shopify_pay,visa' | split: ',' -%}
+              <ul>
+              {% for type in shop.enabled_payment_types %}
+                {% if payment_icons_available contains type %}
+                <li>
+                  <img src="{{ type | payment_type_img_url }}" />
+                </li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endunless %}
+        </div>
+      {% endunless %}
+
+      <p class="copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: '//www.catnipbeasts.com' }}.
+         All Rights Reserved </p>
+    </div>
+
+
+
+  </footer>
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "radio",
+      "id": "payment_icons",
+      "label": "Payment icons",
+      "options": [
+        { "value": "hidden", "label": "Hidden" },
+        { "value": "color", "label": "Color" },
+        { "value": "bw", "label": "Black and white" }
+      ],
+      "default": "color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Footer menu"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Learn more about us"
+        },
+        {
+          "type": "link_list",
+          "id": "footer_linklist",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Newsletter"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Subscribe to be the first to hear about our exclusive offers and latest arrivals."
+        }
+      ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Contact us"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_contact",
+          "label": "Show contact information",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone number",
+          "default": "1.877.555.9300"
+        },
+        {
+          "type": "text",
+          "id": "contact_text",
+          "label": "Contact text"
+        },
+        {
+          "type": "url",
+          "id": "contact_link",
+          "label": "Contact link"
+        },
+        {
+          "type": "richtext",
+          "id": "address",
+          "label": "Address",
+          "default": "<p></p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social icons",
+          "default": true
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

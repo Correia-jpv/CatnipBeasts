@@ -1,0 +1,193 @@
+<div id="HulkAppsReviews" class="hulkapps-reviews" data-type="productReviews" data-product-id="{{product.id}}" data-product-title="{{product.title | escape}}">
+  <div id="HulkAppsReviewsLoader" class="HulkAppsReviewsLoader"></div>
+  <div id="HulkAppsReviewsContainer" style="display:none;">
+    <div v-if="settings.layout_mode != 'list'">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <h3 class="title-rating text-center">
+            <template v-if="totalReviews">
+              <span v-text="totalReviews"></span> Reviews
+            </template>
+            <template v-else>
+              ${settings.zero_reviews_text}
+            </template>
+          </h3>
+          <div v-if="totalReviews > 0" class="avg-rating" v-html="getAvgRating()"></div>
+        </div>
+      </div>
+      <div id="reviewsCarousel" class="carousel row">
+        <div v-for="review in reviews.data" class="carousel-cell col-xs-12 col-sm-6 col-md-4 col-lg-4 text-center">
+          <div class="review-item equalize">
+            <div class="review-rating">
+              <span v-html="getRating(review)"></span>
+            </div>
+            <div class="review-title text-uppercase" v-text="review.title"></div>
+            <div class="review-author" v-text="review.author"></div>
+            <div class="review-date text-uppercase" v-text="dateFormat(review.created_at)"></div>
+            <div class="review-body" v-html="truncateWords(review.body, 20)"></div>
+            <div><a href="#" @click.prevent="showReview(reviews.data, review.id)" class="read-more">Read More</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <a href="#" id="newReviewBtn" @click.prevent="showReviewForm" class="btn btn-primary text-uppercase">Write A Review</a>
+        </div>
+      </div>
+    </div>
+
+    <div v-else id="reviewsList">
+      <div class="row reviews-header">
+        <div class="col-sm-6">
+          <h3 class="title-rating">
+            <template v-if="totalReviews">
+              <span v-text="totalReviews"></span> Reviews
+            </template>
+            <template v-else>
+              ${settings.zero_reviews_text}
+            </template>
+          </h3>
+          <div v-if="totalReviews > 0" class="avg-rating" v-html="getAvgRating()"></div>
+        </div>
+        <div class="col-sm-6 text-right">
+          <a href="#" id="newReviewBtn" @click.prevent="showReviewForm" class="btn btn-primary text-uppercase">Write A Review</a>
+        </div>
+      </div>
+      <div v-for="review in reviews.data" class="row">
+        <div class="col-sm-12">
+          <div class="review-item">
+            <div class="row">
+              <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 equalize">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="review-author" v-text="review.author"></div>
+                    <div class="review-date text-uppercase" v-text="dateFormat(review.created_at)"></div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div v-for="field in review.custom_fields" v-if="field.pivot.value" class="row review-custom-fields">
+                      <div class="col-sm-12">
+                        <strong v-text="field.name+':'"></strong>
+                      </div>
+                      <div class="col-sm-12">
+                        <span v-text="field.pivot.value"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div :class="{ 'col-xs-12 col-sm-7 col-md-7 col-lg-8': settings.image_upload_enabled, 'col-xs-12 col-sm-9 col-md-9 col-lg-10': !settings.image_upload_enabled }">
+                <div class="review-details equalize">
+                  <div class="review-rating">
+                    <span v-html="getRating(review)"></span>
+                  </div>
+                  <div class="review-title text-uppercase" v-text="review.title"></div>
+                  <div class="review-body" v-html="review.body"></div>
+                </div>
+              </div>
+              <div v-if="settings.image_upload_enabled" class="col-xs-12 col-sm-2 equalize">
+                <img :src="review.image" class="review-image img-responsive" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <pagination :data="reviews.pagination" :limit="2" @pagination-change-page="getPagedResults" />
+    </div>
+
+    <modal ref="singleReviewModal" :blocking="false" :overlay-theme="settings.overlay_theme" :modal-theme="settings.modal_theme">
+      <div slot="title">
+        <span class="title text-uppercase" v-text="singleReview.title"></span>
+      </div>
+      <div class="row">
+        <div v-if="settings.image_upload_enabled && singleReview.image" class="col-sm-5">
+          <img :src="singleReview.image" class="img-responsive" />
+        </div>
+        <div :class="{ 'col-sm-7': (settings.image_upload_enabled && singleReview.image), 'col-sm-12': (!settings.image_upload_enabled || !singleReview.image) }">
+          <div class="review-details" :class="{ 'no-padding': !singleReview.image }">
+            <div class="review-rating">
+              <span v-html="getRating(singleReview)"></span>
+            </div>
+            <div v-if="singleReview.custom_fields && singleReview.custom_fields.length" class="review-custom-fields">
+              <div v-for="field in singleReview.custom_fields">
+                <strong v-text="field.name+':'" class="text-uppercase"></strong>
+                <span v-text="field.pivot.value"></span>
+              </div>
+            </div>
+            <div class="review-body" v-html="singleReview.body"></div>
+            <div class="review-author text-right" v-text="'- '+singleReview.author"></div>
+            <div class="review-date text-right" v-text="dateFormat(singleReview.created_at)"></div>
+          </div>
+        </div>
+      </div>
+      <template slot="box-action">
+        <div id="prevLink" @click="getPrevReview(singleReview.id)"><i class="fa fa-angle-left"></i></div>
+        <div id="nextLink" @click="getNextReview(singleReview.id)"><i class="fa fa-angle-right"></i></div>
+      </template>
+    </modal>
+
+    <modal ref="newReviewModal" :blocking="false" :overlay-theme="settings.overlay_theme" :modal-theme="settings.modal_theme">
+      <div slot="title">
+        <span class="title text-uppercase">Write a review for {{ product.title }}</span>
+      </div>
+      <form id="newReviewForm" enctype="multipart/form-data" @submit.prevent="createReview">
+        <div class="row form-group">
+          <div class="col-xs-12">
+            <div id="response"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" name="author" class="form-control" placeholder="Name" required>
+          </div>
+          <div class="col-sm-6">
+            <input type="email" name="email" class="form-control" placeholder="E-mail" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 rating">
+            <label>Rating:</label>
+            <star-rating name="rating" :inline="true" :star-size="16" active-color="#000" v-model="rating"></star-rating>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 ">
+            <input type="text" name="title" class="form-control" placeholder="Review Title" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 ">
+            <textarea name="body" class="form-control" placeholder="Review Body" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div v-for="field in settings.custom_fields" class="col-sm-6">
+            <input type="text" name="custom_fields[]" :data-id="field.id" :placeholder="field.name" class="form-control">
+          </div>
+        </div>
+        <div class="row">
+          <div v-if="settings.image_upload_enabled" class="col-xs-12">
+                  <dropzone
+                  id="reviewUpload"
+                  ref="reviewUpload"
+                  :options="dropzoneOptions"
+                  @vdropzone-success="fileUploaded"
+                  @vdropzone-error="uploadError"
+                  @vdropzone-removed-file="fileRemoved" />
+           </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="hidden" name="product_handle" value="{{ product.handle }}"/>
+            <input type="hidden" name="product_title" value="{{ product.title | escape }}"/>
+            <input type="hidden" name="product_image" value="{{ featured_image | img_url: 'large' }}"/>
+            <input type="submit" class="btn btn-primary" value="SUBMIT">
+          </div>
+        </div>
+      </form>
+    </modal>
+
+  </div>
+</div>

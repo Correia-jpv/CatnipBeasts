@@ -1,0 +1,63 @@
+{% unless text_placement %}
+  {%- assign text_placement = 'below' -%}
+{% endunless %}
+{% unless zoom %}
+  {%- assign zoom = false -%}
+{% endunless %}
+
+{% if collection.empty? %}
+  {% comment %}add default state for collection block in theme editor{% endcomment %}
+  {% assign collection_image_url = '' %}
+{% else %}
+  {% if collection.image %}
+    {%- assign image = collection.image -%}
+  {% elsif collection.products.first %}
+    {%- assign image = collection.products.first.featured_image -%}
+  {% endif %}
+{% endif %}
+<div class="box">
+  <a href="{% if collection.empty? %}#{% else %}{{ collection.url }}{% endif %}" class="{% if zoom %}zoom text-overlay{% endif %}">
+    <figure class="animation-label-overlay">
+      {% if collection.empty? %}
+        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+        {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      {% else %}
+        <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+          {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
+          {% include 'theme-rias' %}
+          <img class="card__image lazyload"
+            data-src="{{ image_url_pattern }}"
+            data-widths="[{{ image_widths }}]"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            data-sizes="auto"
+            alt="{{ collection.title }}">
+          <noscript>
+            <img class="card__image" src="{{ image | img_url: '590x' }}" alt="{{ collection.title }}">
+          </noscript>
+        </div>
+      {% endif %}
+      {% if text_placement == 'over' %}
+        <figcaption>
+          <h2>
+            {% if collection.empty? %}
+              {{ 'homepage.onboarding.collection_title' | t }}
+            {% else %}
+              {{ collection.title }}
+            {% endif %}
+          </h2>
+        </figcaption>
+      {% endif %}
+    </figure>
+  </a>
+  {% if text_placement == 'below' %}
+    <figcaption class="below">
+      <h3>
+        {% if collection.empty? %}
+          <a href="#">{{ 'homepage.onboarding.collection_title' | t }}</a>
+        {% else %}
+          <a href="{{ collection.url }}">{{ collection.title }}</a>
+        {% endif %}
+      </h3>
+    </figcaption>
+  {% endif %}
+</div>

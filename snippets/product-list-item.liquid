@@ -1,0 +1,100 @@
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+<div class="box product">
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+  {% endcomment %}
+  <figure>
+    <div class="product-thumbnail">
+      <a href="{{ product.url | within: collection }}"{% if product.images.size > 1 and settings.variant_rollover %} class="view-alt product-image lazyload" data-bgset="{% include 'bgset', image: product.images[1] %}"{% else %} class="product-image"{% endif %}>
+        {%- assign image = product.featured_image -%}
+        <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+          {% assign image_widths = '120,240,394,590' %}
+          {% include 'theme-rias' %}
+          <img class="card__image lazyload fade-in"
+            data-src="{{ image_url_pattern }}"
+            data-widths="[{{ image_widths }}]"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            data-sizes="auto"
+            alt="{{ image.alt | escape }}">
+          <noscript>
+            <img class="card__image" src="{{ image | img_url: '120x' }}" alt="{{ image.alt | escape }}">
+          </noscript>
+        </div>
+      </a>
+    </div>
+    <figcaption>
+      <header>
+        <div class="product-title">
+          <a href="{{ product.url | within: collection }}" class="title">{{ product.title }}</a>
+          
+          {% if settings.show_vendors %}
+            <span class="vendor">{{ product.vendor | link_to_vendor }}</span>
+          {% endif %}
+        </div>
+        <span class="price">
+          {% if on_sale %}
+          <span class="sale">{{ 'products.product.on_sale' | t }}</span>
+          {% endif %}
+          {% if sold_out %}
+          <span class="sold-out">{{ 'products.product.sold_out' | t }}</span>
+          <span class="original-price">
+          {% endif %}
+
+          {% if on_sale %}
+            {% if product.price_varies %}
+              <span class="from">{{ 'products.general.from' | t }}</span>
+              <span class="original-price">{{ product.compare_at_price | money }}</span>
+              {{ product.price | money }}
+            {% else %}
+              <span class="original-price">{{ product.compare_at_price | money }}</span>
+              {{ product.price | money }}
+            {% endif %}
+          {% else %}
+            {% if product.price_varies %}<span class="from">{{ 'products.general.from' | t }}</span>{% endif %}
+            {{ product.price | money }}
+          {% endif %}
+
+          {% if sold_out %}
+          </span>
+          {% endif %}
+        </span>
+      </header>
+      <div class="description rte">
+        {% assign word_limit = 40 %}
+        <p>{{ product.description | strip_html | truncatewords: word_limit }}</p>
+      </div>
+      {% if sold_out %}
+      <span class="label sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {% else %}
+        {% if on_sale %}
+        <span class="label sale">{{ 'products.product.on_sale' | t }}</span>
+        {% endif %}
+      {% endif %}
+    </figcaption>
+  </figure>
+
+</div>

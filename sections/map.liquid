@@ -1,0 +1,220 @@
+{%- assign display_map = false -%}
+{%- assign onboarding = false -%}
+{%- assign bg_image = section.settings.background_image -%}
+
+{%- if section.settings.api_key == blank and bg_image == blank -%}
+  {%- assign onboarding = true -%}
+{%- endif -%}
+{%- if section.settings.api_key != blank and section.settings.map_address -%}
+  {%- assign display_map = true -%}
+{%- endif -%}
+
+<div id="MapSection--{{ section.id }}" 
+     class="map-section section-standard no-border"
+     data-section-id="{{ section.id }}"
+     data-section-type="map">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} no-padding">
+    <div class="wrapper">
+
+      <div class="map-section__content-wrapper lazyload background-alignment__{{ section.settings.background_image_position }}" {% if bg_image != blank %}data-bgset="{% include 'bgset', image: bg_image %}"{% endif %}>
+        <div class="map-section__content">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+          {% if section.settings.address != blank %}
+            <div class="rte">{{ section.settings.address }}</div>
+          {% endif %}
+          {% if section.settings.map_address != blank and section.settings.button_text != blank %}
+            <a href="https://maps.google.com?daddr={{ section.settings.map_address | escape }}" target="_blank" class="button outline">{{ section.settings.button_text | escape }}</a>
+          {% endif %}
+        </div>
+        {% if onboarding == true %}
+          <div class="placeholder-background">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        {% if display_map %}
+          <div class="map-section__container"
+              id="Map-{{ section.id }}"
+              data-map
+              data-address-setting="{{ section.settings.map_address | escape }}"
+              data-api-key="{{ section.settings.api_key }}"
+              data-map-style="{{ section.settings.map_style }}">
+          </div>
+          <div class="map-section__overlay" data-map-overlay></div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  {% assign overlay_alpha = section.settings.color_overlay_alpha_range | times: 0.01 %}
+  #MapSection--{{ section.id }} .map-section__overlay {
+    background-color: {{ section.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Map",
+  "class": "index-section map-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "id": "heading",
+      "type": "text",
+      "label": "Heading",
+      "default": "Our store"
+    },
+    {
+      "id": "address",
+      "type": "richtext",
+      "label": "Address and hours",
+      "default": "<p>200 Fake St.<br>Irvine, California</p><p>Mon - Fri, 10am - 9pm<br>Saturday, 11am - 9pm<br>Sunday, 11am - 5pm</p>"
+    },
+    {
+      "id": "map_address",
+      "type": "text",
+      "label": "Map address",
+      "info": "Google Maps will find the exact location",
+      "default": "200 Spectrum Center Dr, Irvine CA"
+    },
+    {
+      "id": "button_text",
+      "type": "text",
+      "label": "Map link label",
+      "default": "Get directions"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": true
+    },
+    {
+      "id": "api_key",
+      "type": "text",
+      "label": "Google Maps API key",
+      "info": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+    },
+    {
+      "type": "select",
+      "id": "map_style",
+      "label": "Google Maps style",
+      "default": "standard",
+      "options": [
+        {
+          "label": "Standard",
+          "value": "standard"
+        },
+        {
+          "label": "Silver",
+          "value": "silver"
+        },
+        {
+          "label": "Retro",
+          "value": "retro"
+        },
+        {
+          "label": "Dark",
+          "value": "dark"
+        },
+        {
+          "label": "Night",
+          "value": "night"
+        },
+        {
+          "label": "Aubergine",
+          "value": "aubergine"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image",
+      "info": "Displayed if the map isn’t loaded"
+    },
+    {
+      "type": "select",
+      "id": "background_image_position",
+      "label": "Image position",
+      "default": "center-center",
+      "options": [
+        {
+          "label": "Top left",
+          "value": "top-left"
+        },
+        {
+          "label": "Top center",
+          "value": "top-center"
+        },
+        {
+          "label": "Top right",
+          "value": "top-right"
+        },
+        {
+          "label": "Middle left",
+          "value": "center-left"
+        },
+        {
+          "label": "Middle center",
+          "value": "center-center"
+        },
+        {
+          "label": "Middle right",
+          "value": "center-right"
+        },
+        {
+          "label": "Bottom left",
+          "value": "bottom-left"
+        },
+        {
+          "label": "Bottom center",
+          "value": "bottom-center"
+        },
+        {
+          "label": "Bottom right",
+          "value": "bottom-right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "color_overlay_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map",
+      "category": "Store information"
+    }
+  ]
+}
+
+{% endschema %}

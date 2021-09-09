@@ -1,0 +1,85 @@
+{% comment %}
+
+
+<!-- /snippets/breadcrumb.liquid -->
+{% comment %}
+  Documentation - http://docs.shopify.com/support/your-website/navigation/creating-a-breadcrumb-navigation
+{% endcomment %}
+{% unless template == 'index' %}
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+  <a href="/" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+  {% if template contains 'product' %}
+
+    {% if collection %}
+      <span aria-hidden="true">&rsaquo;</span>
+      {% if collection.handle %}
+        {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+        {{ collection.title | link_to: url }}
+      {% endif %}
+    {% endif %}
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ product.title }}</span>
+
+  {% elsif template contains 'collection' and collection.handle %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {% if current_tags %}
+      {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+      {{ collection.title | link_to: url }}
+      <span aria-hidden="true">&rsaquo;</span>
+      <span>{{ current_tags | join: " + " | replace: "_", " " }}</span>
+    {% else %}
+      <span>{{ collection.title }}</span>
+    {% endif %}
+
+  {% elsif template == 'blog' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {% if current_tags %}
+      {{ blog.title | link_to: blog.url }}
+      <span aria-hidden="true">&rsaquo;</span>
+      <span>{{ current_tags | join: " + " | replace: "_", " " }}</span>
+    {% else %}
+    <span>{{ blog.title }}</span>
+    {% endif %}
+
+  {% elsif template == 'article' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {{ blog.title | link_to: blog.url }}
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ article.title }}</span>
+
+  {% elsif template contains 'page' %}
+
+   <span aria-hidden="true">&rsaquo;</span>
+   <span>{{ page.title }}</span>
+
+  {% elsif template contains 'search' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ 'general.search.submit' | t }}: {{ page_title }}</span>
+
+  {% elsif template == 'customers/addresses' or
+           template == 'customers/order' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    <a href="/account">{{ 'customer.account.title' | t }}</a>
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ page_title }}</span>
+
+  {% elsif template == 'customers/account' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ 'customer.account.title' | t }}</span>
+
+  {% else %}
+
+   <span aria-hidden="true">&rsaquo;</span>
+   <span>{{ page_title }}</span>
+
+  {% endif %}
+</nav>
+{% endunless %}
+{% endcomment %}

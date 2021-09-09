@@ -1,0 +1,161 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section">
+  <div class="site-header-wrapper">
+    <header class="site-header {% if section.settings.minimal_padding == "minimal" %}minimal{% endif %} {% if section.settings.header_full_width %}full-width{% endif %}" data-scroll-lock="{{ section.settings.scroll_lock }}" role="banner">
+
+      <div class="wrapper">
+        
+
+
+
+        <div class="logo-nav-contain layout-{{ section.settings.header_layout }}">
+
+          {% comment %}
+            Use the uploaded logo from theme settings if enabled.
+            Site name gets precedence with H1 tag on homepage, div on other pages.
+          {% endcomment %}
+          
+                      {% if template.name == 'index' %}
+
+          <div class="logo-contain">
+            {% if template.name == 'index' %}
+              <h1 class="site-logo {% if section.settings.logo %}has-image{% endif %}" itemscope itemtype="http://schema.org/Organization">
+            {% else %}
+              <div class="site-logo {% if section.settings.logo %}has-image{% endif %}" itemscope itemtype="http://schema.org/Organization">
+            {% endif %}
+              {% if section.settings.logo %}
+                <a href="/" itemprop="url" class="logo-image">
+                  {% assign image = section.settings.logo %}
+                  {% assign image_default_width = section.settings.logo_max_width | append: 'x' %}
+                  {% assign image_retina_width = image_default_width | times: 2 %}
+                  <img src="{{ image | img_url: image_default_width }}"
+                    srcset="{{ image | img_url: image_default_width }} 1x
+                            {% if image.width >= image_retina_width %},{{ image | img_url: image_default_width, scale: 2 }} 2x{% endif %}"
+                    alt="{{ image.alt | escape | default: shop.name }}"
+					width="399"
+                    height="103"
+                       class="loaded">
+                </a>
+              {% else %}
+                <a href="/" itemprop="url">{{ shop.name }}</a>
+              {% endif %}
+            {% if template.name == 'index' %}
+              </h1>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+                      {% endif %}
+
+          <nav class="nav-bar" role="navigation">
+            {% include 'site-nav' %}
+          </nav>
+        </div>
+
+      </div>
+    </header>
+  </div>
+</div>
+
+<nav id="menu" class="panel" role="navigation">
+  <div class="search">
+    {% include 'search-bar' %}
+  </div>
+
+  {% include 'site-nav' %}
+
+  <div class="account">
+    {% if shop.customer_accounts_enabled %}
+      {% include 'accounts-nav' %}
+    {% endif %}
+  </div>
+</nav>
+
+<style>
+  {% if section.settings.top_bar_full_width %}
+  header.util .wrapper {
+    padding: 0;
+    max-width: 100%;
+  }
+  header.util .wrapper .left-wrapper,
+  header.util .wrapper .right-wrapper {
+    margin: 6px 20px;
+  }
+  {% endif %}
+  .site-logo.has-image {
+    max-width: {{ section.settings.logo_max_width }}px;
+  }
+  //
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "header_layout",
+      "label": "Logo placement",
+      "options": [
+        { "value": "horizontal", "label": "Left aligned" },
+        { "value": "vertical", "label": "Centered" }
+      ],
+      "default": "vertical"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 100,
+      "max": 1180,
+      "step": 20,
+      "unit": "px",
+      "label": "Logo maximum width",
+      "default": 280
+    },
+    {
+      "type": "link_list",
+      "id": "main_linklist",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "scroll_lock",
+      "label": "Lock while scrolling",
+      "options": [
+        { "value": "util", "label": "Top bar" },
+        { "value": "header", "label": "Header" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "util"
+    },
+    {
+      "type": "radio",
+      "id": "minimal_padding",
+      "label": "Header size",
+      "options": [
+        { "value": "minimal", "label": "Minimal" },
+        { "value": "normal", "label": "Normal" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "checkbox",
+      "id": "top_bar_full_width",
+      "label": "Expand top bar full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "header_full_width",
+      "label": "Expand header full width",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+<iframe id='home-cc-iframe' src='https://confidentcustomer.com/Catnip-Beasts-reviews/frame' frameBorder='0' scrolling='no' style='width:100%;margin:0px;max-width:{{section.settings.maxwidth}}px;height:{{section.settings.height}}px;border:0px;'></iframe>
+<script type='text/javascript'>
+function home_cc_iframe_sizer(){var m={{section.settings.maxwidth}};var d=window.innerWidth;var a=0;if(d>m){a=(d-m)/2;}document.getElementById('home-cc-iframe').style.margin = '0px '+a+'px 0px '+a+'px';}home_cc_iframe_sizer();window.onresize = function(event){home_cc_iframe_sizer();};
+</script>
+{% schema %}
+{
+	"name": "CC Reviews",
+	"settings": [
+		{
+			"type": "range",
+			"id": "height",
+			"min": 200,
+			"max": 1080,
+			"step": 20,
+			"unit": "px",
+			"label": "Height of reviews block",
+			"default": 500
+		},
+		{
+			"type": "range",
+			"id": "maxwidth",
+			"min": 480,
+			"max": 1920,
+			"step": 40,
+			"unit": "px",
+			"label": "Maximum width",
+			"default": 1920
+		}
+	],
+	"presets": [{
+		"name": "CC Reviews",
+		"category": "ConfidentCustomer"
+	}]
+}
+{% endschema %}

@@ -1,0 +1,461 @@
+<div class="slideshow slideshow-{{ section.id }} section-standard no-border" data-section-id="{{ section.id }}" data-section-type="slideshow-section">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} no-padding">
+    <div class="wrapper">
+      {% if section.settings.autoplay %}
+        {% assign autoplay = section.settings.autoplay_speed_range | times: 1000 %}
+      {% else %}
+        {% assign autoplay = false %}
+      {% endif %}
+      <div class="slideshow-carousel"
+        data-slide-count="{{ section.blocks.size }}"
+        data-flickity-options='{
+          "imagesLoaded": true,
+          "lazyLoad": 1,
+          "adaptiveHeight": true,
+          "autoPlay": {{ autoplay }},
+          "wrapAround": true,
+          "prevNextButtons": {{ section.settings.show_arrows }},
+          "pageDots": {{ section.settings.show_dots }}
+        }'>
+        {% for block in section.blocks %}
+          <div id="block-{{ block.id }}" class="slide__item slide__item-{{ block.type }}" data-slide-index="{{ forloop.index0 }}" {% if block.type == 'video' %}data-video-id="{{ block.settings.video_url.id }}" data-mobile-autoplay="{{ block.settings.mobile_autoplay }}"{% endif %} {{ block.shopify_attributes }}>
+            {% comment %}
+              Slide text content
+            {% endcomment %}
+            <div class="slide__item-content {{ block.settings.vertical_alignment }} {{ block.settings.horizontal_alignment }}">
+              <div class="content-box">
+                <div class="outer-wrapper">
+                  <div class="inner-wrapper">
+                    {% if block.settings.title != blank %}
+                      <div class="content-contain">
+                        <h2>{{ block.settings.title | escape }}</h2>
+                      </div>
+                    {% endif %}
+                    {% if block.settings.text != blank %}
+                      <div class="rte content-contain">
+                        {{ block.settings.text }}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.button_link != blank and block.settings.button_label != blank %}
+                      <a href="{{ block.settings.button_link }}" class="button">{{ block.settings.button_label | escape }}</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% comment %}
+              Slide image and link
+            {% endcomment %}
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="slide__item-image">
+            {% else %}
+              <div class="slide__item-image">
+            {% endif %}
+
+            <div class="slide__item-image-contain desktop">
+              {% if block.settings.image != blank %}
+                {% assign image = block.settings.image %}
+                {% assign image_widths = '400,600,800,900,1000,1200,1500,1800,2000,2400' %}
+                {% include 'theme-rias' %}
+                <img class="slide__image slide__image-desktop {% if forloop.first %}lazyload{% else %}lazymanual{% endif %}"
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  data-src="{{ image_url_pattern }}"
+                  data-widths="[{{ image_widths }}]"
+                  data-aspectratio="{{ image.aspect_ratio }}"
+                  data-sizes="auto"
+                  alt="{{ image.alt | escape }}">
+                {% if forloop.first %}
+                <noscript>
+                  <img src="{{ image | img_url: '900x' }}" alt="{{ image.alt | escape }}">
+                </noscript>
+                {% endif %}
+                {% assign height = image.height | plus: 0 %}
+                {% assign width = image.width | plus: 0 %}
+                {% assign padding_ratio = height | times: 100 | divided_by: width %}
+              {% else %}
+                {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                {% assign padding_ratio = 40 %}
+              {% endif %}
+            </div>
+
+            <div class="slide__item-image-contain mobile">
+              {% if block.settings.mobile_image != blank %}
+                {% assign image = block.settings.mobile_image %}
+                {% assign image_widths = '400,600,800,1000,1200' %}
+                {% include 'theme-rias' %}
+                <img class="slide__image slide__image-mobile lazymanual"
+                  {% if forloop.first %}
+                  src="{{ image | img_url: '400x' }}"
+                  {% else %}
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  {% endif %}
+                  data-preload="{{ image | img_url: '400x' }}"
+                  data-src="{{ image_url_pattern }}"
+                  data-widths="[{{ image_widths }}]"
+                  data-aspectratio="{{ image.aspect_ratio }}"
+                  data-sizes="auto"
+                  alt="{{ image.alt | escape }}">
+                {% if forloop.first %}
+                <noscript>
+                  <img src="{{ image | img_url: '400x' }}" alt="{{ image.alt | escape }}">
+                </noscript>
+                {% endif %}
+                {% assign height = image.height | plus: 0 %}
+                {% assign width = image.width | plus: 0 %}
+                {% assign mobile_padding_ratio = height | times: 100 | divided_by: width %}
+              {% endif %}
+            </div>
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+
+            <style media="screen">
+              #block-{{ block.id }} .slide__item-image-contain.desktop {
+                position: relative;
+                height: 0;
+                padding-bottom: {{ padding_ratio }}%;
+              }
+              #block-{{ block.id }} .slide__item-image-contain.desktop img {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+              {% if block.settings.mobile_image != blank %}
+              #block-{{ block.id }} .slide__item-image-contain.mobile {
+                display: none;
+                position: relative;
+                height: 0;
+                padding-bottom: {{ mobile_padding_ratio }}%;
+              }
+              #block-{{ block.id }} .slide__item-image-contain.mobile img {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+              @media (max-width: 700px) {
+                #block-{{ block.id }} .slide__item-image-contain.mobile { display: block; }
+                #block-{{ block.id }} .slide__item-image-contain.desktop { display: none; }
+              }
+              @media (min-width: 701px) {
+                #block-{{ block.id }} .slide__item-image-contain.mobile { display: none; }
+                #block-{{ block.id }} .slide__item-image-contain.desktop { display: block; }
+              }
+              @media (max-width: 600px) {
+                #block-{{ block.id }} .slide__item-content h2 { font-size: 24px; }
+                #block-{{ block.id }} .slide__item-content p { font-size: 15px; }
+                #block-{{ block.id }} .slide__item-content .content-box { padding: 20px; }
+              }
+              {% endif %}
+              {% assign overlay_alpha = block.settings.color_overlay_alpha_range | times: 0.01 %}
+              #block-{{ block.id }} .slide__item-content {
+                background-color: {{ block.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+              }
+              #block-{{ block.id }} h2,
+              #block-{{ block.id }} .rte {
+                color: {{ block.settings.color_text }};
+              }
+              #block-{{ block.id }} a {
+                color: {{ block.settings.color_accent }};
+              }
+              #block-{{ block.id }} a:hover,
+              #block-{{ block.id }} a:focus {
+                color: {{ block.settings.color_text }};
+              }
+              #block-{{ block.id }} a.button {
+                color: {{ block.settings.color_accent }};
+                border-color: {{ block.settings.color_accent }};
+              }
+              #block-{{ block.id }} a.button:hover,
+              #block-{{ block.id }} a.button:focus {
+                color: {{ block.settings.color_text }};
+                border-color: {{ block.settings.color_text }};
+              }
+            </style>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "class": "slideshow-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed_range",
+      "label": "Change slides every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "sec",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show slide dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show previous and next arrows",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "2000 x 800px .jpg recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional. 1200 x 1200px .jpg recommended"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Slide link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Slide"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add brief details about this slide.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "default": "align-center",
+          "options": [
+            {"value": "align-start", "label": "Top"},
+            {"value": "align-center", "label": "Middle"},
+            {"value": "align-end", "label": "Bottom"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment",
+          "label": "Horizontal alignment",
+          "default": "justify-center",
+          "options": [
+            {"value": "justify-start", "label": "Left"},
+            {"value": "justify-center", "label": "Center"},
+            {"value": "justify-end", "label": "Right"}
+          ]
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_accent",
+          "label": "Accent",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_overlay",
+          "label": "Overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "color_overlay_alpha_range",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Overlay opacity",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video slide",
+      "settings": [
+        {
+          "id": "video_url",
+          "type": "video_url",
+          "label": "Background video URL",
+          "accept": ["youtube"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_autoplay",
+          "label": "Autoplay on mobile devices",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1500 x 600px .jpg recommended. Displayed while video is loading and in browsers that do not support autoplay video."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional. 1200 x 1200px .jpg recommended. Displayed while video is loading and in browsers that do not support autoplay video."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Slide link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Slide"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add brief details about this slide.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "vertical_alignment",
+          "label": "Vertical alignment",
+          "default": "align-center",
+          "options": [
+            {"value": "align-start", "label": "Top"},
+            {"value": "align-center", "label": "Middle"},
+            {"value": "align-end", "label": "Bottom"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "horizontal_alignment",
+          "label": "Horizontal alignment",
+          "default": "justify-center",
+          "options": [
+            {"value": "justify-start", "label": "Left"},
+            {"value": "justify-center", "label": "Center"},
+            {"value": "justify-end", "label": "Right"}
+          ]
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_accent",
+          "label": "Accent",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_overlay",
+          "label": "Overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "color_overlay_alpha_range",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Overlay opacity",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "category": "Image",
+      "settings": {
+        "full_width": true,
+        "autoplay": true,
+        "autoplay_speed_range": 5,
+        "show_dots": true,
+        "show_arrows": false
+      },
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

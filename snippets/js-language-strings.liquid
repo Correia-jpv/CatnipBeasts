@@ -1,0 +1,14 @@
+{%- capture js_language_strings -%}
+    StyleHatch.Strings = {
+      instagramAddToken: {{ 'homepage.onboarding.instagram_add_token' | t | json }},
+      instagramInvalidToken: {{ 'homepage.onboarding.instagram_invalid_token' | t | json }},
+      instagramRateLimitToken: {{ 'homepage.onboarding.instagram_ratelimit_token' | t | json }},
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      addressError: {{ 'sections.map.address_error' | t | json }},
+      addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+      addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+      authError: {{ 'sections.map.auth_error_html' | t | json }}
+    }
+{%- endcapture -%}
+{{ js_language_strings }}

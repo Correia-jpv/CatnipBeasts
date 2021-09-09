@@ -1,0 +1,114 @@
+<!-- /templates/customers/account.liquid -->
+{% comment %}
+
+  For all available customer liquid tags:
+    - http://docs.shopify.com/themes/liquid-variables/customer
+
+{% endcomment %}
+<section class="page page-top">
+  <div class="wrapper">
+    <header class="content-util">
+    {% include 'breadcrumb' %}
+    {% include 'social-icons' %}
+    </header>
+    <header class="page-header">
+      <h1>{{ 'customer.account.title' | t }}</h1>
+    </header>
+  </div>
+</section>
+
+<section class="page">
+  <div class="wrapper">
+    <div class="content-container">
+      <div class="grid">
+        <div class="orders-container">
+          <div class="orders">
+            <h4>{{ 'customer.orders.title' | t }}</h4>
+
+            {% comment %}
+              If we have past orders, loop through each one
+            {% endcomment %}
+            {% paginate customer.orders by 20 %}
+              {% if customer.orders.size != 0 %}
+
+                <div class="table-wrap">
+                  <table class="full">
+                    <thead>
+                      <tr>
+                        <th>{{ 'customer.orders.order_number' | t }}</th>
+                        <th>{{ 'customer.orders.date' | t }}</th>
+                        <th>{{ 'customer.orders.payment_status' | t }}</th>
+                        <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                        <th>{{ 'customer.orders.total' | t }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for order in customer.orders %}
+                        <tr>
+                          <td>{{ order.name | link_to: order.customer_url }}</td>
+                          <td>{{ order.created_at | date: format: 'month_day_year' }}</td>
+                          <td>{{ order.financial_status_label }}</td>
+                          <td>{{ order.fulfillment_status_label }}</td>
+                          <td>{{ order.total_price | money }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+              {% else %}
+
+                <p>{{ 'customer.orders.none' | t }}</p>
+
+              {% endif %}
+              {% if paginate.pages > 1 %}
+                <footer class="collection-footer">
+                  {% include 'pagination' %}
+                </footer>
+              {% endif %}
+            {% endpaginate %}
+          </div>
+        </div>
+        <div class="account">
+          <h4>{{ 'customer.account.details' | t }}</h4>
+
+          <p>
+            <strong>{{ customer.name }}</strong><br>
+          {% if customer.default_address != nil %}
+            <span class="smaller">
+            {{ customer.default_address.address1 }}<br>
+
+            {% if customer.default_address.address2 != "" %}
+              {{ customer.default_address.address2 }}<br>
+            {% endif %}
+
+            {% if customer.default_address.city != "" %}
+              {{ customer.default_address.city }}<br>
+            {% endif %}
+
+            {% if customer.default_address.province_code != "" %}
+              {{ customer.default_address.province_code | upcase }}<br>
+            {% endif %}
+
+            {% if customer.default_address.zip != "" %}
+              {{ customer.default_address.zip | upcase }}<br>
+            {% endif %}
+
+            {% if customer.default_address.country != "" %}
+              {{ customer.default_address.country }}<br>
+            {% endif %}
+
+            {% if customer.default_address.phone != "" %}
+              {{ customer.default_address.phone }}
+            {% endif %}
+            </span>
+
+          {% endif %}
+          </p>
+
+          <p><a href="/account/addresses" class="button outline">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

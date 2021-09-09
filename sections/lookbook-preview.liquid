@@ -1,0 +1,181 @@
+<div class="lookbook-preview section-standard" data-section-id="{{ section.id }}" data-section-type="lookbook-preview-section">
+  <div class="contain-full-width">
+    <div class="wrapper">
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      <div class="lookbook-container">
+        {% for block in section.blocks %}
+          <div id="block-{{ block.id }}" class="lookbook__item {% if block.settings.full_width %}lookbook__item-full_width{% endif %} lookbook__item-{{ block.type }}">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="lookbook__link">
+            {% endif %}
+
+            {% case block.type %}
+              {% when 'icon_image' %}
+                {%- assign image = block.settings.image -%}
+                {% if image != blank %}
+                  <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+                    {% assign image_widths = '100,240,480,720' %}
+                    {% include 'theme-rias' %}
+                    <img class="card__image lookbook__icon-image lazyload fade-in"
+                      data-src="{{ image_url_pattern }}"
+                      data-widths="[{{ image_widths }}]"
+                      data-aspectratio="{{ image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ image.alt | escape }}">
+                    <noscript>
+                      <img class="card__image lookbook__icon-image" src="{{ image | img_url: '160x' }}" alt="{{ image.alt | escape }}">
+                    </noscript>
+                  </div>
+                  <style media="screen">
+                    #block-{{ block.id }} {
+                      {% if image.width >= 240 %}
+                        max-width: 240px;
+                      {% else %}
+                        max-width: {{ image.width }}px;
+                      {% endif %}
+                      margin-left: auto;
+                      margin-right: auto;
+                    }
+                  </style>
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+
+              {% when 'image' %}
+                {%- assign image = block.settings.image -%}
+                {% if image != blank %}
+                  <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+                    {% assign image_widths = '360,540,720,900,1000,1200,1500,1800,2000,2400' %}
+                    {% include 'theme-rias' %}
+                    <img class="card__image lookbook__image lazyload fade-in"
+                      data-src="{{ image_url_pattern }}"
+                      data-widths="[{{ image_widths }}]"
+                      data-aspectratio="{{ image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ image.alt | escape }}">
+                    <noscript>
+                      <img class="card__image lookbook__image" src="{{ image | img_url: '1200x' }}" alt="{{ image.alt | escape }}">
+                    </noscript>
+                  </div>
+                  <style media="screen">
+                    #block-{{ block.id }}:not(.lookbook__item-full_width) {
+                      max-width: {{ image.width }}px;
+                      margin-left: auto;
+                      margin-right: auto;
+                    }
+                  </style>
+                {% else %}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+
+            {% endcase %}
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if section.settings.button_link != blank and section.settings.button_label != blank %}
+      <footer>
+          <a href="{{ section.settings.button_link }}" class="button large outline">{{ section.settings.button_label | escape }}</a>
+      </footer>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Lookbook preview",
+  "class": "lookbook-preview-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Lookbook Preview"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_image",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full browser width",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured lookbook",
+      "category": "Advanced layout",
+      "settings": {
+        "title": "",
+        "button_label": "Browse the look",
+        "button_link": "shopify://collections/all"
+      },
+      "blocks": [
+        {
+          "type": "icon_image"
+        },
+        {
+          "type": "image",
+          "settings": {
+            "full_width": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

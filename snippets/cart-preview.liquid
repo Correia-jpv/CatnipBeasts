@@ -1,0 +1,27 @@
+<!-- /snippets/cart-preview.liquid -->
+<div class="cart-preview">
+  <div class="cart-preview-title">
+    {{ 'products.product.added_to_cart' | t}}
+  </div>
+  <div class="product-container">
+    <div class="box product">
+      <figure>
+        <a href="#" class="product-image"></a>
+        <figcaption>
+          <a href="#" class="product-title"></a>
+          <ul class="product-variant options"></ul>
+          <span class="product-price price money"></span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="cart-preview-total">
+    {% capture cart_item_count %}{{ cart.items }}{% endcapture %}
+    <div class="count plural">{{ 'cart.general.items_in_cart_html' | t: cart_item_count: cart_item_count }}</div>
+    <div class="count singular">{{ 'cart.general.item_in_cart_html' | t }}</div>
+    <div class="label">{{ 'cart.label.total' | t }}</div>
+    <div class="total-price total"><span class="money"></span></div>
+  </div>
+  <a href="/cart" class="button solid">{{ 'cart.general.checkout' | t }}</a>
+  <a href="#continue" class="button outline continue-shopping">{{ 'cart.general.continue_shoping' | t }}</a>
+</div>

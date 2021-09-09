@@ -1,0 +1,34 @@
+<ul class="site-nav" role="menubar">
+  {% comment %}
+    link - First level menu
+  {% endcomment %}
+  {% for link in linklists[section.settings.main_linklist].links %}
+    <li class="{% if link.active %}active {% endif %}{% if link.links != blank %}has-dropdown {% endif %}" role="presentation">
+      <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %} role="menuitem">{{ link.title | escape }}</a>
+      {% if link.links != blank %}
+        <ul class="dropdown" aria-hidden="true" role="menu">
+          {% comment %}
+            sub_link - Second level menu
+          {% endcomment %}
+          {% for sub_link in link.links %}
+            <li class="{% if sub_link.active %}active {% endif %}{% if sub_link.links != blank %}has-sub-dropdown {% endif %}" role="presentation">
+              <a href="{{ sub_link.url }}" role="menuitem" {% if sub_link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %} tabindex="-1">{{ sub_link.title | escape }}</a>
+              {% if sub_link.links != blank %}
+                <ul class="sub-dropdown" aria-hidden="true" role="menu">
+                  {% comment %}
+                    sub_sub_link - Third level menu
+                  {% endcomment %}
+                  {% for sub_sub_link in sub_link.links %}
+                    <li class="sub-dropdown-item {% if sub_sub_link.active %}active {% endif %}" role="presentation">
+                      <a href="{{ sub_sub_link.url }}" role="menuitem" tabindex="-1">{{ sub_sub_link.title | escape }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

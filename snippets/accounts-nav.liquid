@@ -1,0 +1,23 @@
+<!-- /snippets/accounts-nav.liquid -->
+<ul class="text-links">
+  {% if customer %}
+    <li>
+      {% if customer.first_name != blank %}
+        {% capture first_name %}{{ customer.first_name }}{% endcapture %}
+        <a href="/account">{{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}</a>
+      {% else %}
+        <a href="/account">{{ 'layout.customer.account' | t }}</a>
+      {% endif %}
+    </li>
+    <li>
+      {{ 'layout.customer.log_out' | t | customer_logout_link }}
+    </li>
+  {% else %}
+    <li>
+      {{ 'layout.customer.log_in' | t | customer_login_link }}
+    </li>
+    <li>
+      {{ 'layout.customer.create_account' | t | customer_register_link }}
+    </li>
+  {% endif %}
+</ul>

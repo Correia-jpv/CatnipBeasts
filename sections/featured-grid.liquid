@@ -1,0 +1,250 @@
+<div class="gallery section-standard {% unless section.settings.section_padding %}no-border{% endunless %}" data-section-id="{{ section.id }}" data-section-type="gallery-section">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} {% unless section.settings.section_padding %}no-padding{% endunless %}">
+    <div class="wrapper">
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      {% comment %}
+        Evaluate how many images are in the section
+        Calculate how the number of rows based on the targetted images per row
+        Use the remainder to create a different grid layout for the first row
+      {% endcomment %}
+      {%- assign total_blocks = section.blocks.size -%}
+      {%- assign target_per_row = section.settings.images_per_row_range -%}
+      {%- assign first_row_size = total_blocks | modulo: target_per_row -%}
+      {%- assign target_row_count = total_blocks | divided_by: target_per_row -%}
+      {% if first_row_size > 0 %}
+        {%- assign total_row_count = target_row_count | plus: 1 -%}
+      {% endif %}
+      {% case target_per_row %}
+        {% when 2 %}
+          {%- assign grid_item_width = 'one-half' -%}
+          {%- assign image_size = '800x' -%}
+        {% when 3 %}
+          {%- assign grid_item_width = 'one-third' -%}
+          {%- assign image_size = '540x' -%}
+        {% when 4 %}
+          {%- assign grid_item_width = 'one-quarter' -%}
+          {%- assign image_size = '400x' -%}
+      {% endcase %}
+      {% case first_row_size %}
+        {% when 1 %}
+          {%- assign first_grid_item_width = 'one-full' -%}
+          {%- assign first_image_size = '1600x' -%}
+        {% when 2 %}
+          {%- assign first_grid_item_width = 'one-half' -%}
+          {%- assign first_image_size = '800x' -%}
+        {% when 3 %}
+          {%- assign first_grid_item_width = 'one-third' -%}
+          {%- assign first_image_size = '540x' -%}
+        {% when 4 %}
+          {%- assign first_grid_item_width = 'one-quarter' -%}
+          {%- assign first_image_size = '400x' -%}
+      {% endcase %}
+      {%- assign last_row_start = total_blocks | minus: target_per_row | plus: 1 -%}
+      <div class="{% if section.settings.gutter %}grid{% else %}grid-gutterless{% endif %}">
+        {% for block in section.blocks limit: section.blocks.size %}
+          {% if forloop.index <= first_row_size %}
+            {%- assign block_grid_item_width = first_grid_item_width -%}
+            {%- assign block_image_size = first_image_size -%}
+          {% else %}
+            {%- assign block_grid_item_width = grid_item_width -%}
+            {%- assign block_image_size = image_size -%}
+          {% endif %}
+
+          <div class="grid__item {{ block_grid_item_width }} medium-down--one-whole {% if section.settings.section_padding == false and section.settings.gutter == false and forloop.index >= last_row_start %}no-bottom-margin{% endif %}" {{ block.shopify_attributes }}>
+            {% include 'image-grid-item', image_size: block_image_size, text_placement: section.settings.text_placement, zoom: section.settings.zoom, full_width: section.settings.full_width %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  #shopify-section-{{ section.id }} .box figcaption h4 {
+    color: {{ section.settings.color_overlay_text }};
+  }
+  {% assign overlay_alpha = section.settings.color_overlay_alpha_range | times: 0.01 %}
+  #shopify-section-{{ section.id }} .box a figure:after,
+  #shopify-section-{{ section.id }} .box div.hover-wrapper figure:after {
+    background-color: {{ section.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+  }
+  #shopify-section-{{ section.id }} .box a:hover figure:after,
+  #shopify-section-{{ section.id }} .box div.hover-wrapper:hover figure:after {
+    background-color: {{ section.settings.color_overlay_hover | hex_to_rgba: overlay_alpha }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gallery",
+  "class": "gallery-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image Gallery"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "section_padding",
+      "label": "Show spacing around section",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gutter",
+      "label": "Show spacing around images",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "images_per_row_range",
+      "label": "Targetted images per row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "radio",
+      "id": "text_placement",
+      "label": "Text placement",
+      "default": "below",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below image"
+        },
+        {
+          "value": "over",
+          "label": "Over image"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay",
+      "default": "#4f4f4f"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_hover",
+      "label": "Overlay hover",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_text",
+      "label": "Overlay text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "color_overlay_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom",
+      "label": "Enable rollover zoom",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_rollover",
+          "label": "Rollover image",
+          "info": "Optional - Rollover image should be the same size as the image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image title",
+          "info": "Optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured grid",
+      "category": "Image",
+      "settings": {
+        "title": "Featured grid",
+        "full_width": false,
+        "section_padding": true,
+        "images_per_row_range": 3,
+        "gutter": true,
+        "text_placement": "below"
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "title": "Image title"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Image title"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Image title"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Image title"
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "title": "Image title"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

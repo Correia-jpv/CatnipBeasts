@@ -1,0 +1,85 @@
+<div class="featured-collection layout-{{ section.settings.product_count_range }}" data-section-id="{{ section.id }}" data-section-type="featured-collection-section">
+  <div class="wrapper">
+    <div class="grid">
+
+      {%- assign collection = collections[section.settings.collection] -%}
+      {%- assign product_limit = section.settings.product_count_range -%}
+
+      <div class="box header">
+        <div class="image-table">
+          <div class="details">
+            {% if section.settings.title != blank %}
+              <h2>{{ section.settings.title | escape }}</h2>
+            {% endif %}
+            {% if section.settings.text != blank %}
+              <p>{{ section.settings.text | escape }}</p>
+            {% endif %}
+            {% if section.settings.button_link != blank and section.settings.button_label != blank %}
+              <a href="{{ section.settings.button_link }}" class="button outline">{{ section.settings.button_label | escape }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% for product in collection.products limit: product_limit  %}
+        {% include 'product-grid-item' %}
+      {% else %}
+        {% for i in (1..product_limit) %}
+          {% include 'placeholder-product-grid-item' %}
+        {% endfor %}
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "class": "featured-collection-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection with text"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Use this text to provide customer with details about the collection"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_count_range",
+      "label": "Number of products",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection with text",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

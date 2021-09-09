@@ -1,0 +1,28 @@
+<!-- /snippets/pagination.liquid -->
+{% comment %}
+
+  This snippet renders pagination list when inside a paginate block
+
+{% endcomment %}
+
+<ul class="pagination">
+  {% if paginate.previous.is_link %}
+    <li><a href="{{ paginate.previous.url }}" title="{{ 'layout.pagination.previous_html'}}">&larr;</a></li>
+  {% endif %}
+
+  {% for part in paginate.parts %}
+    {% if part.is_link %}
+      <li>{{ part.title | link_to: part.url }}</li>
+    {% else %}
+      {% if part.title == '&hellip;' %}
+        <li class="ellipsis disabled"><a href="#" onclick="return false;">{{ part.title }}</a></li>
+      {% else %}
+        <li class="active">{{ part.title | link_to: part.url }}</li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if paginate.next.is_link %}
+    <li><a href="{{ paginate.next.url }}" title="{{ 'layout.pagination.next_html'}}">&rarr;</a></li>
+  {% endif %}
+</ul>

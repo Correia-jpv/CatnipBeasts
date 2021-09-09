@@ -1,0 +1,96 @@
+{%- capture tabs %}
+  {%- capture content %}<p>All orders are shipped within 24 to 48 hours of you placing the order using DHL eCommerce, USPS or ePacket depending on your location and fastest available service. <!--Due to extremely high demand, typical delivery time frame is between 14 to 21 business days however, you may receive your items much earlier. All orders are shipped with tracking number so you can track it every step of the way!--><br><br>Packages may be faced with delays beyond our control such as customs or postal delays.</p>
+
+<br>
+<h2 style="text-align: center;">Our Promise</h2>
+
+
+<p>We stand behind our products and honestly believe they are the best on the market. However, if for any reason you are unsatisfied, we back each purchase by our standard 14 day money back guarantee.</p>
+<p>If you don't have a positive experience for ANY reason, we will do WHATEVER it takes to make sure you are 100% satisfied with your purchase.</p>
+<p>We know that shopping online can be tough. There's lots of options and we appreciate that you are considering us. That's why we want to do everything we can to make sure the experience you have is a positive one. If FOR ANY REASON you are unsatisfied or even just have a question, we have an amazing support team here to work for you!</p>
+<p>We have 24/7/365 Ticket and Email Support. Please contact us if you need assistance.</p>
+{% endcapture -%}
+  31825^^Shipping^^{{ content | replace: '~', '&#126;' | replace: '^', '&#94;' }}^^0||||^^^^^^0^^~~
+{%- endcapture -%}
+{%- assign tabs_array = tabs | strip | split: '~~' -%}
+{%- assign p_id_str = product.id | downcase -%}
+<!-- begin station shared tab data -->
+{%- for item in tabs_array -%}
+  {%- assign tab = item | split: '^^' -%}
+  {%- assign hndl = tab[1] | replace: '&amp;', '' | handleize -%}
+  {%- capture tab_output -%}
+    <div id="station-tabs-data-{{ tab[0] }}" class="station-tabs-data-item" style="display:none;" data-position="{{ tab[5] | default: -1 }}">
+      <a id="st-link-{{ hndl }}" class="station-tabs-link" href="#{{ hndl }}"><span>{{ tab[1] }}</span></a>
+      <div id="st-{{ hndl }}" class="station-tabs-content">
+        <div class="station-tabs-content-inner">{{ tab[2] }}</div>
+      </div>
+    </div>
+  {%- endcapture -%}
+  {%- assign asn = tab[3] | split: '|' -%}
+  {%- assign p_ids = asn[0] | split: ',' -%}
+  {%- assign e_ids = tab[4] | split: ',' -%}
+  {%- unless tabs_order contains tab[0] %}{% continue %}{% endunless -%}
+  {%- if e_ids contains p_id_str %}{% continue %}{% endif -%}
+  {%- if tab[7] != blank%}
+    {%- assign t_lcl = tab[7] | downcase -%}
+    {%- assign s_lcl = request.locale.iso_code | downcase -%}
+    {%- if t_lcl != s_lcl %}{% continue %}{% endif -%}
+  {%- endif -%}
+  {%- if asn[0] == '0' or asn[1] == '0' -%} 
+    {{ tab_output }}{% continue -%}
+  {%- endif -%}
+  {%- assign col_ids = asn[1] | split: ',' -%}
+  {%- assign tags = asn[2] | split: ',' -%}
+  {%- assign tps = asn[3] | split: ',' -%}
+  {%- assign vndr = asn[4] | split: ',' -%}
+  {%- if tab[6] == '1' %}{% assign all = true %}{% else %}{% assign all = false %}{% endif -%}
+  {%- if asn[0] != blank -%}
+    {%- assign all = false -%}
+    {%- if p_ids contains p_id_str -%}
+      {{ tab_output }}{% continue -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if tps.size > 1 or vndr.size > 1 %}{% assign all = false %}{% endif -%}
+  {%- assign cncl = false -%}
+  {%- if col_ids.size > 0 -%}
+    {%- assign cols = product.collections | map: 'id' | downcase -%}
+    {%- for c in col_ids -%}
+      {%- if all -%}
+        {%- unless cols contains c %}
+          {%- assign cncl = true %}{% break -%}
+        {%- endunless -%}
+      {%- elsif cols contains c -%}
+        {{ tab_output }}{% assign cncl = true %}{% break -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if cncl %}{% continue %}{% endif -%}
+  {%- endif -%}
+  {%- if tags.size > 0 -%}
+    {%- for t in tags -%}
+      {%- if all -%}
+        {%- unless product.tags contains t -%}
+          {%- assign cncl = true %}{% break -%}
+        {%- endunless -%}
+      {%- elsif product.tags contains t %}
+        {{ tab_output }}{% assign cncl = true %}{% break -%}
+      {%- endif - %}
+    {%- endfor -%}
+    {%- if cncl %}{% continue %}{% endif -%}
+  {%- endif -%}
+  {%- if tps.size > 0 -%}
+    {%- if all and tps[0] != product.type -%}
+      {%- continue -%}
+    {%- elsif all == false and tps contains product.type %}
+      {{ tab_output }}{% continue -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if vndr.size > 0 -%}
+    {%- if all and vndr[0] != product.vendor -%}
+      {%- continue -%}
+    {%- elsif all == false and vndr contains product.vendor -%}
+      {{ tab_output }}{% continue -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if all %}{{ tab_output }}{% endif -%}
+{%- endfor -%}
+<!-- end station shared tab data -->

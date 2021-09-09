@@ -1,0 +1,13 @@
+{% assign hc_storefront_status = shop.metafields.helpfulcrowd.global.storefront_status %}
+{% if product and hc_storefront_status == "active" %}
+  {% assign hc_id 	      = shop.metafields.helpfulcrowd.global.store_id %}
+  {% assign hc_theme 	    = shop.metafields.helpfulcrowd.global.theme %}
+  {% assign hc_suppressed	= product.metafields.helpfulcrowd.product.suppressed | plus: 0 %}
+
+  {% if hc_suppressed < 1 %}
+    <div class="hc-widget">
+      <div data-hc="product-tabs" data-hc-id="{{ product.id }}" data-hc-store-id="{{ hc_id }}" class="{{ hc_theme }}">
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

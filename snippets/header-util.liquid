@@ -1,0 +1,83 @@
+<header class="util">
+  <div class="wrapper">
+
+    <div class="search-wrapper">
+      {% include 'search-bar' %}
+    </div>
+
+    <div class="left-wrapper">
+      <ul class="text-links">
+        <li class="mobile-menu">
+          <a href="#menu" class="toggle-menu menu-link">
+            <span class="icon-text">
+              <span class="icon icon-menu" aria-hidden="true"></span>
+              <span class="text" data-close-text="{{ 'layout.drawers.close_menu' | t }}">{{ 'layout.navigation.menu' | t }}</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="search">
+            <span class="icon-text">
+              <span class="icon icon-search" aria-hidden="true"></span>
+              <span class="text">{{ 'general.search.submit' | t }}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      {% comment %}
+        Include currency picker
+      {% endcomment %}
+      {% if settings.show_multiple_currencies %}
+        {% include 'currency-picker' %}
+      {% endif %}
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="right-wrapper">
+      {% comment %}
+        If customer accounts are enabled, provide login and create account links
+      {% endcomment %}
+      {% if shop.customer_accounts_enabled %}
+        {% include 'accounts-nav' %}
+      {% endif %}
+      {% comment %}
+        Show number of items in the cart and total cost in the /cart link
+      {% endcomment %}
+      <a href="/cart" id="CartButton">
+        <span class="icon-fallback-text">
+          <span class="icon icon-cart" aria-hidden="true"></span>
+        </span>
+        <span id="CartCount">{{ cart.item_count }}</span>
+        {{ 'layout.cart.title' | t }}
+        <span id="CartCost" class="money">{% unless cart.item_count == 0 %}{{ cart.total_price | money }}{% endunless %}</span>
+
+      </a>
+      {% if settings.ajax_cart_enable %}
+        {% include 'cart-preview' %}
+      {% endif %}
+    </div>
+  </div>
+</header>

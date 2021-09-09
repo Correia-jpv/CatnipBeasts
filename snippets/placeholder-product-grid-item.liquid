@@ -1,0 +1,20 @@
+<div class="box product">
+  <figure>
+    <a href="#">
+      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+    </a>
+    <figcaption>
+      <div class="product-title">
+        <a href="#" class="title">{{ 'homepage.onboarding.product_title' | t }}</a>
+        {% if settings.show_vendors %}
+          <span class="vendor"><a href="#">{{ 'homepage.onboarding.product_vendor' | t }}</a></span>
+        {% endif %}
+      </div>
+      <span class="price">
+        {%- assign price = 1999 -%}
+        <span class="money">{{ price | money }}</span>
+      </span>
+    </figcaption>
+  </figure>
+</div>

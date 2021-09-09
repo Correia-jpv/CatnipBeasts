@@ -1,0 +1,13 @@
+<script>
+StyleHatch.currencyConverter = true;
+StyleHatch.shopCurrency = '{{ shop.currency }}';
+StyleHatch.defaultCurrency = '{{ settings.default_currency | default: shop.currency | strip | upcase }}';
+// Formatting
+StyleHatch.currencyConverterFormat = '{{ settings.currency_format | default: 'money_with_currency_format' }}';
+StyleHatch.moneyWithCurrencyFormat = {{ shop.money_with_currency_format | strip_html | json }};
+StyleHatch.moneyFormat = {{ shop.money_format | strip_html | json }};
+</script>
+<!--[if (gt IE 9)|!(IE)]><!--><script src="//cdn.shopify.com/s/javascripts/currencies.js" defer="defer"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="//cdn.shopify.com/s/javascripts/currencies.js"></script><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'jquery.currencies.min.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ 'jquery.currencies.min.js' | asset_url }}"></script><![endif]-->

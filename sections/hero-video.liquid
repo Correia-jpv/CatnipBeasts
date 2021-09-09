@@ -1,0 +1,198 @@
+<div class="hero hero-video hero-{{ section.id }} section-standard no-border" data-video-id="{{ section.settings.video_url.id }}" data-section-id="{{ section.id }}" data-mobile-autoplay="{{ section.settings.mobile_autoplay }}" data-section-type="hero-video-section">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} no-padding">
+    <div class="wrapper">
+
+      <div class="featured-hero size-{{ section.settings.hero_size }}">
+        <div class="content-box">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <div class="rte">{{ section.settings.text }}</div>
+          {% endif %}
+          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <a href="{{ section.settings.button_link }}" class="button outline">{{ section.settings.button_label | escape }}</a>
+          {% endif %}
+        </div>
+        {% if section.settings.image == blank %}
+          <div class="placeholder-background">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  {% assign overlay_alpha = section.settings.color_overlay_alpha_range | times: 0.01 %}
+  .hero-{{ section.id }} .content-box {
+    background-color: {{ section.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+    color: {{ section.settings.color_overlay_text }};
+  }
+  .hero-{{ section.id }} .content-box,
+  .hero-{{ section.id }} .content-box h2,
+  .hero-{{ section.id }} .content-box a {
+    color: {{ section.settings.color_overlay_text }};
+    border-color: {{ section.settings.color_overlay_text }};
+  }
+  .hero-{{ section.id }} .content-box a:hover,
+  .hero-{{ section.id }} .content-box a:active {
+    color: {{ section.settings.color_overlay_text }};
+    border-color: {{ section.settings.color_overlay_text }};
+  }
+  {% if section.settings.image != blank %}
+  @media screen and (max-width: 400px) {
+    .hero-{{ section.id }} .featured-hero {
+      background-image: url('{{ section.settings.image | img_url: '400x400' }}');
+    }
+  }
+  @media screen and (min-width: 401px) and (max-width: 600px) {
+    .hero-{{ section.id }} .featured-hero {
+      background-image: url('{{ section.settings.image | img_url: '600x600' }}');
+    }
+  }
+  @media screen and (min-width: 601px) and (max-width: 1024px) {
+    .hero-{{ section.id }} .featured-hero {
+      background-image: url('{{ section.settings.image | img_url: '1024x1024' }}');
+    }
+  }
+  @media screen and (min-width: 1025px) {
+    .hero-{{ section.id }} .featured-hero {
+      background-image: url('{{ section.settings.image | img_url: '1600x1600' }}');
+    }
+  }
+  @media screen and (min-width: 2001px) {
+    .hero-{{ section.id }} .featured-hero {
+      background-image: url('{{ section.settings.image | img_url: '2048x2048' }}');
+    }
+  }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "Video with text overlay",
+  "class": "hero-video-section",
+  "settings": [
+    {
+      "id": "video_url",
+      "type": "video_url",
+      "label": "Video link",
+      "accept": ["youtube"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "select",
+      "id": "hero_size",
+      "label": "Section height",
+      "default": "medium",
+      "options": [
+        {
+          "label": "Extra Small",
+          "value": "x-small"
+        },
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        },
+        {
+          "label": "Extra Large",
+          "value": "x-large"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_autoplay",
+      "label": "Autoplay on mobile devices",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Cover"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1500 x 600px .jpg recommended. Displayed while video is loading and in browsers that do not support autoplay video."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Video"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use overlay text to give your customers insight into your brand. Select background footage and text that relates to your style and story.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_text",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "color_overlay_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Background opacity",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video with text overlay",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}

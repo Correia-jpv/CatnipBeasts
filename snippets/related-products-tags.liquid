@@ -1,0 +1,42 @@
+<!-- /snippets/related-products.liquid -->
+{% assign heading = 'products.general.recommended_items' | t %}
+{% comment %}
+  Temporarly assign main product loop to be reassigned at the end
+{% endcomment %}
+{% assign single_product = product %}
+
+{% assign recommendations = '' %}
+{% for tag in product.tags %}
+  {% assign split_tag = tag | split: ':' %}
+  {% if split_tag[0] == 'related' %}
+    {% if recommendations != '' %}
+      {% assign recommendations = recommendations | append: ',' %}
+    {% endif %}
+    {% assign related_handle = split_tag[1] | handle %}
+    {% assign recommendations = recommendations | append: related_handle %}
+  {% endif %}
+{% endfor %}
+{% assign recommendations = recommendations | split: ',' %}
+
+<!-- Simple Collection -->
+{% if recommendations.size > 0 %}
+  <div class="simple-collection">
+    <div class="wrapper">
+      <header>
+        {% unless heading == blank %}
+          <h4>{{ heading }}</h4>
+        {% endunless %}
+      </header>
+      <div class="product-container">
+        <!-- `recommendations` liquid variable now holds an array of product handles -->
+        {% for product_handle in recommendations %}
+          {% assign product = all_products[product_handle] %}
+          <!-- Normal HTML & Liquid here, using `product` as reference to iteratee -->
+          {% include 'product-grid-item' %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% assign product = single_product %}

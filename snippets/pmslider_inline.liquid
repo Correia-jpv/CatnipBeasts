@@ -1,0 +1,7 @@
+{% comment %} PRODUCT PAGE SLIDER APP CODE - Contact developers at support@gigilabs.com {% endcomment %}
+{% if request.page_type == "product" and content_for_header contains "pmslider.netlify.app\/s" %}
+  <script>window.pmsliderProductPreload = {{ product | json }}</script>
+  {% assign pmslider_params = content_for_header | split: "pmslider.netlify.app\/s\/" | last | split: "\u0026shop" | first | replace: "\u0026", "&" %}
+  <script src="https://pmslider.netlify.app/s/{{pmslider_params}}&shop={{shop.permanent_domain}}"></script>
+  
+{% endif %}

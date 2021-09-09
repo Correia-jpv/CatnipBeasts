@@ -1,0 +1,132 @@
+{%- assign og_title = page_title -%}
+{%- assign og_url = canonical_url -%}
+{%- assign og_type = 'website' -%}
+{%- assign og_description = page_description | default: shop.description | default: shop.name -%}
+{%- assign og_default_size = '1200x1200' -%}
+{%- assign og_default_at_most = 1200 -%}
+
+{%- comment -%}
+  Default Open Graph image
+{%- endcomment -%}
+{%- if settings.default_opengraph_image -%}
+  {%- assign og_image = settings.default_opengraph_image -%}
+  {%- assign og_image_ratio = og_image.aspect_ratio -%}
+  {%- if og_image_ratio > 1 -%}
+    {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+    {%- assign og_image_height = og_image_width | divided_by: og_image_ratio | round -%}
+  {%- elsif og_image_ratio < 1 -%}
+    {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+    {%- assign og_image_width = og_image_height | times: og_image_ratio | round -%}
+  {%- else -%}
+    {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+    {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+  {%- endif -%}
+
+  {%- capture og_image_tags -%}
+    <meta property="og:image" content="http:{{ og_image | img_url: og_default_size }}">
+    <meta property="og:image:secure_url" content="https:{{ settings.share_image | img_url: og_default_size}}">
+    <meta property="og:image:width" content="{{ og_image_width }}">
+    <meta property="og:image:height" content="{{ og_image_height }}">
+  {%- endcapture -%}
+{%- endif -%}
+
+{%- comment -%}
+  Template specific overides
+{%- endcomment -%}
+{%- if template.name == 'product' -%}
+  {%- assign og_title = product.title | strip_html -%}
+  {%- assign og_type = 'product' -%}
+  {%- capture og_image_tags -%}
+    {%- for image in product.images limit: 3 -%}
+      {%- assign og_image = image -%}
+      {%- assign og_image_ratio = og_image.aspect_ratio -%}
+      {%- if og_image_ratio > 1 -%}
+        {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+        {%- assign og_image_height = og_image_width | divided_by: og_image_ratio | round -%}
+      {%- elsif og_image_ratio < 1 -%}
+        {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+        {%- assign og_image_width = og_image_height | times: og_image_ratio | round -%}
+      {%- else -%}
+        {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+        {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+      {%- endif -%}
+      
+      <meta property="og:image" content="http:{{ og_image.src | product_img_url: og_default_size }}">
+      <meta property="og:image:secure_url" content="https:{{ image.src | product_img_url: og_default_size }}">
+      <meta property="og:image:width" content="{{ og_image_width }}">
+      <meta property="og:image:height" content="{{ og_image_height }}">
+    {%- endfor -%}
+  {%- endcapture -%}
+
+{%- elsif template.name == 'article' -%}
+  {%- assign og_title = article.title | strip_html -%}
+  {%- assign og_type = 'article' -%}
+  {%- assign og_description = article.excerpt_or_content | strip_html -%}
+  {%- if article.image -%}
+    {%- assign og_image = article.image -%}
+    {%- assign og_image_ratio = og_image.aspect_ratio -%}
+    {%- if og_image_ratio > 1 -%}
+      {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+      {%- assign og_image_height = og_image_width | divided_by: og_image_ratio | round -%}
+    {%- elsif og_image_ratio < 1 -%}
+      {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+      {%- assign og_image_width = og_image_height | times: og_image_ratio | round -%}
+    {%- else -%}
+      {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+      {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+    {%- endif -%}
+
+    {%- capture og_image_tags -%}
+      <meta property="og:image" content="http:{{ og_image | img_url: og_default_size }}">
+      <meta property="og:image:secure_url" content="https:{{ og_image | img_url: og_default_size }}">
+      <meta property="og:image:width" content="{{ og_image_width }}">
+      <meta property="og:image:height" content="{{ og_image_height }}">
+    {%- endcapture -%}
+  {%- endif -%}
+
+{%- elsif template.name == 'collection' -%}
+  {%- assign og_title = collection.title | strip_html -%}
+  {%- assign og_type = 'product.group' -%}
+  {%- if collection.image -%}
+    {%- assign og_image = collection.image -%}
+    {%- assign og_image_ratio = og_image.aspect_ratio -%}
+    {%- if og_image_ratio > 1 -%}
+      {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+      {%- assign og_image_height = og_image_width | divided_by: og_image_ratio | round -%}
+    {%- elsif og_image_ratio < 1 -%}
+      {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+      {%- assign og_image_width = og_image_height | times: og_image_ratio | round -%}
+    {%- else -%}
+      {%- assign og_image_width = og_image.width | at_most: og_default_at_most -%}
+      {%- assign og_image_height = og_image.height | at_most: og_default_at_most -%}
+    {%- endif -%}
+
+    {%- capture og_image_tags -%}
+      <meta property="og:image" content="http:{{ og_image | img_url: og_default_size }}">
+      <meta property="og:image:secure_url" content="https:{{ og_image | img_url: og_default_size }}">
+      <meta property="og:image:width" content="{{ og_image_width }}">
+      <meta property="og:image:height" content="{{ og_image_height }}">
+    {%- endcapture -%}
+  {%- endif -%}
+
+{%- elsif template.name == 'password' -%}
+  {%- assign og_title = shop.name -%}
+  {%- assign og_url = shop.url -%}
+  {%- assign og_description = shop.description | default: shop.name -%}
+{%- endif -%}
+
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description }}">
+{%- if template.name == 'product' -%}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ shop.currency }}">
+{%- endif -%}
+{{ og_image_tags }}
+
+<meta name="twitter:site" content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title }}">
+<meta name="twitter:description" content="{{ og_description }}">

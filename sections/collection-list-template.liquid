@@ -1,0 +1,168 @@
+{% if section.blocks.size > 0 %}
+  {%- assign enable_sidebar = true -%}
+{% else %}
+  {%- assign enable_sidebar = false -%}
+{% endif %}
+{%- assign products_per_page = section.settings.products_per_page_range -%}
+
+{% if section.settings.image_placement != 'default' and section.settings.image_placement != 'hidden' and collection.image %}
+  <div class="hero-content header {{ section.settings.image_placement }}">
+    <div class="collection-image">
+      <img src="{{ collection.image | img_url: '1600x' }}" alt="{{ collection.title }}">
+    </div>
+  </div>
+{% endif %}
+
+{% paginate collection.products by products_per_page %}
+<section class="collection" data-section-id="{{ section.id }}" data-section-type="collection-list-template">
+  <div class="wrapper">
+
+    <header class="content-util">
+    {% include 'breadcrumb' %}
+<!--     % include 'social-icons' %} -->
+    </header>
+
+    <div class="grid {% unless enable_sidebar %}full-width{% endunless %}">
+      <div class="collection-container">
+        <header class="collection-header">
+          <div class="container">
+            <h1>{{ collection.title }}</h1>
+            {% include 'collection-sorting' %}
+          </div>
+          {% if section.settings.image_placement == 'default' and collection.image %}
+          <div class="collection-image">
+            <img src="{{ collection.image | img_url: '1600x' }}" alt="{{ collection.title }}">
+          </div>
+          {% endif %}
+          {% if collection.description != blank %}
+          <div class="description rte">
+            {{ collection.description }}
+          </div>
+          {% endif %}
+        </header>
+
+        {% if enable_sidebar %}
+          <div class="mobile-aside-container">
+            <a href="#" class="button simple">{{ 'layout.navigation.collection_menu' | t}}</a>
+            <aside>
+              {% include 'collection-sidebar' %}
+            </aside>
+          </div>
+        {% endif %}
+
+        <div class="products products-list {% unless enable_sidebar %}full-width{% endunless %}">
+          {% comment %}
+            Loop through our products in the current collection.
+            See the snippet 'product-grid-item' for the layout.
+          {% endcomment %}
+          {% for product in collection.products %}
+            {% include 'product-list-item' %}
+          {% else %}
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+        <footer class="collection-footer">
+          {% include 'pagination' %}
+        </footer>
+        {% endif %}
+      </div>
+
+      {% if enable_sidebar %}
+        <div class="aside-container">
+          <aside>
+            {% include 'collection-sidebar' %}
+          </aside>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Collection list pages",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page_range",
+      "label": "Number of products on each page",
+      "min": 12,
+      "max": 48,
+      "step": 12,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "image_placement",
+      "label": "Collection image placement",
+      "options": [
+        { "value": "default", "label": "After collection title" },
+        { "value": "above", "label": "After navigation" },
+        { "value": "above-full", "label": "After navigation full width" },
+        { "value": "hidden", "label": "Hidden" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "sort_enable",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "layout_enable",
+      "label": "Enable grid and list views",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Sidebar menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Menu",
+          "default": "main-menu"
+        }
+      ]
+    },
+    {
+      "type": "tags",
+      "name": "Sidebar tags",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Shop by"
+        },
+        {
+          "type": "radio",
+          "id": "tag_style",
+          "label": "Show tags as",
+          "options": [
+            { "value": "buttons", "label": "Buttons" },
+            { "value": "menu", "label": "Menu" }
+          ],
+          "default": "buttons"
+        },
+        {
+          "type": "checkbox",
+          "id": "tag_grouping",
+          "label": "Enable tag grouping",
+          "default": false,
+          "info": "[Learn how to set up tag groups](http://help.stylehatch.com/)"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

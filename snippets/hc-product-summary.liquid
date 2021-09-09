@@ -1,0 +1,190 @@
+
+
+{% assign hc_storefront_status  = shop.metafields.helpfulcrowd.global.storefront_status %}
+{% if product and hc_storefront_status == "active" %}
+  {% assign hc_show_qa		      = shop.metafields.helpfulcrowd.global.show_qa  | plus: 0 %}
+  {% assign hc_easy_reviews     = shop.metafields.helpfulcrowd.global.easy_reviews %}
+  {% assign hc_reviews_count    = product.metafields.helpfulcrowd.product.reviews_count | plus: 0 %}
+  {% assign hc_qa_count         = product.metafields.helpfulcrowd.product.qa_count | plus: 0 %}
+  {% assign hc_rating 		      = product.metafields.helpfulcrowd.product.rating | plus: 0 %}
+  {% assign hc_suppressed	      = product.metafields.helpfulcrowd.product.suppressed | plus: 0 %}
+  {% assign hc_display_restricted = product.metafields.helpfulcrowd.product.display_restricted | plus: 0 %}
+  {% assign hc_summary_position = shop.metafields.helpfulcrowd.global.summary_position %}
+  {% assign hc_id 			        = shop.metafields.helpfulcrowd.global.store_id %}
+  {% assign hc_theme 			      = shop.metafields.helpfulcrowd.global.theme %}
+  {% assign hc_locale           = shop.metafields.helpfulcrowd.global.locale %}
+  {% assign hc_show_rating_chart = shop.metafields.helpfulcrowd.global.product_summary_show_rating_chart | plus: 0 %}
+  {% assign hc_show_detailed_text = shop.metafields.helpfulcrowd.global.product_summary_show_detailed_text | plus: 0 %}
+  {% assign hc_links            = shop.metafields.helpfulcrowd.global.product_summary_enable_links | plus: 0 %}
+  {% assign hc_rating_data      = product.metafields.helpfulcrowd.product.rating_data %}
+  {% assign hc_store_hashid     = product.metafields.helpfulcrowd.product.store_hashid %}
+  {% assign hc_product_hashid   = product.metafields.helpfulcrowd.product.product_hashid %}
+
+  {% if hc_display_restricted < 1 %}
+    <div class="hc-widget">
+      <div data-hc="product-summary" data-hc-id="{{ product.id }}" data-hc-store-id="{{ hc_id }}" class="{{ hc_theme }}">
+        <div class="hc-product-summary hc-product-summary--{{ hc_summary_position }}">
+          <!-- ########################## -->
+          <!-- Reviews summary -->
+          <!-- ########################## -->
+          <div class="hc-product-summary__reviews">
+            <span class="hc-product-summary__rating">
+              <div class="hc-tooltip">
+                {% render 'hc-stars', product: product %}
+                <!-- Show ratings chart on hover -->
+                {% if hc_show_rating_chart > 0 %}
+                  {% if hc_reviews_count > 0 %}
+                    <svg class="hc-icon   hc-icon--chevron-down hc-icon--justified" height="1em" style="margin-left: 5px;" viewBox="0 0 2240.0 2240.0" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path d="M1683 808l-742 741q-19 19-45 19t-45-19l-742-741q-19-19-19-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19 19 19 45.5t-19 45.5z" /><rect class="hc-icon__transparent-background"></rect></g></svg>
+                    <div class="hc-tooltip__content hc-tooltip__bottom">
+                      <i></i>
+                      <div class="hc-tooltip__header">
+                        {{hc_rating}} out of 5 stars
+                      </div>
+                      <div class="hc-rating-chart hc-rating-chart__floating">
+                        {% for rating_data in hc_rating_data %}
+                          {% if hc_links > 0 %}
+                            <!-- If links are enabled  -->
+                            <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" data-href="#hc-reviews-tab" class="hc-rating-chart__row" data-remote="true" href="{{ 'https://app.helpfulcrowd.com' | append: '/f/' | append: hc_store_hashid | append: '/products/' | append: hc_product_hashid | append: '/reviews.js' | append: '?rating=' | append: rating_data.table.rating }}" data-remotify="true">
+                              <div class="hc-rating-chart__rating">
+                                {{ rating_data.table.rating }}
+                                <svg class="hc-icon   hc-icon--star" height="1em" viewBox="0 0 2240.0 2240.0" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" /><rect class="hc-icon__transparent-background"></rect></g></svg>
+                              </div>
+                              <div class="hc-rating-chart__bar-wrapper">
+                                <div class="hc-rating-chart__bar" style="width: {{ rating_data.table.percentage }}%;"></div>
+                              </div>
+                              <span class="hc-rating-chart__percentage-value">
+                                {{ rating_data.table.percentage }}
+                              </span>
+                              <div class="hc-rating-chart__count">
+                                {{ rating_data.table.percentage_rounded }}
+                              </div>
+                            </a>
+                          {% else %}
+                            <!-- If links are disabled  -->
+                            <div class="hc-rating-chart__row">
+                              <div class="hc-rating-chart__rating">
+                                {{ rating_data.table.rating }}
+                                <svg class="hc-icon   hc-icon--star" height="1em" viewBox="0 0 2240.0 2240.0" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" /><rect class="hc-icon__transparent-background"></rect></g></svg>
+                              </div>
+                              <div class="hc-rating-chart__bar-wrapper">
+                                <div class="hc-rating-chart__bar" style="width: {{ rating_data.table.percentage }}%;"></div>
+                              </div>
+                              <span class="hc-rating-chart__percentage-value">
+                                {{ rating_data.table.percentage }}
+                              </span>
+                              <div class="hc-rating-chart__count">
+                                {{ rating_data.table.percentage_rounded }}
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      {% if hc_links > 0 %}
+                        <a data-hc-scroll-to="true" data-turbolinks="false" data-hc-scroll-target="#hc-product-tabs" class="hc-tooltip__footer" href="javascript:void(0);" data-href="#hc-reviews-tab">See all reviews</a>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+              {% if hc_reviews_count > 0 %}
+                {{ hc_rating }}
+              {% endif %}
+            </span>
+
+            <div class="hc-product-summary__text">
+
+              <!-- Reviews links/text  -->
+              {% if hc_reviews_count > 0 %}
+                <!-- Review count greater than 0 -->
+                {% if hc_links > 0 %}
+                  <!-- If links are enabled  -->
+                  {% if hc_reviews_count == 1 %}
+                    <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" class="hc-product-summary__review-count" href="#hc-reviews-tab">
+                      {% if hc_show_detailed_text > 0 %}
+                        based on 1 review
+                      {% else %}
+                        1 review
+                      {% endif %}
+                    </a>
+                  {% else %}
+                    <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" class="hc-product-summary__review-count" href="#hc-reviews-tab">
+                      {% if hc_show_detailed_text > 0 %}
+                        based on {{hc_reviews_count}} reviews
+                      {% else %}
+                        {{hc_reviews_count}} reviews
+                      {% endif %}
+                    </a>
+                  {% endif %}
+                {% else %}
+                  <!-- If links are disabled  -->
+                  {% if hc_reviews_count == 1 %}
+                    {% if hc_show_detailed_text > 0 %}
+                      based on 1 review
+                    {% else %}
+                      1 review
+                    {% endif %}
+                  {% else %}
+                    {% if hc_show_detailed_text > 0 %}
+                      based on {{hc_reviews_count}} reviews
+                    {% else %}
+                      {{hc_reviews_count}} reviews
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% elsif hc_easy_reviews > 0 and hc_links > 0 %}
+                <!-- If reviews are not found, user can write a review and links are enabled -->
+                <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" href="#hc-reviews-tab">
+                  Write review
+                </a>
+              {% else %}
+                <!-- If reviews are not found or user cannot write new reviews or links are disabled  -->
+                No reviews yet
+              {% endif %}
+              <!-- END Reviews summary -->
+
+              <!-- ########################## -->
+              <!-- Questions summary -->
+              <!-- ########################## -->
+              {% if hc_show_qa > 0 %}
+                 |
+                <div class="hc-product-summary__qa">
+                  <!-- Questions links/text -->
+                  {% if hc_qa_count > 0 %}
+                    {% if hc_links > 0 %}
+                      <!-- If links are enabled  -->
+                      {% if hc_reviews_count == 1 %}
+                        <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" class="hc-product-summary__review-count" href="#hc-questions-tab">
+                          1 question
+                        </a>
+                      {% else %}
+                        <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" class="hc-product-summary__review-count" href="#hc-questions-tab">
+                          {{hc_qa_count}} questions
+                        </a>
+                      {% endif %}
+                    {% else %}
+                      <!-- If links are disabled  -->
+                      {% if hc_reviews_count == 1 %}
+                        1 question
+                      {% else %}
+                        {{hc_qa_count}} questions
+                      {% endif %}
+                    {% endif %}
+                  {% elsif hc_links > 0 %}
+                    <!-- Q&A not found but links are enabled -->
+                    <a data-hc-scroll-to="true" data-hc-scroll-target="#hc-product-tabs" href="#hc-questions-tab">
+                      Ask question
+                    </a>
+                  {% else %}
+                    <!-- Q&A not found and links are disabled -->
+                    No questions yet
+                  {% endif %}
+                </div>
+              {% endif %}
+              <!-- END Questions summary -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

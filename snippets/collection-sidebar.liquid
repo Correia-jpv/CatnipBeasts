@@ -1,0 +1,171 @@
+<div class="nav-container">
+
+  {% for block in section.blocks %}
+
+    {% if block.type == 'menu' %}
+      <nav class="link-list" {{ block.shopify_attributes }} role="navigation" aria-labelledby="nav-{{ linklists[block.settings.linklist].title | handle }}" {{ block.shopify_attributes }}>
+        <h5 id="nav-{{ linklists[block.settings.linklist].title | handle }}">{{ linklists[block.settings.linklist].title | escape }}</h5>
+        {% comment %}
+          TODO - Check to make sure active link works for colleciton tag filters
+          TODO - Preopen child active
+        {% endcomment %}
+        <ul class="nested-menu">
+          {% for link in linklists[block.settings.linklist].links %}
+            <li class="{% if link.active %}active {% endif %}{% if link.links != blank %}has-dropdown {% endif %}">
+              <a href="{{ link.url }}" {% if link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ link.title | escape }}</a>
+              {% if link.links != blank %}
+                <ul class="dropdown" aria-hidden="true">
+                  {% comment %}
+                    sub_link - Second level menu
+                  {% endcomment %}
+                  {% for sub_link in link.links %}
+                    <li class="{% if sub_link.active %}active {% endif %}{% if sub_link.links != blank %}has-sub-dropdown {% endif %}">
+                      <a href="{{ sub_link.url }}" tabindex="-1" {% if sub_link.links != blank %}aria-haspopup="true" aria-expanded="false"{% endif %}>{{ sub_link.title | escape }}</a>
+                      {% if sub_link.links != blank %}
+                        <ul class="sub-dropdown" aria-hidden="true">
+                          {% comment %}
+                            sub_sub_link - Third level menu
+                          {% endcomment %}
+                          {% for sub_sub_link in sub_link.links %}
+                            <li class="sub-dropdown-item {% if sub_sub_link.active %}active {% endif %}">
+                              <a href="{{ sub_sub_link.url }}">{{ sub_sub_link.title | escape }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    {% if block.type == 'tags' %}
+      {% if collection.all_tags.size > 0 %}
+        {% if block.settings.tag_grouping %}
+          {% comment %}
+          A loop to catch and filter out the different tag categories.
+          This is mainly for advanced tagging, but will also help us strip
+          out any tag categories from our tags (E.g. remove BRAND_ from BRAND_tag)
+          {% endcomment %}
+          {% assign default_cat_title = block.settings.title | escape | append: '_' %}
+          {% if template contains 'collection' and collection.all_tags.size > 0 %}
+            {% assign categories = '' %}
+            {% for tag in collection.all_tags %}
+              {% assign cat_tag = tag %}
+              {% unless cat_tag contains '_' %}
+                {% assign cat_tag = cat_tag | prepend: default_cat_title %}
+              {% endunless %}
+              {% capture categories %}{% unless categories == blank  %}{{ categories }}|{% endunless %}{{ cat_tag | split: '_' | first }}{% endcapture %}
+            {% endfor %}
+            {% assign cat_array = categories | split: '|' | uniq %}
+          {% endif %}
+
+          {% comment %}
+            Tag categories
+            Smart tags to group into categories
+          {% endcomment %}
+          {% for cat_item in cat_array %}
+            <nav class="{% if block.settings.tag_style == 'buttons' %}tags{% else %}link-list{% endif %} advanced" data-category="{{ cat_item | downcase }}" aria-labelledby="nav-{{ cat_item | handle }}">
+              <h5 id="nav-{{ cat_item | handle }}">{{ cat_item }}</h5>
+              <ul>
+                {% comment %}
+                  Loop through collection tags
+                {% endcomment %}
+                {% for tag in collection.all_tags %}
+                  {% assign cat_tag = tag %}
+                  {% unless cat_tag contains '_' %}
+                    {% assign cat_tag = cat_tag | prepend: default_cat_title %}
+                  {% endunless %}
+                  {% assign cat = cat_tag | split: '_' | first %}
+                  {% if cat != cat_tag and cat_item == cat %}
+                    {% comment %}
+                      Strip out tag category prefix and add/remove link for tag filtering
+                    {% endcomment %}
+                    {% if current_tags contains tag %}
+                      <li class="active close advanced-filter" data-group="{{ cat_item }}" data-handle="{{ tag | handle }}">{{ cat_tag | remove_first: cat_item | remove_first: '_' | link_to_remove_tag: tag }}</li>
+                    {% else %}
+                      <li class="advanced-filter" data-group="{{ cat_item }}" data-handle="{{ tag | handle }}">{{ tag | remove_first: cat_item | remove_first: '_' | link_to_add_tag: tag }}</li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </nav>
+          {% endfor %}
+
+        {% else %}
+          {% comment %}
+            Basic tags
+          {% endcomment %}
+          <nav class="{% if block.settings.tag_style == 'buttons' %}tags{% else %}link-list{% endif %}" aria-labelledby="nav-{{ block.settings.title | handle }}" {{ block.shopify_attributes }}>
+            <h5 id="nav-{{ block.settings.title | handle }}">{{ block.settings.title | escape }}</h5>
+            <ul>
+                {% if block.settings.tag_style == 'buttons' %}
+                  <li{% unless current_tags %} class="active"{% endunless %}>
+
+                    {% comment %}
+                      Good for /collections/all collection and regular collections
+                    {% endcomment %}
+                    {% if collection.handle %}
+                      <a href="/collections/{{ collection.handle }}">
+                        {{ 'collections.general.all_of_collection' | t: collection: collection.title }}
+                      </a>
+
+                    {% comment %}
+                      Good for automatic type collections
+                    {% endcomment %}
+                    {% elsif collection.current_type %}
+                      <a href="{{ collection.current_type | url_for_type }}">
+                        {{ 'collections.general.all_of_collection' | t: collection: collection.title }}
+                      </a>
+
+                    {% comment %}
+                      Good for automatic vendor collections
+                    {% endcomment %}
+                    {% elsif collection.current_vendor %}
+                      <a href="{{ collection.current_vendor | url_for_vendor }}">
+                        {{ 'collections.general.all_of_collection' | t: collection: collection.title }}
+                      </a>
+
+                    {% endif %}
+                  </li>
+                {% endif %}
+
+                {% for tag in collection.all_tags %}
+                  {% if current_tags contains tag %}
+                    <li class="active close">
+                      {% if block.settings.tag_style == 'buttons' %}
+                        {{ tag | link_to_remove_tag: tag }}
+                      {% else %}
+                        {{ tag | link_to_tag: tag }}
+                      {% endif %}
+
+                    </li>
+                  {% else %}
+                    <li>
+                      {% comment %}
+                        Use link_to_add_tag if you want to allow filtering
+                        by multiple tags
+                      {% endcomment %}
+                      {% if block.settings.tag_style == 'buttons' %}
+                        {{ tag | link_to_add_tag: tag }}
+                      {% else %}
+                        {{ tag | link_to_tag: tag }}
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+          </nav>
+        {% endif %}
+
+      {% endif %}
+
+    {% endif %}
+
+  {% endfor %}
+
+</div>

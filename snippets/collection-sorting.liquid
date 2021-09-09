@@ -1,0 +1,35 @@
+{% if section.settings.sort_enable or section.settings.layout_enable %}
+  <div class="sort-by">
+    {% if section.settings.sort_enable %}
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      <label for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+      <select name="SortBy" id="SortBy">
+        <option value="manual"{% if sort_by == "manual" %} selected="selected"{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+        <option value="best-selling"{% if sort_by == "best-selling" %} selected="selected"{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+        <option value="title-ascending"{% if sort_by == "title-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+        <option value="title-descending"{% if sort_by == "title-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+        <option value="price-ascending"{% if sort_by == "price-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+        <option value="price-descending"{% if sort_by == "price-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+        <option value="created-descending"{% if sort_by == "created-descending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_descending' | t }}</option>
+        <option value="created-ascending"{% if sort_by == "created-ascending" %} selected="selected"{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+      </select>
+      <input class="sort-by__default-sort" type="hidden" value="{{ collection.default_sort_by }}">
+    {% endif %}
+    {% if section.settings.layout_enable %}
+      <div class="layout-options">
+        <button type="button" title="{{ 'collections.general.grid_view' | t }}" class="change-view {% unless template contains 'list' %}active{% endunless %}" data-view="grid">
+          <span class="icon-fallback-text">
+            <span class="icon icon-grid" aria-hidden="true"></span>
+            <span class="fallback-text">{{ 'collections.general.grid_view' | t }}</span>
+          </span>
+        </button>
+        <button type="button" title="{{ 'collections.general.list_view' | t }}" class="change-view {% if template contains 'list' %}active{% endif %}" data-view="list">
+          <span class="icon-fallback-text">
+            <span class="icon icon-list" aria-hidden="true"></span>
+            <span class="fallback-text">{{ 'collections.general.list_view' | t }}</span>
+          </span>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

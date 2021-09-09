@@ -1,0 +1,161 @@
+<section class="collection search-results" data-section-id="{{ section.id }}" data-section-type="search-template">
+  {% if section.settings.search_layout == 'grid' %}
+    {%- assign grid_results = true -%}
+    {%- assign results_count = 18 -%}
+  {% else %}
+    {%- assign grid_results = false -%}
+    {%- assign results_count = 50 -%}
+  {% endif %}
+
+  {% comment %}
+    Check to enforce respond.js
+  {% endcomment %}
+  {%- assign respond_js_secret_key = shop.domain | md5 -%}
+  {% unless search.terms == respond_js_secret_key %}
+
+  {% comment %}
+    Avoid accessing search.results before the opening paginate tag.
+    If you do, the pagination of results will be broken.
+  {% endcomment %}
+  {% paginate search.results by results_count %}
+  <div class="wrapper">
+
+    <header class="content-util">
+    {% include 'breadcrumb' %}
+<!--     % include 'social-icons' %} -->
+    </header>
+
+    <div class="collection-container">
+      <div class="search-wrapper">
+        {% include 'search-bar' %}
+      </div>
+
+      
+          {% if search.performed %}
+            {% if search.results_count == 0 %}
+      <header class="collection-header">
+        <div class="container">
+              <h1>{{ 'general.search.no_results_html' | t: terms: search.terms }}</h1>
+           </div>
+      </header>
+            {% else %}
+<!--               <h1> 'general.search.results_for_html' | t: terms: search.terms }}</h1> -->
+            {% endif %}
+          {% else %}
+            <h1>{{ 'general.search.title' | t }}</h1>
+          {% endif %}
+       
+
+
+      {% if search.performed %}
+        <div class="products {% if grid_results %}products-grid search-grid{% else %}products-list search-list{% endif %}">
+          {% comment %}
+            Loop through our products in the current collection.
+            See the snippet 'product-grid-item' for the layout.
+          {% endcomment %}
+          {% for product in search.results %}
+
+            {% if product.price %}
+              {% unless grid_results %}
+                {% include 'product-list-item' %}
+              {% else %}
+                {% include 'product-grid-item' %}
+              {% endunless %}
+
+            {% elsif grid_results == false %}
+              {% comment %}
+                Search results for blog posts
+                Since the loop references 'product' for the product-list-item the articles also use 'product'
+              {% endcomment %}
+              <div class="box product article">
+                <figure>
+                  {% if product.image %}
+                    <div class="article-image product-thumbnail">
+                      <a href="{{ product.url }}"><img src="{{ product.image.src | img_url: '240x' }}" alt="{{ product.title }}"></a>
+                    </div>
+                  {% endif %}
+                  <figcaption>
+                    <header>
+                      <a href="{{ product.url }}" class="product-title">{{ product.title }}</a>
+                    </header>
+                    <div class="description rte">
+                      <p>{{ product.content | strip_html | truncatewords: 50 }} <a href="{{ product.url }}" class="button simple">{{ 'blogs.article.read_more' | t }}</a></p>
+                    </div>
+                  </figcaption>
+                </figure>
+              </div>
+            {% endif %}
+
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <footer class="collection-footer">
+            {% include 'pagination' %}
+          </footer>
+        {% endif %}
+      {% endif %}
+
+      {% if search.results_count == 0 %}
+        {% unless section.settings.extra_featured_products == blank %}
+          {% assign collection_limit = 4 | plus:0 %}
+          <div class="simple-collection layout-{{ collection_limit }}">
+            <div class="wrapper">
+              <header>
+                <h4>{{ collections[section.settings.extra_featured_products].title }}</h4>
+                <a href="{{ collections[section.settings.extra_featured_products].url }}" class="button outline">{{ 'collections.general.all_of_collection' | t: collection: collections[section.settings.extra_featured_products].title }}</a>
+              </header>
+              <div class="product-container">
+                {% for product in collections[section.settings.extra_featured_products].products limit:collection_limit %}
+                  {% include 'product-grid-item' %}
+                {% else %}
+                  {% for i in (1..collection_limit) %}
+                    {% include 'placeholder-product-grid-item' %}
+                  {% endfor %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endunless %}
+      {% endif %}
+
+
+
+    </div>
+  </div>
+</section>
+
+
+
+{% endpaginate %}
+
+{% else %}
+  {% include 'respond' %}
+  {% layout none %}
+{% endunless %}
+{% schema %}
+{
+  "name": "Search page",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "search_layout",
+      "label": "Results layout",
+      "options": [
+        { "value": "grid", "label": "Grid - products only" },
+        { "value": "list", "label": "List" }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "header",
+      "content": "Empty search"
+    },
+    {
+      "type": "collection",
+      "id": "extra_featured_products",
+      "label": "Empty search collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,190 @@
+<div class="recent-posts-collection layout-{{ section.settings.post_limit }}" data-section-id="{{ section.id }}" data-section-type="featured-blog-section">
+  <div class="wrapper">
+    {%- assign blog = blogs[section.settings.blog] -%}
+    <header>
+      <h4>{{ section.settings.title | escape }}</h4>
+      {% if section.settings.button_label != blank %}
+        <a href="{{ blog.url }}" class="button outline">{{ section.settings.button_label | escape }}</a>
+      {% endif %}
+    </header>
+    {% unless blog.empty? %}
+      <div class="recent-posts-container">
+        {% for article in blog.articles limit: section.settings.post_limit %}
+          {%- assign image = article.image -%}
+          {%- capture article_image -%}
+          <div class="article-image">
+            <a href="{{ article.url }}" class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+              {% assign image_widths = '360,540,720,900,1000,1200,1500,1800,2000,2400' %}
+              {% include 'theme-rias' %}
+              <img class="card__image lazyload fade-in"
+                data-src="{{ image_url_pattern }}"
+                data-widths="[{{ image_widths }}]"
+                data-aspectratio="{{ image.aspect_ratio }}"
+                data-sizes="auto"
+                alt="{{ image.alt | escape }}">
+              <noscript>
+                <img class="card__image" src="{{ image | img_url: '394x' }}" alt="{{ image.alt | escape }}">
+              </noscript>
+            </a>
+          </div>
+          {%- endcapture -%}
+
+          <article class="align-{{ section.settings.align_text }}">
+            {% if article.image and section.settings.show_image_first %}
+              {{ article_image }}
+            {% endif %}
+            <header>
+              <h5><a href="{{ article.url }}">{{ article.title }}</a></h5>
+              {% if section.settings.show_dates %}
+                {{ article.published_at | time_tag: '%b %d, %Y' }}
+              {% endif %}
+            </header>
+            {% if article.image and section.settings.show_image_first == false %}
+              {{ article_image }}
+            {% endif %}
+            <section class="rte">
+              {% if section.settings.show_excerpts %}
+                {% if article.excerpt.size > 0 %}
+                  {{ article.excerpt }}
+                {% else %}
+                  <p>{{ article.content | strip_html | truncatewords: 40 }}</p>
+                {% endif %}
+              {% endif %}
+              {% if section.settings.show_read_more %}
+                <p class="read-more"><a href="{{ article.url }}" class="button outline">{{ 'blogs.article.read_more' | t }}</a></p>
+              {% endif %}
+            </section>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="recent-posts-container">
+        {% for i in (1..section.settings.post_limit) %}
+
+          {%- capture article_image -%}
+          <div class="article-image">
+            <a href="#">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</a>
+          </div>
+          {%- endcapture -%}
+
+          <article class="align-{{ section.settings.align_text }}">
+            {% if section.settings.show_image_first %}
+              {{ article_image }}
+            {% endif %}
+            <header>
+              <h5><a href="#">{{ 'homepage.onboarding.blog_title' | t }}</a></h5>
+              {% if section.settings.show_dates %}
+                {% assign placeholder_date = '2015-06-09T01:02:00Z' %}
+                {{ placeholder_date | time_tag: '%b %d, %Y' }}
+              {% endif %}
+            </header>
+            {% if section.settings.show_image_first == false %}
+              {{ article_image }}
+            {% endif %}
+            <section class="rte">
+              {{ 'homepage.onboarding.blog_excerpt' | t }}
+              {% if section.settings.show_read_more %}
+                <p class="read-more"><a href="#" class="button outline">{{ 'blogs.article.read_more' | t }}</a></p>
+              {% endif %}
+            </section>
+          </article>
+
+        {% endfor %}
+      </div>
+    {% endunless %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "featured-blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "id": "blog",
+      "type": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View the blog"
+    },
+    {
+      "type": "select",
+      "id": "post_limit",
+      "label": "Posts",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Centered"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_first",
+      "label": "Show blog image first",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dates",
+      "label": "Show dates",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpts",
+      "label": "Show post excerpts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Show read more button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog",
+      "settings": {
+        "post_limit": "3"
+      }
+    }
+  ]
+}
+{% endschema %}

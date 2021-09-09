@@ -1,0 +1,114 @@
+{%- comment -%}
+  Check if the product is on sale and set a variable to be used below.
+{%- endcomment -%}
+{%- assign on_sale = false -%}
+{%- if product.compare_at_price > product.price -%}
+  {%- assign on_sale = true -%}
+{%- endif -%}
+
+{%- comment -%}
+  Check if the product is sold out and set a variable to be used below.
+{%- endcomment -%}
+{%- assign sold_out = true -%}
+{%- if product.available -%}
+  {%- assign sold_out = false -%}
+{%- endif -%}
+
+<div class="box product">
+  {%- comment -%}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+  {%- endcomment -%}
+  {% capture img_id %}ProductGridImage-{{ section.id }}-{{ collection.id }}-{{ product.id }}{% endcapture %}
+  {% capture wrapper_id %}ProductGridImageWrapper-{{ section.id }}-{{ collection.id }}-{{ product.id }}{% endcapture %}
+  {%- assign img_url = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+  {%- comment %}
+  	Auto-crop
+    - Square
+    --- set padding-top to 100%
+    --- absolute top to 50% and transform translateY to -50%
+  {% endcomment -%}
+  <figure>
+    <a id="{{ wrapper_id }}" href="{{ product.url | within: collection }}" class="product_card">
+      {%- assign image = product.featured_image -%}
+      <div class="product_card__image-wrapper" data-bgset="{% include 'bgset', image: image %}">
+        {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
+        {% include 'theme-rias' %}
+        <img id="{{ img_id }}" class="product_card__image lazyload lazypreload fade-in {% if settings.variant_rollover == true and product.images.size > 1 %}featured{% endif %}"
+          data-src="{{ image_url_pattern }}"
+          data-widths="[{{ image_widths }}]"
+          data-aspectratio="{{ image.aspect_ratio }}"
+          data-sizes="auto"
+          data-expand="600"
+          data-fallback="{{ image | img_url: '394x' }}"
+          alt="{{ product.featured_image.alt | escape }}">
+        <noscript>
+          <img class="product_card__image" src="{{ image | img_url: '394x' }}" alt="{{ product.featured_image.alt | escape }}">
+        </noscript>
+        <style media="screen">
+          {%- if settings.collections_product_ratio == 'false' or settings.collections_product_ratio == 'auto' -%}
+            {%- unless related_products_section -%}
+              #{{ wrapper_id }} .product_card__image-wrapper:before,
+            {%- endunless -%}
+          {%- endif -%}
+        </style>
+        {%- if settings.variant_rollover == true and product.images.size > 1 -%}
+          {%- assign image = product.images[1] -%}
+          {%- assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' -%}
+          {% include 'theme-rias' %}
+          <img id="{{ img_id }}" class="product_card__image alt lazyload"
+            data-src="{{ image_url_pattern }}"
+            data-widths="[{{ image_widths }}]"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            data-sizes="auto"
+            data-expand="600"
+            alt="{{ product.featured_image.alt | escape }}">
+        {%- endif -%}
+        {%- if sold_out -%}
+          <span class="label sold-out">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif on_sale -%}
+          <span class="label sale">{{ 'products.product.on_sale' | t }}</span>
+        {%- endif -%}
+      </div>
+    </a>
+    <figcaption>
+      <div class="product-title">
+        <a href="{{ product.url | within: collection }}" class="title">{{ product.title }}</a>
+        
+        {% if settings.show_vendors %}
+          <span class="vendor">{{ product.vendor | link_to_vendor }}</span>
+        {% endif %}
+      </div>
+      <span class="price">
+      {% if on_sale %}
+        {% if product.price_varies %}
+          <span class="from">{{ 'products.general.from' | t }}</span>
+          <span class="original-price money">{{ product.compare_at_price | money }}</span>
+          <span class="money">{{ product.price | money }}</span>
+        {% else %}
+          <span class="original-price money">{{ product.compare_at_price | money }}</span>
+          <span class="money">{{ product.price | money }}</span>
+        {% endif %}
+      {% else %}
+        {% if product.price_varies %}<span class="from">{{ 'products.general.from' | t }}</span>{% endif %}
+        <span class="money">{{ product.price | money }}</span>
+      {% endif %}
+      </span>
+    </figcaption>
+  </figure>
+
+<!-- **BEGIN** Hextom USB Integration // Collection Include - DO NOT MODIFY -->
+    {% render 'hextom_usb_coll', product: product %}
+    <!-- **END** Hextom USB Integration // Collection Include - DO NOT MODIFY -->
+</div>
+{%- if settings.collections_product_ratio == 'auto' and related_products_section != true -%}
+ {% include 'product-grid-item-auto-ratio' %}
+{%- endif -%}

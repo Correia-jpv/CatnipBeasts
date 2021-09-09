@@ -1,0 +1,60 @@
+{% unless text_placement %}
+  {%- assign text_placement = 'below' -%}
+{% endunless %}
+{% unless zoom %}
+  {%- assign zoom = false -%}
+{% endunless %}
+{% unless full_width %}
+  {%- assign full_width = false -%}
+{% endunless %}
+{%- assign image_rollover = block.settings.image_rollover -%}
+{%- assign image = block.settings.image -%}
+
+<div class="box">
+  {% if block.settings.link != blank %}
+    <a href="{{ block.settings.link }}" class="{% if zoom %}zoom text-overlay{% endif %} {% if image_rollover != blank %}rollover{% endif %}">
+  {% else %}
+    <div class="hover-wrapper {% if zoom %}zoom text-overlay{% endif %} {% if image_rollover != blank %}rollover{% endif %}">
+  {% endif %}
+    <figure class="animation-label-overlay lazyload {% if full_width %}full-width{% endif %}" {% if image_rollover != blank %}data-bgset="{% include 'bgset', image: image_rollover %}"{% endif %} {% if image != blank %}style="max-width:{{ image.width }}px;"{% endif %}>
+      {% if image != blank %}
+        <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+          {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
+          {% include 'theme-rias' %}
+          <img class="card__image lazyload"
+            src="{{ image | img_url: '590x' }}"
+            data-src="{{ image_url_pattern }}"
+            data-widths="[{{ image_widths }}]"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            data-sizes="auto"
+            alt="{{ image.alt | escape }}">
+        </div>
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+      {% if text_placement == 'over' and block.settings.title != blank %}
+        <figcaption>
+          <h4>{{ block.settings.title | escape }}</h4>
+        </figcaption>
+      {% endif %}
+    </figure>
+  {% if block.settings.link != blank %}
+    </a>
+  {% else %}
+    </div>
+  {% endif %}
+
+  {% if text_placement == 'below' and block.settings.title != blank %}
+    <figcaption class="below">
+      <h3>
+        {% if block.settings.link != blank %}
+          <a href="{{ block.settings.link }}">
+        {% endif %}
+            {{ block.settings.title | escape }}
+        {% if block.settings.link != blank %}
+          </a>
+        {% endif %}
+      </h3>
+    </figcaption>
+  {% endif %}
+</div>

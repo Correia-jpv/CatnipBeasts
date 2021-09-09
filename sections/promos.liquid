@@ -1,0 +1,468 @@
+<div data-section-id="{{ section.id }}" data-section-type="promos-section" data-scroll-lock="{{ section.settings.scroll_lock }}">
+  {% for block in section.blocks %}
+    {% comment %}
+      Announcment bar
+    {% endcomment %}
+    {% if block.type == 'announcement-bar' %}
+      {%- if block.settings.show_announcement_bar -%}
+        {%- if block.settings.homepage_limit -%}
+          {%- if template.name == 'index' -%}
+            {%- assign show_announcement_bar = true -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign show_announcement_bar = true -%}
+        {%- endif -%}
+        {%- if show_announcement_bar -%}
+          <header id="block-{{ block.id }}" class="promo-bar promo-bar-{{ block.id }} align-center size-{{ block.settings.bar_size }} placement-{{ block.settings.bar_placement }}"
+            data-type="{{ block.type }}"
+            {% if block.settings.autohide %}
+            data-hide-delay="{{ block.settings.autohide_delay_range | times: 1000 }}"
+            {% else %}
+            data-hide-delay="no-delay"
+            {% endif %}
+            data-bar-placement="{{ block.settings.bar_placement}}"
+            data-show-for="{{ block.settings.show_for}}"
+            data-homepage-limit="{{ block.settings.homepage_limit }}"
+            {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link}}">
+                <span class="promo-bar-text">{{ block.settings.title | escape }}</span>
+              </a>
+            {% else %}
+              <span class="promo-bar-text">{{ block.settings.title | escape }}</span>
+            {% endif %}
+          </header>
+          <style>
+            header.promo-bar-{{ block.id }} span.promo-bar-text {
+              background-color: {{ block.settings.color_background }};
+              color: {{ block.settings.color_text }};
+            }
+            header.promo-bar-{{ block.id }} a {
+              color: {{ block.settings.color_text }};
+            }
+          </style>
+        {%- endif -%}
+      {%- endif -%}
+      
+    {% endif %}
+
+    {% comment %}
+      Signup bar
+    {% endcomment %}
+    {% if block.type == 'signup-bar' %}
+      <header id="block-{{ block.id }}" class="promo-bar promo-bar-{{ block.id }} signup-bar align-center size-{{ block.settings.bar_size }} placement-{{ block.settings.bar_placement }}"
+        data-type="{{ block.type }}"
+        data-bar-placement="{{ block.settings.bar_placement}}"
+        data-show-for="{{ block.settings.show_for}}"
+        data-homepage-limit="{{ block.settings.homepage_limit }}"
+        data-visitor-limit="{{ block.settings.visitor_limit }}"
+        data-hide-delay="no-delay"
+        {{ block.shopify_attributes }}>
+        <img class="lazyload"
+             alt="Trust Badge"
+             data-src="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/new-features-bar_1.jpg?v=1579173087"
+             width="587"
+             height="27"/>
+        {% if block.settings.newsletter %}
+          <div class="popup-email">
+            {% include 'newsletter-subscribe', subscribe_source: 'signup-bar' %}
+          </div>
+        {% endif %}
+      </header>
+      <style>
+      header.promo-bar-{{ block.id }} {
+        background-color: {{ block.settings.color_background }};
+        color: {{ block.settings.color_text }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input {
+        border-color: {{ block.settings.color_text | hex_to_rgba: 0.7 }};
+        color: {{ block.settings.color_text }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input.errors {
+        border-color: {{ block.settings.color_accent }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input:focus {
+        border-color: {{ block.settings.color_text }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input::-webkit-input-placeholder {
+        color: {{ block.settings.color_text | hex_to_rgba: 0.7 }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input::-moz-placeholder{
+        color: {{ block.settings.color_text | hex_to_rgba: 0.7 }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input:-ms-input-placeholder{
+        color: {{ block.settings.color_text | hex_to_rgba: 0.7 }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email input:-moz-placeholder {
+        color: {{ block.settings.color_text | hex_to_rgba: 0.7 }};
+      }
+      header.promo-bar-{{ block.id }} .popup-email button {
+        background-color: {{ block.settings.color_accent }};
+        color: {{ block.settings.color_background }};
+      }
+      header.promo-bar-{{ block.id }}.signup-bar .errors {
+        color: {{ block.settings.color_accent }};
+        border-color: {{ block.settings.color_text | hex_to_rgba: 0.5 }};
+      }
+      </style>
+    {% endif %}
+
+    {% comment %}
+      Popup
+    {% endcomment %}
+    {% if block.type == 'popup' %}
+      <div id="block-{{ block.id }}" class="promo-popup promo-popup-{{ block.id }} style-overlay"
+        data-type="popup"
+        data-show-delay="{{ block.settings.show_delay_range | times: 1000 }}"
+        data-show-again-delay="{{ block.settings.show_again_delay_range }}"
+        data-homepage-limit="{{ block.settings.homepage_limit }}"
+        data-visitor-limit="{{ block.settings.visitor_limit }}"
+        data-visitor="{% if customer %}false{% else %}true{% endif %}"
+        data-show-for="{{ block.settings.show_for}}"
+        data-id="{{ block.id }}"
+        {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          <div class="popup-image">
+            <img src="{{ block.settings.image | img_url: '400x' }}"
+              srcset="{{ block.settings.image | img_url: '400x' }} 1x, {{ block.settings.image | img_url: '400x', scale: 2 }} 2x"
+              alt="{{ block.settings.image.alt | default: shop.name | escape }}" />
+          </div>
+        {% endif %}
+        <div class="wrapper">
+          <div class="popup-close">
+            <span class="icon-text">
+              <span class="icon icon-close" aria-hidden="true"></span>
+              <span class="text">{{ 'general.ui.close' | t }}</span>
+            </span>
+          </div>
+          <div class="popup-container">
+            <div class="popup-message">
+              <h4>{{ block.settings.title | escape }}</h4>
+              <p>{{ block.settings.subheading | escape }}</p>
+            </div>
+            {% if block.settings.newsletter %}
+              <div class="popup-email">
+                {% include 'newsletter-subscribe', subscribe_source: 'popup' %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <style>
+      .promo-popup-{{ block.id }} {
+        background-color: {{ block.settings.color_background }};
+        color: {{ block.settings.color_text }};
+      }
+      .promo-popup-{{ block.id }} h4 {
+        color: {{ block.settings.color_text }};
+      }
+      .promo-popup-{{ block.id }} .popup-email {
+        border-top-color: {{ block.settings.color_text | hex_to_rgba: 0.2 }};
+      }
+      .promo-popup-{{ block.id }} .popup-email input {
+        border-color: {{ block.settings.color_text | hex_to_rgba: 0.5 }};
+      }
+      .promo-popup-{{ block.id }} .popup-email input.errors {
+        border-color: {{ block.settings.color_accent }};
+      }
+      .promo-popup-{{ block.id }} .popup-email input:focus {
+        border-color: {{ block.settings.color_text }};
+      }
+      .promo-popup-{{ block.id }} .popup-email input::-webkit-input-placeholder,
+      .promo-popup-{{ block.id }} .popup-email input::-moz-placeholder,
+      .promo-popup-{{ block.id }} .popup-email input:-ms-input-placeholder,
+      .promo-popup-{{ block.id }} .popup-email input:-moz-placeholder {
+        color: {{ block.settings.color_text | hex_to_rgba: 0.5 }};
+      }
+      .promo-popup-{{ block.id }} .popup-email button {
+        background-color: {{ block.settings.color_accent }};
+        color: {{ block.settings.color_background }};
+      }
+      .promo-popup-{{ block.id }} .popup-email div.errors {
+        color: {{ block.settings.color_accent }};
+      }
+      </style>
+    {% endif %}
+
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Promotional",
+  "class": "promos",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "scroll_lock",
+      "label": "Show while scrolling",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement-bar",
+      "name": "Announcement Bar",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_announcement_bar",
+          "label": "Show",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Promote free shipping, an upcoming sale, or an announcement."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background",
+          "default": "#4f4f4f"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "checkbox",
+          "id": "homepage_limit",
+          "label": "Home page only",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "show_for",
+          "label": "Show for",
+          "options": [
+            { "value": "both", "label": "Desktop and mobile" },
+            { "value": "desktop", "label": "Desktop" },
+            { "value": "mobile", "label": "Mobile" }
+          ],
+          "default": "both"
+        },
+        {
+          "type": "select",
+          "id": "bar_size",
+          "label": "Size",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "select",
+          "id": "bar_placement",
+          "label": "Placement",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "checkbox",
+          "id": "autohide",
+          "label": "Automatically hide after delay",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "autohide_delay_range",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "unit": "sec",
+          "label": "Hide delay",
+          "default": 15
+        }
+      ]
+    },
+    {
+      "type": "signup-bar",
+      "name": "Signup Bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "Build an email list, promote new products, or announce a sale."
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "color_accent",
+          "label": "Accent",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background",
+          "default": "#4f4f4f"
+        },
+        {
+          "type": "checkbox",
+          "id": "homepage_limit",
+          "label": "Home page only",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "show_for",
+          "label": "Show for",
+          "options": [
+            { "value": "both", "label": "Desktop and mobile" },
+            { "value": "desktop", "label": "Desktop" },
+            { "value": "mobile", "label": "Mobile" }
+          ],
+          "default": "both"
+        },
+        {
+          "type": "select",
+          "id": "bar_size",
+          "label": "Size",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "select",
+          "id": "bar_placement",
+          "label": "Placement",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "bottom"
+        },
+        {
+          "type": "checkbox",
+          "id": "newsletter",
+          "label": "Show email capture form",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "visitor_limit",
+          "label": "Only enable for visitors",
+          "default": true,
+          "info": "Logged in customers will not see the popup."
+        }
+      ]
+    },
+    {
+      "type": "popup",
+      "name": "Popup",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Promotional popup"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Build an email list, promote new products, or announce a sale."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#4f4f4f"
+        },
+        {
+          "type": "color",
+          "id": "color_accent",
+          "label": "Accent",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_background",
+          "label": "Background",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "checkbox",
+          "id": "homepage_limit",
+          "label": "Home page only",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "show_for",
+          "label": "Show for",
+          "options": [
+            { "value": "both", "label": "Desktop and mobile" },
+            { "value": "desktop", "label": "Desktop" },
+            { "value": "mobile", "label": "Mobile" }
+          ],
+          "default": "both"
+        },
+        {
+          "type": "checkbox",
+          "id": "newsletter",
+          "label": "Show email capture form",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "visitor_limit",
+          "label": "Only enable for visitors",
+          "default": true,
+          "info": "Logged in customers will not see the popup."
+        },
+
+        {
+          "type": "range",
+          "id": "show_delay_range",
+          "label": "Show popup after",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "sec",
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "show_again_delay_range",
+          "label": "Show popup again after",
+          "min": 1,
+          "max": 90,
+          "step": 1,
+          "unit": "day",
+          "default": 7
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

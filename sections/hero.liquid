@@ -1,0 +1,169 @@
+<div class="hero hero-{{ section.id }} section-standard no-border" data-section-id="{{ section.id }}" data-section-type="hero-section">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} no-padding">
+    <div class="wrapper">
+
+      <div class="featured-hero lazyload background-alignment-{{ section.settings.alignment }} size-{{ section.settings.hero_size }}" {% if section.settings.image != blank %}data-bgset="{% include 'bgset', image: section.settings.image %}"{% endif %}>
+        <div class="content-box">
+          {% if section.settings.title != blank %}
+            <h2>{{ section.settings.title | escape }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <div class="rte">{{ section.settings.text }}</div>
+          {% endif %}
+          {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+            <a href="{{ section.settings.button_link }}" class="button outline">{{ section.settings.button_label | escape }}</a>
+          {% endif %}
+        </div>
+        {% if section.settings.image == blank %}
+          <div class="placeholder-background">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  {% assign overlay_alpha = section.settings.color_overlay_alpha_range | times: 0.01 %}
+  .hero-{{ section.id }} .content-box {
+    background-color: {{ section.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+    color: {{ section.settings.color_overlay_text }};
+  }
+  .hero-{{ section.id }} .content-box,
+  .hero-{{ section.id }} .content-box h2,
+  .hero-{{ section.id }} .content-box a {
+    color: {{ section.settings.color_overlay_text }};
+    border-color: {{ section.settings.color_overlay_text }};
+  }
+  .hero-{{ section.id }} .content-box a:hover {
+    color: {{ section.settings.color_overlay_text }};
+    border-color: {{ section.settings.color_overlay_text }};
+  }
+  {% if section.settings.image != blank %}
+  html.no-js .hero-{{ section.id }} .featured-hero {
+    background-image: url('{{ section.settings.image | img_url: '900x' }}');
+  }
+  {% endif %}
+</style>
+
+
+
+{% schema %}
+{
+  "name": "Image with text overlay",
+  "class": "hero-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Image alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text overlay"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use overlay text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+    },
+    {
+      "type": "select",
+      "id": "hero_size",
+      "label": "Section height",
+      "default": "medium",
+      "options": [
+        {
+          "label": "Extra Small",
+          "value": "x-small"
+        },
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        },
+        {
+          "label": "Extra Large",
+          "value": "x-large"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_text",
+      "label": "Overlay text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "color_overlay_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text overlay",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

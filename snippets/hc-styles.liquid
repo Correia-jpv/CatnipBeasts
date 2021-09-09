@@ -1,0 +1,15 @@
+{% assign hc_storefront_status = shop.metafields.helpfulcrowd.global.storefront_status %}
+{% assign hc_css_url = shop.metafields.helpfulcrowd.global.css_url %}
+{% assign hc_custom_stylesheet_active = shop.metafields.helpfulcrowd.global.custom_stylesheet_active %}
+{% assign hc_custom_stylesheet_code = shop.metafields.helpfulcrowd.global.custom_stylesheet_code %}
+
+{% if hc_storefront_status == "active" and hc_css_url != blank %}
+  <link href="{{ hc_css_url }}" rel="stylesheet" type="text/css" media="all" data-hc="stylesheet">
+
+  {% if hc_custom_stylesheet_active %}
+    <!-- CUSTOM STYLESHEET -->
+    <style>
+      {{ hc_custom_stylesheet_code }}
+    </style>
+  {% endif %}
+{% endif %}

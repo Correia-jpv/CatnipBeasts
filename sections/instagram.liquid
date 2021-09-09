@@ -1,0 +1,110 @@
+<div class="instagram-collection {% if section.settings.full_width %}full-width{% endif %}" data-section-id="{{ section.id }}" data-instagram-access-token="{{ section.settings.access_token }}" data-image-count="{{ section.settings.image_count_range }}" data-section-type="instagram-section" style="display:none;">
+  <div class="wrapper">
+    <header>
+      {% if section.settings.title != blank %}
+        <h4>{{ section.settings.title | escape }}</h4>
+      {% else %}
+        {% if section.settings.show_button %}
+          <a href="#" class="button outline">{{ section.settings.button_label | escape }}</a>
+        {% endif %}
+      {% endif %}
+    </header>
+    <div class="instagram-container">
+      {% assign count = section.settings.image_count_range | minus: 1 %}
+      {% for i in (0..count) %}
+      <div class="box box-{{ i }} photo" tabindex="0">
+        <figure>
+          <a href="#" target="_blank" tabindex="-1" class="card__image-wrapper" style="padding-top: 100%;">
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg card__image' }}
+          </a>
+          <figcaption>
+            <p></p>
+            <ul class="social-stats">
+              <li>
+                <a href="#" target="_blank" class="likes" tabindex="-1">
+                  <span class="icon-fallback-text">
+                    <span class="icon icon-like" aria-hidden="true"></span>
+                    <span class="fallback-text">{{ 'homepage.instagram.likes' | t }}</span>
+                    <span class="label">0</span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="#" target="_blank" class="comments" tabindex="-1">
+                  <span class="icon-fallback-text">
+                    <span class="icon icon-comment" aria-hidden="true"></span>
+                    <span class="fallback-text">{{ 'homepage.instagram.comments' | t }}</span>
+                    <span class="label">0</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+      {% endfor %}
+
+    </div>
+    {% if section.settings.title != blank %}
+    <footer>
+      {% if section.settings.show_button %}
+        <a href="#" class="button outline">{{ section.settings.button_label | escape }}</a>
+      {% endif %}
+    </footer>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instagram",
+  "class": "instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Instagram feed"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Follow Us on Instagram"
+    },
+    {
+      "type": "text",
+      "id": "access_token",
+      "label": "Instagram access token",
+      "info": "Generate your access token at [stylehatch.com\/instagram](http:\/\/stylehatch.co\/instagram\/)"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand to full browser width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_count_range",
+      "label": "Images",
+      "min": 6,
+      "max": 18,
+      "step": 6,
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram feed",
+      "category": "Social media"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,194 @@
+{%- if forloop.first == true -%}
+{%- assign wrapper_ids = '' -%}
+{%- assign ratios = '' -%}
+{%- assign max_ratio = image.aspect_ratio -%}
+{%- endif -%}
+
+{%- assign wrapper_ids = wrapper_ids | append: wrapper_id -%}
+{%- assign ratios = ratios | append: image.aspect_ratio -%}
+
+{%- if image.aspect_ratio < max_ratio -%}
+{%- assign max_ratio = image.aspect_ratio -%}
+{%- endif -%}
+
+{%- unless forloop.last -%}
+{%- assign wrapper_ids = wrapper_ids | append: ',' -%}
+{%- assign ratios = ratios | append: ',' -%}
+{%- endunless -%}
+
+{%- if forloop.last == true -%}
+{%- comment -%}
+    Group IDs into 2, 3 and 4 for automatic ratios across each row based on responsive CSS
+{%- endcomment -%}
+{%- if section.settings.product_count_range == 2
+    or section.settings.product_count_range == 6
+    or section.settings.product_count_range == 10 -%}
+    {%- assign wrapper_ids = wrapper_ids | prepend: 'PGIW-,PGIW-,' -%}
+    {%- assign ratios = ratios | prepend: '100,100,' -%}
+{%- endif -%}
+
+{%- assign wrapper_ids_array = wrapper_ids | split: ',' -%}
+{%- assign ratios_array = ratios | split: ',' -%}
+
+{%- comment -%}
+    Array of grouped arrays delimited by pipe |
+{%- endcomment -%}
+{%- assign wrapper_ids_group_by_2 = '' -%}
+{%- assign wrapper_ids_group_by_3 = '' -%}
+{%- assign wrapper_ids_group_by_4 = '' -%}
+{%- assign ratios_group_by_2 = '' -%}
+{%- assign ratios_group_by_3 = '' -%}
+{%- assign ratios_group_by_4 = '' -%}
+
+{%- comment -%}
+    Loop through wrapper IDs
+{%- endcomment -%}
+{%- for id in wrapper_ids_array -%}
+    {%- assign wrapper_ids_group_by_2 = wrapper_ids_group_by_2 | append: '#' | append: id | append: ' .product_card__image-wrapper:before' -%}
+    {%- assign wrapper_ids_group_by_3 = wrapper_ids_group_by_3 | append: '#' | append: id | append: ' .product_card__image-wrapper:before' -%}
+    {%- assign wrapper_ids_group_by_4 = wrapper_ids_group_by_4 | append: '#' | append: id | append: ' .product_card__image-wrapper:before' -%}
+
+    {%- assign ratios_group_by_2 = ratios_group_by_2 | append: ratios_array[forloop.index0] -%}
+    {%- assign ratios_group_by_3 = ratios_group_by_3 | append: ratios_array[forloop.index0] -%}
+    {%- assign ratios_group_by_4 = ratios_group_by_4 | append: ratios_array[forloop.index0] -%}
+
+    {%- comment -%}
+    Add in pipes at the end of groups based off of modulo
+    {%- endcomment -%}
+    {%- assign index_mod_2 = forloop.index | modulo: 2 -%}
+    {%- assign index_mod_3 = forloop.index | modulo: 3 -%}
+    {%- assign index_mod_4 = forloop.index | modulo: 4 -%}
+
+    {%- comment -%}
+    Group by 2
+    {%- endcomment -%}
+    {%- if index_mod_2 == 0 -%}
+    {%- assign wrapper_ids_group_by_2 = wrapper_ids_group_by_2 | append: '|' -%}
+    {%- assign ratios_group_by_2 = ratios_group_by_2 | append: '|' -%}
+    {%- else -%}
+    {%- unless forloop.last -%}
+        {%- assign wrapper_ids_group_by_2 = wrapper_ids_group_by_2 | append: ',' -%}
+        {%- assign ratios_group_by_2 = ratios_group_by_2 | append: ',' -%}
+    {%- endunless -%}
+    {%- endif -%}
+
+    {%- comment -%}
+    Group by 3
+    {%- endcomment -%}
+    {%- if index_mod_3 == 0 -%}
+    {%- assign wrapper_ids_group_by_3 = wrapper_ids_group_by_3 | append: '|' -%}
+    {%- assign ratios_group_by_3 = ratios_group_by_3 | append: '|' -%}
+    {%- else -%}
+    {%- unless forloop.last -%}
+        {%- assign wrapper_ids_group_by_3 = wrapper_ids_group_by_3 | append: ',' -%}
+        {%- assign ratios_group_by_3 = ratios_group_by_3 | append: ',' -%}
+    {%- endunless -%}
+    {%- endif -%}
+
+    {%- comment -%}
+    Group by 4
+    {%- endcomment -%}
+    {%- if index_mod_4 == 0 -%}
+    {%- assign wrapper_ids_group_by_4 = wrapper_ids_group_by_4 | append: '|' -%}
+    {%- assign ratios_group_by_4 = ratios_group_by_4 | append: '|' -%}
+    {%- else -%}
+    {%- unless forloop.last -%}
+        {%- assign wrapper_ids_group_by_4 = wrapper_ids_group_by_4 | append: ',' -%}
+        {%- assign ratios_group_by_4 = ratios_group_by_4 | append: ',' -%}
+    {%- endunless -%}
+    {%- endif -%}
+
+{%- endfor -%}
+
+{%- comment -%}
+    Loop through ratio groups and only add back the highest value and convert to padding
+{%- endcomment -%}
+{%- assign ratios_group_by_2_array = ratios_group_by_2 | split: '|' -%}
+{%- assign padding_group_by_2 = '' -%}
+{%- for ratios in ratios_group_by_2_array -%}
+    {%- assign temp_ratio = ratios | split: ',' | sort | first | round: 2 -%}
+    {%- assign padding = 1 | divided_by: temp_ratio | times: 100 | append: '%' -%}
+    {%- assign padding_group_by_2 = padding_group_by_2 | append: padding -%}
+    {%- unless forloop.last -%}
+    {%- assign padding_group_by_2 = padding_group_by_2 | append: '|' -%}
+    {%- endunless -%}
+{%- endfor -%}
+
+{%- assign ratios_group_by_3_array = ratios_group_by_3 | split: '|' -%}
+{%- assign padding_group_by_3 = '' -%}
+{%- for ratios in ratios_group_by_3_array -%}
+    {%- assign temp_ratio = ratios | split: ',' | sort | first | round: 2 -%}
+    {%- assign padding = 1 | divided_by: temp_ratio | times: 100 | append: '%' -%}
+    {%- assign padding_group_by_3 = padding_group_by_3 | append: padding -%}
+    {%- unless forloop.last -%}
+    {%- assign padding_group_by_3 = padding_group_by_3 | append: '|' -%}
+    {%- endunless -%}
+{%- endfor -%}
+
+{%- assign ratios_group_by_4_array = ratios_group_by_4 | split: '|' -%}
+{%- assign padding_group_by_4 = '' -%}
+{%- for ratios in ratios_group_by_4_array -%}
+    {%- assign temp_ratio = ratios | split: ',' | sort | first | round: 2 -%}
+    {%- assign padding = 1 | divided_by: temp_ratio | times: 100 | append: '%' -%}
+    {%- assign padding_group_by_4 = padding_group_by_4 | append: padding -%}
+    {%- unless forloop.last -%}
+    {%- assign padding_group_by_4 = padding_group_by_4 | append: '|' -%}
+    {%- endunless -%}
+{%- endfor -%}
+
+{%- capture group_by_2_css -%}
+    {%- assign wrapper_ids_group_by_2_array = wrapper_ids_group_by_2 | split: '|' -%}
+    {%- assign padding_group_by_2_array = padding_group_by_2 | split: '|' -%}
+    {%- for ids in wrapper_ids_group_by_2_array -%}
+    {{ ids }} { padding-bottom: {{ padding_group_by_2_array[forloop.index0] }}; }
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture group_by_3_css -%}
+    {%- assign wrapper_ids_group_by_3_array = wrapper_ids_group_by_3 | split: '|' -%}
+    
+    {%- assign padding_group_by_3_array = padding_group_by_3 | split: '|' -%}
+    {%- for ids in wrapper_ids_group_by_3_array -%}
+    {{ ids }} { padding-bottom: {{ padding_group_by_3_array[forloop.index0] }}; }
+    {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture group_by_4_css -%}
+    {%- assign wrapper_ids_group_by_4_array = wrapper_ids_group_by_4 | split: '|' -%}
+    {%- assign padding_group_by_4_array = padding_group_by_4 | split: '|' -%}
+    {%- for ids in wrapper_ids_group_by_4_array -%}
+    {{ ids }} { padding-bottom: {{ padding_group_by_4_array[forloop.index0] }}; }
+    {%- endfor -%}
+{%- endcapture -%}
+
+<style>
+    {%- if section.id == 'collection-template' and enable_sidebar == true -%}
+    @media screen and (min-width: 951px) {
+        {{ group_by_3_css }}
+    }
+    @media screen and (min-width: 601px) and (max-width: 950px) {
+        {{ group_by_2_css }}
+    }
+    {%- elsif section.id == 'search-template' and search.results_count != 0 -%}
+    @media screen and (min-width: 951px) {
+        {{ group_by_3_css }}
+    }
+    @media screen and (min-width: 601px) and (max-width: 950px) {
+        {{ group_by_2_css }}
+    }
+    {%- else -%}
+    @media screen and (min-width: 801px) {
+        {{ group_by_4_css }}
+    }
+    @media screen and (min-width: 601px) and (max-width: 800px) {
+        {{ group_by_2_css }}
+    }
+    {%- endif -%}
+    {%- unless settings.collections_product_columns == '1' -%}
+    @media screen and (max-width: 600px) {
+        {{ group_by_2_css }}
+    }
+    {%- endunless -%}
+</style>
+
+{%- endif -%}

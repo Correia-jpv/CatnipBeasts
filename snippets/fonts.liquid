@@ -1,0 +1,56 @@
+{%- assign useCustomFont = false -%}
+{% if useCustomFont %}
+  {% comment %}
+    Paste custom font embed code below provided by Google Fonts, Typekit or a similar service
+  {% endcomment %}
+{% else %}
+  {% comment %}
+    If Google Font, break down the settings structure into three variables:
+
+    Google_Lato:400,400italic,700,700italic_sans
+      - Vendor (Google)
+      - Font ID (Lato:400,400italic,700,700italic)
+      - Font type (sans)
+  {% endcomment %}
+  {% comment %}
+    Heading Font
+    ================================
+  {% endcomment %}
+  {%- assign loadGoogleFont = false -%}
+  {%- assign googleFontURL = '//fonts.googleapis.com/css?family=' -%}
+  {% if settings.typography_headings_family contains 'Google' %}
+    {%- assign loadGoogleFont = true -%}
+    {%- assign typography_base_parts = settings.typography_headings_family | split: '_' -%}
+    {%- assign typography_base_id = typography_base_parts[1] -%}
+    {%- assign googleFontURL = googleFontURL | append: typography_base_id | append: '|&display=swap|' -%}
+  {% else %}
+    {%- assign headerFontStack = settings.typography_headings_family -%}
+  {% endif %}
+  {% comment %}
+    Body Font
+    ================================
+  {% endcomment %}
+  {% if settings.typography_body_family contains 'Google' %}
+    {%- assign loadGoogleFont = true -%}
+    {%- assign typography_base_parts = settings.typography_body_family | split: '_' -%}
+    {%- assign typography_base_id = typography_base_parts[1] -%}
+    {%- assign googleFontURL = googleFontURL | append: typography_base_id | append: '|&display=swap|' -%}
+  {% else %}
+    {%- assign bodyFontStack = settings.typography_headings_family -%}
+  {% endif %}
+  {% comment %}
+    Navigation Font
+    ================================
+  {% endcomment %}
+  {% if settings.typography_navigation_family contains 'Google' %}
+    {%- assign loadGoogleFont = true -%}
+    {%- assign typography_base_parts = settings.typography_navigation_family | split: '_' -%}
+    {%- assign typography_base_id = typography_base_parts[1] -%}
+    {%- assign googleFontURL = googleFontURL | append: typography_base_id | append: '|&display=swap|' -%}
+  {% else %}
+    {%- assign navFontStack = settings.typography_headings_family -%}
+  {% endif %}
+  {% if loadGoogleFont %}
+    {{ googleFontURL | stylesheet_tag }}
+  {% endif %}
+{% endif %}

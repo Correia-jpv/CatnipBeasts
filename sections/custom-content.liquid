@@ -1,0 +1,270 @@
+<div class="custom-content section-standard" data-section-id="{{ section.id }}" data-section-type="custom-content-section">
+  <div class="contain-full-width">
+    <div class="wrapper">
+
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      <div class="custom-content-container align-{{ section.settings.alignment }}">
+        {% for block in section.blocks %}
+          <div id="block-{{ block.id }}" class="custom__item custom__item-{{ block.type }} {% if block.settings.full_width %}custom__item-full_width{% endif %}" {{ block.shopify_attributes }}>
+            {% case block.type %}
+              {% when 'page' %}
+                <div class="content rte">
+                  {% if block.settings.show_title %}
+                    <h2 class="align-{{ section.settings.alignment }}">{{ pages[block.settings.page].title }}</h2>
+                  {% endif %}
+                  <div class="content-page">{{ pages[block.settings.page].content }}</div>
+                </div>
+              {% when 'image' %}
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="content">
+                {% else %}
+                  <div class="content">
+                {% endif %}
+
+                {%- assign image = block.settings.image -%}
+                {% if image != blank %}
+                  <div class="card__image-wrapper" style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100}}%">
+                    {% assign image_widths = '360,540,720,900,1000,1200,1500,1800,2000,2400' %}
+                    {% include 'theme-rias' %}
+                    <img class="card__image lazyload fade-in"
+                      data-src="{{ image_url_pattern }}"
+                      data-widths="[{{ image_widths }}]"
+                      data-aspectratio="{{ image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ image.alt | escape }}">
+                    <noscript>
+                      <img class="card__image" src="{{ image | img_url: '1200x' }}" alt="{{ image.alt | escape }}">
+                    </noscript>
+                  </div>
+                  <style media="screen">
+                    #block-{{ block.id }}:not(.custom__item-full_width) {
+                      max-width: {{ image.width }}px;
+                      margin-left: auto;
+                      margin-right: auto;
+                    }
+                    //
+                  </style>
+                {% else %}
+                  {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                  {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+
+                {% if block.settings.link != blank %}
+                  </a>
+                {% else %}
+                  </div>
+                {% endif %}
+              {% when 'video' %}
+                <div class="content" data-video-type="{{ block.settings.video_url.type }}" data-video-id="{{ block.settings.video_url.id }}">
+                  {% case block.settings.video_url.type %}
+                    {% when 'youtube' %}
+                      <iframe src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                    {% when 'vimeo' %}
+                      <iframe src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?color={{ settings.primary_accent_color | remove: '#' }}&title=0&byline=0&portrait=0" width="850" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                  {% endcase %}
+                </div>
+              {% when 'richtext' %}
+                <div class="content rte">
+                  {% if block.settings.title != blank %}
+                    <h2>{{ block.settings.title | escape }}</h2>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <div class="richtext">
+                      {{ block.settings.text }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% when 'html' %}
+                <div class="content">
+                  {% if block.settings.code != blank %}
+                    {{ block.settings.code }}
+                  {% endif %}
+                </div>
+              {% when 'button' %}
+                {% if block.settings.button_link != blank and block.settings.button_label != blank %}
+                  <div class="content">
+                    <a href="{{ block.settings.button_link }}" class="button large outline">{{ block.settings.button_label | escape }}</a>
+                  </div>
+                {% endif %}
+            {% endcase %}
+
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Rich text",
+  "class": "featured-text-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Custom content"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page content"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_title",
+          "label": "Show title",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full browser width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Image link"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full browser width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "id": "video_url",
+          "type": "video_url",
+          "label": "Video URL",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full browser width",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "name": "Custom HTML",
+      "settings": [
+        {
+          "type": "html",
+          "id": "code",
+          "label": "HTML"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full browser width",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom content",
+      "category": "Advanced layout",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "richtext",
+          "settings": {
+            "title": ""
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_label": "See all products",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

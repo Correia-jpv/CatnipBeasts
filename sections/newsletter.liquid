@@ -1,0 +1,181 @@
+<div class="newsletter newsletter-{{ section.id }} section-standard no-border" data-section-id="{{ section.id }}" data-section-type="newsletter-section">
+  <div class="contain-full-width no-padding">
+    <div class="wrapper">
+
+      <div class="featured-hero lazyload background-alignment-{{ section.settings.alignment }} size-{{ section.settings.hero_size }}" {% if section.settings.image != blank %}data-bgset="{% include 'bgset', image: section.settings.image %}"{% endif %}>
+        <div class="content-box">
+          {% if section.settings.title != blank %}
+            <h2>{{ section.settings.title | escape }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <div class="rte">{{ section.settings.text }}</div>
+          {% endif %}
+          <div class="section-email">
+            {% include 'newsletter-subscribe', subscribe_source: 'newsletter-section' %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  {% assign overlay_alpha = section.settings.color_background_alpha_range | times: 0.01 %}
+  .newsletter-{{ section.id }} .content-box {
+    background-color: {{ section.settings.color_background | hex_to_rgba: overlay_alpha }};
+    color: {{ section.settings.color_text }};
+  }
+  .newsletter-{{ section.id }} .content-box,
+  .newsletter-{{ section.id }} .content-box h2,
+  .newsletter-{{ section.id }} .content-box a {
+    color: {{ section.settings.color_text }};
+    border-color: {{ section.settings.color_text }};
+  }
+  .newsletter-{{ section.id }} .content-box a:hover {
+    color: {{ section.settings.color_text }};
+    border-color: {{ section.settings.color_text }};
+  }
+  .newsletter-{{ section.id }} .section-email input {
+    border-color: {{ section.settings.color_text | hex_to_rgba: 0.5 }};
+  }
+  .newsletter-{{ section.id }} .section-email input.errors {
+    border-color: {{ section.settings.color_accent }};
+  }
+  .newsletter-{{ section.id }} .section-email input:focus {
+    border-color: {{ section.settings.color_text }};
+  }
+  .newsletter-{{ section.id }} .section-email input::-webkit-input-placeholder {
+    color: {{ section.settings.color_text | hex_to_rgba: 0.5 }};
+  }
+  .newsletter-{{ section.id }} .section-email input::-moz-placeholder {
+    color: {{ section.settings.color_text | hex_to_rgba: 0.5 }};
+  }
+  .newsletter-{{ section.id }} .section-email input:-ms-input-placeholder {
+    color: {{ section.settings.color_text | hex_to_rgba: 0.5 }};
+  }
+  .newsletter-{{ section.id }} .section-email input:-moz-placeholder {
+    color: {{ section.settings.color_text | hex_to_rgba: 0.5 }};
+  }
+  .newsletter-{{ section.id }} .section-email button {
+    background-color: {{ section.settings.color_accent }};
+    color: {{ section.settings.color_background }};
+  }
+  .newsletter-{{ section.id }} .section-email div.errors {
+    color: {{ section.settings.color_accent }};
+  }
+  {% if section.settings.image != blank %}
+  html.no-js .newsletter-{{ section.id }} .featured-hero {
+    background-image: url('{{ section.settings.image | img_url: '900x' }}');
+  }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "newsletter-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Newsletter Sign Up"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Subheading",
+      "default": "<p>Give your visitors an option to sign up for a newsletter to announce sales, new products and updates.</p>"
+    },
+    {
+      "type": "select",
+      "id": "hero_size",
+      "label": "Section height",
+      "default": "small",
+      "options": [
+        {
+          "label": "Extra Small",
+          "value": "x-small"
+        },
+        {
+          "label": "Small",
+          "value": "small"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Large",
+          "value": "large"
+        },
+        {
+          "label": "Extra Large",
+          "value": "x-large"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#606060"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent",
+      "default": "#424242"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "range",
+      "id": "color_background_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Background color opacity",
+      "default": 100
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Optional"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Image alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

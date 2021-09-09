@@ -1,0 +1,44 @@
+<!-- /snippets/newsletter-subscribe.liquid -->
+{% assign form_id = 'newsletter-' | append: subscribe_source %}
+{% form 'customer', id: form_id %}
+  {{ form.errors | default_errors }}
+
+  {% if form.posted_successfully? %}
+    <p>{{ 'password.general.thanks_title' | t }}</p>
+
+    {% assign discount_code = settings.newsletter_discount_code %}
+    {% assign redirect_link = settings.newsletter_redirect_link %}
+    {%- if discount_code != blank -%}
+      {% assign code = discount_code | url_encode %}
+      {% assign discount_url = '/discount/' | append: code %}
+
+      {%- if redirect_link != blank -%}
+        {% assign discount_url = discount_url | append: '?redirect=' | append: redirect_link %}
+      {%- endif -%}
+      {% assign discount_url = discount_url | append: '#' | append: code %}
+
+      <script>
+      window.location = '{{ discount_url }}';
+      </script>
+    {%- else -%}
+
+      {%- if redirect_link != blank -%}
+      <script>
+      window.location = '{{ redirect_link }}';
+      </script>
+      {%- endif -%}
+      
+    {%- endif -%}
+
+  {% else %}
+    <input type="hidden" name="contact[tags]" value="prospect, email subscribe{% if subscribe_source %}, {{ subscribe_source }}{% endif %}">
+    <div class="input-row">
+      <div class="input-wrapper">
+        <input type="email" name="contact[email]" id="email" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" class="input-group-field" required>
+      </div>
+      <div class="button-wrapper">
+        <button type="submit" id="subscribe" class="btn">{{ 'general.newsletter_form.go' | t }}</button>
+      </div>
+    </div>
+  {% endif %}
+{% endform %}

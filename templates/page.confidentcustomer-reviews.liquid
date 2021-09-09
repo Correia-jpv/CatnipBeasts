@@ -1,0 +1,27 @@
+{% if shop.metafields.confidentcustomer["rating_stats"] %}
+{% assign ccrating = shop.metafields.confidentcustomer["rating_stats"] | split: "," %}
+{% if ccrating[1] != '0' %}
+<div itemscope itemtype="https://schema.org/Product">
+<meta itemprop="name" content="{{ shop.name | escape }}"/>
+<div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+<meta itemprop="ratingValue" content="{{ ccrating[0] }}"/>
+<meta itemprop="ratingCount" content="{{ ccrating[1] }}"/>
+</div>
+</div>
+{% endif %}
+{% endif %}
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="rte">
+        {{ page.content }}
+      </div>
+      
+      <iframe id="home-cc-iframe" src="https://confidentcustomer.com/Catnip-Beasts-reviews/frame" frameBorder="0" scrolling="no" style="width:100%;margin:0px;height:500px;border:0px;"></iframe>
+    </div>
+  </div>
+</div>

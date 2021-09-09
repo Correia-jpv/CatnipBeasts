@@ -1,0 +1,60 @@
+<div class="custom-content section-standard" data-section-id="{{ section.id }}" data-section-type="custom-content-section">
+  <div class="contain-full-width">
+    <div class="wrapper">
+
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      <div class="custom-content-container align-center">
+        <div class="custom__item custom__item-video {% if section.settings.full_width %}custom__item-full_width{% endif %}">
+          <div class="content" data-video-type="{{ section.settings.video_url.type }}" data-video-id="{{ section.settings.video_url.id }}">
+            {% case section.settings.video_url.type %}
+              {% when 'youtube' %}
+                <iframe src="//www.youtube.com/embed/{{ section.settings.video_url.id }}?vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+              {% when 'vimeo' %}
+                <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?color={{ settings.primary_accent_color | remove: '#' }}&title=0&byline=0&portrait=0" width="850" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            {% endcase %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "class": "video-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Video"
+    },
+    {
+      "id": "video_url",
+      "type": "video_url",
+      "label": "Video link",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}

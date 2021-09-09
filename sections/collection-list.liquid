@@ -1,0 +1,197 @@
+<div class="collection-list section-standard {% unless section.settings.section_padding %}no-border{% endunless %}" data-section-id="{{ section.id }}" data-section-type="collection-list-section">
+  <div class="{% if section.settings.full_width %}contain-full-width{% else %}contain-site-width{% endif %} {% unless section.settings.section_padding %}no-padding{% endunless %}">
+    <div class="wrapper">
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      {%- assign image_size = '800x' -%}
+      {% case section.settings.columns_range %}
+        {% when 2 %}
+          {%- assign grid_item_width = 'one-half small--one-whole' -%}
+        {% when 3 %}
+          {%- assign grid_item_width = 'one-third medium-down--one-whole' -%}
+        {% when 4 %}
+          {%- assign grid_item_width = 'one-quarter large--one-half medium--one-half small--one-whole' -%}
+      {% endcase %}
+
+      <div class="{% if section.settings.gutter %}grid{% else %}grid-gutterless{% endif %}">
+        {% for block in section.blocks limit: section.blocks.size %}
+          <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }}>
+            {%- assign collection = collections[block.settings.collection] -%}
+            {% include 'collection-grid-item', text_placement: section.settings.text_placement, zoom: section.settings.zoom %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  #shopify-section-{{ section.id }} .box figcaption h4 {
+    color: {{ section.settings.color_overlay_text }};
+    border-color: {{ section.settings.color_overlay_text }};
+  }
+  {% assign overlay_alpha = section.settings.color_overlay_alpha_range | times: 0.01 %}
+  #shopify-section-{{ section.id }} .box a figure:after {
+    background-color: {{ section.settings.color_overlay | hex_to_rgba: overlay_alpha }};
+  }
+  #shopify-section-{{ section.id }} .box a:hover figure:after {
+    background-color: {{ section.settings.color_overlay_hover | hex_to_rgba: overlay_alpha }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "class": "collection-list-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collection list"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Expand full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "section_padding",
+      "label": "Show spacing around section",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "gutter",
+      "label": "Show spacing around images",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "columns_range",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "radio",
+      "id": "text_placement",
+      "label": "Text placement",
+      "default": "below",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below image"
+        },
+        {
+          "value": "over",
+          "label": "Over image"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "color_overlay",
+      "label": "Overlay",
+      "default": "#4f4f4f"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_hover",
+      "label": "Overlay hover",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "color_overlay_text",
+      "label": "Overlay text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "color_overlay_alpha_range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom",
+      "label": "Enable rollover zoom",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collection",
+      "settings": {
+        "title": "Collection list",
+        "full_width": false,
+        "section_padding": true,
+        "columns_range": 3,
+        "gutter": true,
+        "text_placement": "below"
+      },
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    },
+    {
+      "name": "Collection grid",
+      "category": "Collection",
+      "settings": {
+        "title":"Collection grid",
+        "full_width": true,
+        "section_padding": false,
+        "columns_range": 3,
+        "gutter": false,
+        "text_placement": "over",
+        "color_overlay_alpha_range": 30
+      },
+      "blocks": [
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        },
+        {
+          "type": "featured_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

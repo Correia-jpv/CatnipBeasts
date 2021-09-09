@@ -1,0 +1,130 @@
+<div class="logo-list logo-list-{{ section.id }} section-standard" data-section-id="{{ section.id }}" data-section-type="logo-list-section">
+  <div class="contain-site-width">
+    <div class="wrapper">
+      {% if section.settings.title != blank %}
+        <header>
+          <h4>{{ section.settings.title | escape }}</h4>
+        </header>
+      {% endif %}
+
+      <div class="logo-bar">
+        {% for block in section.blocks %}
+          <div id="block-{{ block.id }}" class="logo-bar__item" {{ block.shopify_attributes }}>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="logo-bar__link">
+            {% endif %}
+            {% assign image = block.settings.image %}
+            {% if image != blank %}
+
+                {% assign image_widths = '100,180,260,340,420,500' %}
+                {% include 'theme-rias' %}
+                <img class="lazyload"
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  data-src="{{ image_url_pattern }}"
+                  data-widths="[{{ image_widths }}]"
+                  data-aspectratio="{{ image.aspect_ratio }}"
+                  data-sizes="auto"
+                  alt="{{ image.alt }}">
+                <noscript>
+                  <img class="" src="{{ image | img_url: '160x' }}" alt="{{ image.alt }}">
+                </noscript>
+
+            {% else %}
+              {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </div>
+          <style media="screen">
+            #block-{{ block.id }} img {
+              max-width: {{ image.width }}px;
+            }
+          </style>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .logo-list-{{ section.id }} .logo-bar__item {
+    width: {{ section.settings.logo_width }}px;
+    margin: {{ section.settings.logo_margins }}px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Logo list",
+  "class": "logo-list-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Logo list"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 100,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "logo_margins",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Column spacing",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo_image",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo list",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        },
+        {
+          "type": "logo_image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
