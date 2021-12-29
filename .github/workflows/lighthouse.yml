@@ -10,7 +10,7 @@ jobs:
       uses: foo-software/lighthouse-check-action@master
       with:
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
-        commentUrl: 'https://api.github.com/repos/${{ github.sha }}/commits/${{ github.sha }}/comments'
+        commentUrl: 'https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/commits/${{ github.sha::7 }}/comments'
         device: 'desktop'
         wait: true
   lighthouse-mobile:
@@ -21,6 +21,6 @@ jobs:
       uses: foo-software/lighthouse-check-action@master
       with:
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
-        commentUrl: 'https://api.github.com/repos/echo ${GITHUB_REPOSITORY}/commits/echo ${GITHUB_SHA::7}/comments'
+        commentUrl: 'https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/commits/${{ github.sha }}/comments'
         device: 'mobile'
         wait: true
