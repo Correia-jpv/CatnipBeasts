@@ -9,8 +9,9 @@ jobs:
     - name: Lighthouse
       uses: foo-software/lighthouse-check-action@master
       with:
-        device: 'desktop'
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
+        commentUrl: https://api.github.com/repos/:owner/:repo/commits/:commit_sha/comments
+        device: 'desktop'
         wait: true
   lighthouse-mobile:
     runs-on: ubuntu-latest
@@ -19,6 +20,7 @@ jobs:
     - name: Lighthouse
       uses: foo-software/lighthouse-check-action@master
       with:
-        device: 'mobile'
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
+        commentUrl: https://api.github.com/repos/:owner/:repo/commits/:commit_sha/comments
+        device: 'mobile'
         wait: true
