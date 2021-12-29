@@ -8,6 +8,8 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.primary_accent_color }}">
+  <!-- Leveraging Browser Caching -->
+  <meta http-equiv="Expires" content="30" /> 
   
 <!--  Preload fonts  -->
  <link rel="dns-prefetch" href="https://cdn.shopify.com">
@@ -19,7 +21,7 @@
 {% include 'css-fonts' %}
   
 
-  <script defer src="{{ 'vendor.js' | asset_url }}"></script>
+  <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
 
   
   <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" as="script">
@@ -37,9 +39,29 @@
   {% endif %}
 
   {% include 'social-meta-tags' %}
+
   
-  {{ content_for_header }} 
+
+  
+  
+    {% capture pghandle %}
+	{{ template }}
+  {% endcapture %}
+  
+  {% capture h_content %}
+	{{ content_for_header }}
+  {% endcapture %}
+  {% if template == 'product' %}
+	{{ content_for_header }}
+  {% else %}
+    {{ h_content | remove: '"https:\/\/cdn.hextom.com\/js\/ultimatesalesboost.js?shop=catnip-beasts.myshopify.com","https:\/\/wiser.expertvillagemedia.com\/assets\/js\/wiser_script.js?shop=catnip-beasts.myshopify.com","https:\/\/tabs.stationmade.com\/registered-scripts\/tabs-by-station.js?shop=catnip-beasts.myshopify.com",' }}
+  {% endif %}
+  
  
+
+  
+  
+  
   <link rel="preload"
         as="style"
         onload="this.rel = 'stylesheet'"
@@ -125,7 +147,7 @@
   </div>
   
   
-  	<!--[if lte IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif] -->
+  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
     
   <script>
     window.lazySizesConfig = window.lazySizesConfig || {};
@@ -178,7 +200,6 @@
   <!--[if lte IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->
 
   
-  	{% include 'wiser' %}
 
   	
 
@@ -199,7 +220,8 @@
   </script>
     
       
-{% if template.name == 'product' %}
+{% if template == 'product' %}
+  	{% include 'wiser' %}
 
   <script>
     var $jq = jQuery.noConflict();
@@ -225,4 +247,4 @@
 
     
 {% endif %}
-</html><div id="shop_booster_social_proof"></div><script src="https://shopbooster.co/ali/reviews_js.js"  ></script><script src="https://shopbooster.co/ali/theme_js.js"></script>  
+</html>

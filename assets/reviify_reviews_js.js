@@ -25,6 +25,7 @@ function loadReviews() {
       res = replaceAll(res,"https://www.shopbooster.co/ali/admin/default/templates/loading.gif\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/loading1.gif\" alt=\"Loading image\" loading=\"lazy\"");
       res = replaceAll(res,"https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Burj_Khalifa.jpg/220px-Burj_Khalifa.jpg", "");
       res = replaceAll(res,"https://shopbooster.co/ali/admin/default/templates/p1.jpg", "");
+      res = replaceAll(res,"style=\"width: 16px;\"", "width=\"16\" height=\"12\" class=\"lazy\" alt=\"Review Country Flag\" loading=\"lazy\"");
       
 
       document.getElementById("shopbooster-ali").innerHTML =res;

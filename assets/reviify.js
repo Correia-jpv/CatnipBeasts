@@ -805,6 +805,8 @@ function booster_smoothScroll(eID) {
       res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/uk.svg", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/uk.svg?1107\" class=\"lazy\""); 
       res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/nz.svg", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/nz.svg?1107\" class=\"lazy\""); 
       res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/no.svg", "");
+      res = replaceAll(res,"style=\"width: 16px;\"", "width=\"16\" height=\"12\"");
+
           
           
           

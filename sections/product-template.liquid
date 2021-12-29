@@ -57,10 +57,10 @@
                   {% assign image_widths = '85,100,200,295,394,590,720,800' %}
                   {% include 'theme-rias' %}
                   <div class="productimage-limit" style="max-width:{{ image.width }}px">
-                    <img id="ProductImage-{{ section.id }}" class="lazyload"
+                    <img id="ProductImage-{{ section.id }}"
                       data-ProductImage
                       data-id="{{ section.id }}"
-                      data-src="{{ image_url_pattern }}"
+                      src="{{ image | img_url: '394x' }}"
                       data-widths="[{{ image_widths }}]"
                       data-aspectratio="{{ image.aspect_ratio }}"
                       data-sizes="auto"
@@ -68,10 +68,9 @@
                       data-max-width="{{ image.width }}"
                       width="394"
                       height="394"
-                      alt="{{ image.alt | escape }}"
-                          loading="lazy">
+                      alt="{{ image.alt | escape }}">
                     <noscript>
-                      <img src="{{ image | img_url: '590x' }}" alt="{{ image.alt | escape }}" loading="lazy">
+                      <img src="{{ image | img_url: '394x' }}" alt="{{ image.alt | escape }}">
                     </noscript>
                   </div>
                 </a>
