@@ -2,11 +2,23 @@ name: Lighthouse
 on: [push, pull_request]
 
 jobs:
-  lighthouse:
+  lighthouse-desktop:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - name: Lighthouse
       uses: foo-software/lighthouse-check-action@master
       with:
-        urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/realistic-catnip-fish-plushie'
+        device: 'desktop'
+        urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
+        wait: true
+  lighthouse-mobile:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Lighthouse
+      uses: foo-software/lighthouse-check-action@master
+      with:
+        device: 'mobile'
+        urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
+        wait: true
