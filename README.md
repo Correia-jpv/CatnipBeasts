@@ -24,4 +24,4 @@ Quickly sign up so you can keep track of your bucket list on any device.
 
 <!-- Links -->
   <!-- Header hero image -->
-  [Logo]:assets/catnipbeasts-mockup-devices.png
+  [Logo]:assets/catnipbeasts-devices-mockup.png
