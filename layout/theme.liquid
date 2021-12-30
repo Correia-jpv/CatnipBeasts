@@ -152,6 +152,7 @@
     {% include 'js-language-strings' %}
     StyleHatch.currencyFormat = {{ shop.money_format | json }};
     StyleHatch.ajaxCartEnable = {{ settings.ajax_cart_enable }};
+    
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
@@ -215,17 +216,19 @@
   	{% include 'wiser' %}
 
   <script>
-    var $jq = jQuery.noConflict();
-    $jq(document).ready(function(){
-      $jq('#ProductThumbs-product-template').slick({
-        infinite: true,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-        autoplay: true,
-        arrows: false,
-        mobileFirst: true
+    (function( $ ) {
+      var $jq = jQuery.noConflict();
+      $jq(document).ready(function(){
+        $jq('#ProductThumbs-product-template').slick({
+          infinite: true,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          autoplay: true,
+          arrows: false,
+          mobileFirst: true
+        });
       });
-    });
+    })(jq223);
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
