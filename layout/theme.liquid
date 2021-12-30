@@ -21,9 +21,6 @@
 {% include 'css-fonts' %}
   
   
-    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
-  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
-    
   <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" as="script">
   
   {% if settings.favicon != blank %}
@@ -146,6 +143,9 @@
     {% section 'footer' %}
   </div>
   
+    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
+  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
+    
   <script>
     window.lazySizesConfig = window.lazySizesConfig || {};
     window.lazySizesConfig.expand = 1200;
@@ -206,7 +206,7 @@
   </script>
   
   <script defer type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>  
-  <script async type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     
       
@@ -214,8 +214,8 @@
   	{% include 'wiser' %}
 
   <script>
-    var $jq = jQuery.noConflict();
-    $jq(document).ready(function(){
+    window.addEventListener('DOMContentLoaded', function() {
+      var $jq = jQuery.noConflict();
       $jq('#ProductThumbs-product-template').slick({
         infinite: true,
         slidesToShow: 3,
@@ -224,7 +224,7 @@
         arrows: false,
         mobileFirst: true
       });
-    });
+    })
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
