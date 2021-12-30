@@ -43,7 +43,7 @@
         {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
         {% include 'theme-rias' %}
         <img id="{{ img_id }}" class="product_card__image fade-in {% if settings.variant_rollover == true and product.images.size > 1 %}featured{% endif %}"
-          data-src="{{ image_url_pattern }}"
+          src="{{ image_url_pattern }}"
           data-widths="[{{ image_widths }}]"
           data-aspectratio="{{ image.aspect_ratio }}"
           data-sizes="auto"
@@ -65,7 +65,7 @@
           {%- assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' -%}
           {% include 'theme-rias' %}
           <img id="{{ img_id }}" class="product_card__image alt"
-               data-src="{{ image_url_pattern }}"
+               src="{{ image_url_pattern }}"
                data-widths="[{{ image_widths }}]"
                data-aspectratio="{{ image.aspect_ratio }}"
                data-sizes="auto"

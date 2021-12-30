@@ -143,10 +143,10 @@
     {% section 'footer' %}
   </div>
   
-  
+    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
     
-  <script>
+  <script type="module">
     window.lazySizesConfig = window.lazySizesConfig || {};
     window.lazySizesConfig.expand = 1200;
     window.lazySizesConfig.loadMode = 3;
@@ -182,7 +182,6 @@
   {% endif %} 
    
     
-  <script src="{{ 'vendor.min.js' | asset_url }}"></script>
 
   <!--[if (gt IE 9)|!(IE)]><!--><script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
