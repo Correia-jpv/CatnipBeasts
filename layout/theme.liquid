@@ -22,9 +22,6 @@
   <link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous"> {% include 'css-fonts' %}
 
 
-  <script async src="{{ 'vendor.min.js' | asset_url }}"></script>
-
-
   <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" as="script"> {% if settings.favicon != blank %}
   <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" /> {% endif %}
 
@@ -129,7 +126,6 @@
         Add JavaScript fuctionality that relies on jQuery here
         this will allow jQuery to properly load before the calls are made { % endcomment %
         }
-
         { %
           if newHash %
         }
@@ -151,20 +147,20 @@
   {% if settings.show_multiple_currencies %} {% include 'currencies' %} {% endif %}
 
 
+  <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
 
-
-<!--   <script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script> -->
+  <script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
   <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
 
   <!--[if (gt IE 9)|!(IE)]><!-->
-  <script async type="text/javascript" src="{{ 'theme.min.js' | asset_url }}"></script>
+  <script defer type="text/javascript" src="{{ 'theme.min.js' | asset_url }}"></script>
   <!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->
 
-  <script async src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
 
   <!--[if (gt IE 9)|!(IE)]><!-->
-  <script async src="{{ 'lazysizes.min.js' | asset_url }}"></script>
+  <script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script>
   <!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
 
@@ -176,8 +172,6 @@
     var preloadedScript = document.createElement('script');
     preloadedScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js';
     document.body.appendChild(preloadedScript);
-
-
     (function() {
       ll = new LazyLoad({
         elements_selector: ".lazy",
