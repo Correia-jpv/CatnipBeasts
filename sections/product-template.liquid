@@ -320,7 +320,8 @@
                     <div-mobile-only><div data-station-tabs-app data-station-tabs-product="{{ product.handle }}">{{ product.description }}</div>
 
 
-      <div id="shopbooster-ali" product-id="{{ product.id }}" ></div>{{ 'reviify.js' | asset_url | script_tag }}
+      <div id="shopbooster-ali" product-id="{{ product.id }}" ></div>
+      <script defer src="{{ 'reviify.js' | asset_url }}"></script>
 			<a href="#AddToCartForm-product-template">
                     <button type="submit" name="add" class="default-cart-button__button" style="margin-bottom:0px">
                       <span id="AddToCartText-Anchor2" data-AddToCartText>
