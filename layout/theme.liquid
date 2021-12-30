@@ -143,7 +143,7 @@
     {% section 'footer' %}
   </div>
   
-    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
+    <script src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
     
   <script>
@@ -213,9 +213,9 @@
 {% if template == 'product' %}
   	{% include 'wiser' %}
 
-  <script type="module">
-    window.addEventListener('DOMContentLoaded', function() {
-      var $jq = jQuery.noConflict();
+  <script>
+    var $jq = jQuery.noConflict();
+    $jq(document).ready(function(){
       $jq('#ProductThumbs-product-template').slick({
         infinite: true,
         slidesToShow: 3,
@@ -224,7 +224,7 @@
         arrows: false,
         mobileFirst: true
       });
-    })
+    });
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
