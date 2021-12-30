@@ -1373,6 +1373,23 @@ img, video, iframe {
 }
 
 
+img {
+  min-width: 100%;
+  height: auto;
+  // Hide img when lazy loading
+  &[src=""],
+  &:not([src]) {
+    visibility: hidden;
+    // img block space before lazy loading
+    &::before {
+      display: block;
+      content: '';
+      padding-top: calc(100% - 24px);
+    }
+  }
+}
+
+
 .loaded, .lazyloaded {
   	background-image: none;
   content: none;
