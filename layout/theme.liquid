@@ -185,7 +185,7 @@
   <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
   
   
-    <script src="{{ 'vendor.min.js' | asset_url }}"></script>
+    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
     
 <!--   <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>   -->
@@ -216,19 +216,21 @@
   	{% include 'wiser' %}
 
   <script>
-    (function( $ ) {
-      var $jq = jQuery.noConflict();
-      $jq(document).ready(function(){
-        $jq('#ProductThumbs-product-template').slick({
-          infinite: true,
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          autoplay: true,
-          arrows: false,
-          mobileFirst: true
+    window.addEventListener('DOMContentLoaded', function() {
+      (function( $ ) {
+        var $jq = jQuery.noConflict();
+        $jq(document).ready(function(){
+          $jq('#ProductThumbs-product-template').slick({
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            autoplay: true,
+            arrows: false,
+            mobileFirst: true
+          });
         });
-      });
-    })(jq223);
+      })(jq223);
+    })
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
