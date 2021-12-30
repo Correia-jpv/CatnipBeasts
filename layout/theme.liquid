@@ -143,10 +143,10 @@
     {% section 'footer' %}
   </div>
   
-    <script src="{{ 'vendor.min.js' | asset_url }}"></script>
+    <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
     
-  <script type="module">
+  <script>
     window.lazySizesConfig = window.lazySizesConfig || {};
     window.lazySizesConfig.expand = 1200;
     window.lazySizesConfig.loadMode = 3;
