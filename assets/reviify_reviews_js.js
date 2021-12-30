@@ -42,9 +42,9 @@ function loadReviews() {
   xhttp.send();}
   
 
-     const ll2 = new LazyLoad({
-       elements_selector: ".lazyload",
-     })   
+//      const ll2 = new LazyLoad({
+//        elements_selector: ".lazyload",
+//      })   
       
 }
  loadReviews();
