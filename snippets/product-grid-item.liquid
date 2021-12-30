@@ -69,6 +69,7 @@
             data-widths="[{{ image_widths }}]"
             data-aspectratio="{{ image.aspect_ratio }}"
             data-sizes="auto"
+            data-fallback="{{ image | img_url: '394x' }}"
             data-expand="600"
             alt="{{ product.featured_image.alt | escape }}">
         {%- endif -%}
