@@ -1382,10 +1382,10 @@ img, video, iframe {
   height: auto;  
 }
 
-.lazyload:[not(.alt)] {
+.lazyload:not(.alt) {
   visibility: hidden;
 }
-.lazyload:[not(.alt)]::before {
+.lazyload:not(.alt)::before {
   display: block;
   content: '';
   padding-top: calc(100% - 24px);
