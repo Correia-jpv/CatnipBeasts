@@ -156,21 +156,21 @@
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
-      {% comment %}
+        {% comment %}
         Add JavaScript fuctionality that relies on jQuery here
         this will allow jQuery to properly load before the calls are made
-      {% endcomment %}
-      {% if newHash %}
+        {% endcomment %}
+        {% if newHash %}
         $(function() {
           StyleHatch.updateHash('{{ newHash }}');
-        });
-      {% endif %}
-      {% if resetPassword %}
-        $(function() {
-          StyleHatch.resetPasswordSuccess();
-        });
-      {% endif %}
-      })(jq223);
+                                });
+          {% endif %}
+          {% if resetPassword %}
+          $(function() {
+            StyleHatch.resetPasswordSuccess();
+          });
+          {% endif %}
+        })(jq223);
     });
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
   </script>
@@ -216,26 +216,24 @@
   	{% include 'wiser' %}
 
   <script>
-    
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
-      {% if newHash %}
+        {% if newHash %}
         $(function() {
-        var $jq = jQuery.noConflict();
-        $jq(document).ready(function(){
-          $jq('#ProductThumbs-product-template').slick({
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            autoplay: true,
-            arrows: false,
-            mobileFirst: true
-          });        });
-      {% endif %}
-      })(jq223);
-    });
-
+          var $jq = jQuery.noConflict();
+          $jq(document).ready(function(){
+            $jq('#ProductThumbs-product-template').slick({
+              infinite: true,
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              autoplay: true,
+              arrows: false,
+              mobileFirst: true
+            });        });
+        })(jq223);
+        {% endif %}
+      });
     })
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
