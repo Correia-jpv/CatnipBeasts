@@ -1,7 +1,10 @@
 <!doctype html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="{{ shop.locale }}"> <![endif]-->
 <!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="{{ shop.locale }}">
+<!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -9,135 +12,87 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.primary_accent_color }}">
   <!-- Leveraging Browser Caching -->
-  <meta http-equiv="Expires" content="30" /> 
-  
-<!--  Preload fonts  -->
- <link rel="dns-prefetch" href="https://cdn.shopify.com">
-<link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-italic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-700italic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <meta http-equiv="Expires" content="30" />
 
-{% include 'css-fonts' %}
-  
+  <!--  Preload fonts  -->
+  <link rel="dns-prefetch" href="https://cdn.shopify.com">
+  <link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-italic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-700italic.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="https://cdn.shopify.com/s/files/1/0048/8642/9785/files/roboto-v27-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous"> {% include 'css-fonts' %}
+
 
   <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
 
-  
-  <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" as="script">
-  
-  {% if settings.favicon != blank %}
-  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
-  {% endif %}
+
+  <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" as="script"> {% if settings.favicon != blank %}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" /> {% endif %}
 
   <title>
-    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{%
+    unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
   </title>
 
   {% if page_description %}
-    <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
+  <meta name="description" content="{{ page_description | escape }}"> {% endif %} {% include 'social-meta-tags' %} {% capture pghandle %} {{ template }} {% endcapture %} {% capture h_content %} {{ content_for_header }} {% endcapture %} {% if template == 'product' %} {{ content_for_header }} {% else %} {{ h_content |
+  remove: '"https:\/\/cdn.hextom.com\/js\/ultimatesalesboost.js?shop=catnip-beasts.myshopify.com","https:\/\/wiser.expertvillagemedia.com\/assets\/js\/wiser_script.js?shop=catnip-beasts.myshopify.com","https:\/\/tabs.stationmade.com\/registered-scripts\/tabs-by-station.js?shop=catnip-beasts.myshopify.com",'
+  }} {% endif %}
 
-  {% include 'social-meta-tags' %}
 
-  
 
-  
-  
-    {% capture pghandle %}
-	{{ template }}
-  {% endcapture %}
-  
-  {% capture h_content %}
-	{{ content_for_header }}
-  {% endcapture %}
-  {% if template == 'product' %}
-	{{ content_for_header }}
-  {% else %}
-    {{ h_content | remove: '"https:\/\/cdn.hextom.com\/js\/ultimatesalesboost.js?shop=catnip-beasts.myshopify.com","https:\/\/wiser.expertvillagemedia.com\/assets\/js\/wiser_script.js?shop=catnip-beasts.myshopify.com","https:\/\/tabs.stationmade.com\/registered-scripts\/tabs-by-station.js?shop=catnip-beasts.myshopify.com",' }}
-  {% endif %}
-  
- 
 
-  
-  
-  
-  <link rel="preload"
-        as="style"
-        onload="this.rel = 'stylesheet'"
-        href="{{ 'theme.scss.css' | asset_url }}">
-  
+
+
+  <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="{{ 'theme.scss.css' | asset_url }}">
+
   <noscript>
     <link
           rel="stylesheet"
           href='{{ 'theme.scss.css' | asset_url }}'>
   </noscript>
 
-  
-  <link rel="preload"
-        as="style"
-        onload="this.rel = 'stylesheet'"
-        href="{{ 'paymentfont.scss.css' | asset_url }}">
+
+  <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="{{ 'paymentfont.scss.css' | asset_url }}">
 
   <noscript>
     <link
           rel="stylesheet"
           href='{{ 'paymentfont.scss.css' | asset_url }}'>
-  </noscript>
+  </noscript> {% if template contains 'customers' %}
+  <!--     { 'shopify_common.js' | shopify_asset_url | script_tag }} -->
+  {% endif %} {% include 'oldIE-js' %} {% if template.name == 'product' %}
 
-  
-  
-  {% if template contains 'customers' %}
-<!--     { 'shopify_common.js' | shopify_asset_url | script_tag }} -->
-  {% endif %}
-  {% include 'oldIE-js' %}
-  
-  {% if template.name == 'product' %}
-
-	<link rel="preload"
-      as="style"
-      onload="this.rel = 'stylesheet'"
-      href="{{ 'slick-css.scss.css' | asset_url }}">
+  <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="{{ 'slick-css.scss.css' | asset_url }}">
 
   <noscript>
     <link
           rel="stylesheet"
           href='{{ 'slick-css.scss.css' | asset_url }}'>
   </noscript>
-  
-  	<link rel="preload"
-      as="style"
-      onload="this.rel = 'stylesheet'"
-      href="{{ 'slick-theme-css.scss.css' | asset_url }}">
+
+  <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="{{ 'slick-theme-css.scss.css' | asset_url }}">
 
   <noscript>
     <link
           rel="stylesheet"
           href='{{ 'slick-theme-css.scss.css' | asset_url }}'>
   </noscript>
-  
-  <link rel="preload"
-      as="style"
-      onload="this.rel = 'stylesheet'"
-      href="//cdn.shopify.com/s/files/1/0048/8642/9785/t/5/assets/riviify_shop-booster-grid.css">
+
+  <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="//cdn.shopify.com/s/files/1/0048/8642/9785/t/5/assets/riviify_shop-booster-grid.css">
 
   <noscript>
     <link
           rel="stylesheet"
           href='//cdn.shopify.com/s/files/1/0048/8642/9785/t/5/assets/riviify_shop-booster-grid.css'>
-  </noscript>
-  
+  </noscript> {% endif %}
 
-    {% endif %}
 
-	
 </head>
-<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" data-template-directory="{{ template.directory }}" data-template="{{ template.name }}" >
+
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" data-template-directory="{{ template.directory }}" data-template="{{ template.name }}">
 
   <div id="page">
-    {% section 'promos' %}
-    {% include 'header-util' %}
-    {% section 'header' %}
+    {% section 'promos' %} {% include 'header-util' %} {% section 'header' %}
 
     <main class="main-content" role="main">
       {{ content_for_layout }}
@@ -145,87 +100,97 @@
 
     {% section 'footer' %}
   </div>
-  
-  
-  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
-    
+
+
+  <!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
+
   <script>
     window.lazySizesConfig = window.lazySizesConfig || {};
     window.lazySizesConfig.expand = 1200;
     window.lazySizesConfig.loadMode = 3;
     window.lazySizesConfig.ricTimeout = 50;
-    window.StyleHatch = window.StyleHatch || {};
-    {% include 'js-language-strings' %}
-    StyleHatch.currencyFormat = {{ shop.money_format | json }};
-    StyleHatch.ajaxCartEnable = {{ settings.ajax_cart_enable }};
+    window.StyleHatch = window.StyleHatch || {}; { % include 'js-language-strings' %
+    }
+    StyleHatch.currencyFormat = {
+      {
+        shop.money_format | json
+      }
+    };
+    StyleHatch.ajaxCartEnable = {
+      {
+        settings.ajax_cart_enable
+      }
+    };
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
-      (function( $ ) {
-      {% comment %}
+      (function($) {
+        { % comment %
+        }
         Add JavaScript fuctionality that relies on jQuery here
-        this will allow jQuery to properly load before the calls are made
-      {% endcomment %}
+        this will allow jQuery to properly load before the calls are made { % endcomment %
+        }
 
-      {% if newHash %}
+        { %
+          if newHash %
+        }
         $(function() {
           StyleHatch.updateHash('{{ newHash }}');
-        });
-      {% endif %}
-      {% if resetPassword %}
+        }); { % endif %
+        } { %
+          if resetPassword %
+        }
         $(function() {
           StyleHatch.resetPasswordSuccess();
-        });
-      {% endif %}
+        }); { % endif %
+        }
       })(jq223);
     });
     document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
   </script>
-  
-  {% if settings.show_multiple_currencies %}
-    {% include 'currencies' %}
-  {% endif %} 
-   
-    
-<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script><!--<![endif]-->
-<!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
-   
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+  {% if settings.show_multiple_currencies %} {% include 'currencies' %} {% endif %}
 
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>  
-  
-  
-  <!--[if (gt IE 9)|!(IE)]><!--><script type="text/javascript" src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+
+
+
+  <script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+
+  <!--[if (gt IE 9)|!(IE)]><!-->
+  <script defer type="text/javascript" src="{{ 'theme.min.js' | asset_url }}"></script>
+  <!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->
 
-  
+  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>
 
-  	
+  <!--[if (gt IE 9)|!(IE)]><!-->
+  <script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script>
+  <!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
 
-        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>  
 
-    
+  <script defer type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
   <script>
     var preloadedScript = document.createElement('script');
     preloadedScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js';
     document.body.appendChild(preloadedScript);
-    
-    
-   (function() {
-     ll = new LazyLoad({
-       elements_selector: ".lazy",
-     })   
-   })();    
+
+
+    (function() {
+      ll = new LazyLoad({
+        elements_selector: ".lazy",
+      })
+    })();
   </script>
-    
-      
-{% if template == 'product' %}
-  	{% include 'wiser' %}
+
+
+  {% if template == 'product' %} {% include 'wiser' %}
 
   <script>
     var $jq = jQuery.noConflict();
-    $jq(document).ready(function(){
+    $jq(document).ready(function() {
       $jq('#ProductThumbs-product-template').slick({
         infinite: true,
         slidesToShow: 3,
@@ -236,15 +201,17 @@
       });
     });
   </script>
-    {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
+  {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
   <!-- **BEGIN** Hextom USB Integration // Main Include - DO NOT MODIFY -->
   {% render 'hextom_usb_main', product: product, customer: customer %}
   <!-- **END** Hextom USB Integration // Main Include - DO NOT MODIFY -->
 
-  {{ 'reviify_reviews_js.js' | asset_url | script_tag }}{{ 'reviify_theme_js.js' | asset_url | script_tag }}
+
+  <script defer src="{{ 'reviify_reviews_js.js' | asset_url }}"></script>
+  <script defer src="{{ 'reviify_theme_js.js' | asset_url }}"></script>
 
 
-    
-{% endif %}
+  {% endif %}
+
 </html>
