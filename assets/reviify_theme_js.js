@@ -90,6 +90,8 @@ function booster_loadDoc() {
       strToLazy = replaceAll(strToLazy," src=\"media/2020/", " src=\"//shopbooster.co/ali/admin/default/media/2020/");
       strToLazy = replaceAll(strToLazy,"https://shopbooster.co/ali/webf/css/all2.css", "");
       strToLazy = replaceAll(strToLazy,"https://shopbooster.co/ali/admin/default/shop-booster-grid.css", "");
+      
+      console.log(strToLazy);
 
      document.getElementById("shop_booster_social_proof").innerHTML = strToLazy;
      booster_divs = document.getElementsByClassName('shop_booster_sproof_d');
