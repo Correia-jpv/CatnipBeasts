@@ -1374,11 +1374,16 @@ img, video, iframe {
 
 
 img {
-  min-width: 100%;
+  min-width: auto;
   height: auto;
   // Hide img when lazy loading
   &[src=""],
-  &:not([src]) {
+  &:not([src]),
+  &[src=""],
+  &:not([src]),
+  &[srcset=""],
+  &:not([srcset]){
+    min-width: 100%;
     visibility: hidden;
     // img block space before lazy loading
     &::before {
