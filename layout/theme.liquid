@@ -197,19 +197,14 @@
   <!--[if lte IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->
 
   <script defer type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>  
-
-    
   <script type="module">
-    var preloadedScript = document.createElement('script');
-    preloadedScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js';
-    document.body.appendChild(preloadedScript);
-    
-    
-   (function() {
-     ll = new LazyLoad({
-       elements_selector: ".lazy",
-     })   
-   })();    
+	const preloadedScript = document.createElement('script');
+	preloadedScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js';
+	document.body.appendChild(preloadedScript);
+
+	const ll = new LazyLoad({
+		elements_selector: ".lazy",
+	})     
   </script>
     
       
