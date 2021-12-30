@@ -9,6 +9,7 @@ jobs:
     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
     - name: Lighthouse-desktop
       uses: foo-software/lighthouse-check-action@master
+      id: lighthouseCheckDesktop
       with:
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
         outputDirectory: ${{ github.workspace }}/tmp/artifacts
@@ -18,7 +19,8 @@ jobs:
         device: 'desktop'
         wait: true
     - name: Lighthouse-mobile
-      uses: foo-software/lighthouse-check-action@master
+      uses: foo-software/lighthouse-check-action@master 
+      id: lighthouseCheckMobile
       with:
         urls: 'https://catnipbeasts.com/,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy'
         outputDirectory: ${{ github.workspace }}/tmp/artifacts
@@ -32,12 +34,21 @@ jobs:
       with:
         name: Lighthouse reports
         path: ${{ github.workspace }}/tmp/artifacts
-    - name: Verify Lighthouse Check results
+    - name: Verify Lighthouse Check desktop results
       uses: foo-software/lighthouse-check-status-action@master
       with:
-        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+        lighthouseCheckResults: ${{ steps.lighthouseCheckDesktop.outputs.lighthouseCheckResults }}
         minAccessibilityScore: "80"
         minBestPracticesScore: "60"
-        minPerformanceScore: "50"
+        minPerformanceScore: "70"
+        minProgressiveWebAppScore: "0"
+        minSeoScore: "70"
+    - name: Verify Lighthouse Check mobile results
+      uses: foo-software/lighthouse-check-status-action@master
+      with:
+        lighthouseCheckResults: ${{ steps.lighthouseCheckMobile.outputs.lighthouseCheckResults }}
+        minAccessibilityScore: "80"
+        minBestPracticesScore: "60"
+        minPerformanceScore: "30"
         minProgressiveWebAppScore: "0"
         minSeoScore: "70"
