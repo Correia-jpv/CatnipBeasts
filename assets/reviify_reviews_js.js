@@ -42,7 +42,7 @@ function loadReviews() {
   xhttp.send();}
   
 
-     ll2 = new LazyLoad({
+     const ll2 = new LazyLoad({
        elements_selector: ".lazyload",
      })   
       
