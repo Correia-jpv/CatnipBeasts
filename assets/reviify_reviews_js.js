@@ -10,14 +10,14 @@ function loadReviews() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var str = this.responseText;
-      var res = replaceAll(str,"max-width:100%;\"", "max-width:100%;\" class=\"lazy\" loading=\"lazy\" loading=\"lazy\" alt=\"Product review\"");
+      var res = replaceAll(str,"max-width:100%;\"", "max-width:100%;\" class=\"Lazy\" loading=\"Lazy\" alt=\"Product review\"");
       res = replaceAll(res," src=\"media/2019/", " src=\"//shopbooster.co/ali/admin/default/media/2019/");
       res = replaceAll(res," src=\"media/2020/", " src=\"//shopbooster.co/ali/admin/default/media/2020/");
-      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/us.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/us.svg?1107\" width=\"16\" height=\"12\" class=\"lazy\" alt=\"United States Flag\" loading=\"lazy\"");
-      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/ca.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/ca.svg?1107\" width=\"16\" height=\"12\" class=\"lazy\" alt=\"Canada Flag\" loading=\"lazy\""); 
-      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/au.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/au.svg?1107\" width=\"16\" height=\"12\" class=\"lazy\" alt=\"Australia Flag\" loading=\"lazy\""); 
-      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/uk.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/uk.svg?1107\" width=\"16\" height=\"12\" class=\"lazy\" alt=\"United Kingdom Flag\" loading=\"lazy\""); 
-      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/nz.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/nz.svg?1107\" width=\"16\" height=\"12\" class=\"lazy\" alt=\"New Zealand Flag\" loading=\"lazy\""); 
+      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/us.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/us.svg?1107\" width=\"16\" height=\"12\" class=\"Lazy\" alt=\"United States Flag\" loading=\"Lazy\"");
+      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/ca.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/ca.svg?1107\" width=\"16\" height=\"12\" class=\"Lazy\" alt=\"Canada Flag\" loading=\"Lazy\""); 
+      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/au.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/au.svg?1107\" width=\"16\" height=\"12\" class=\"Lazy\" alt=\"Australia Flag\" loading=\"Lazy\""); 
+      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/uk.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/uk.svg?1107\" width=\"16\" height=\"12\" class=\"Lazy\" alt=\"United Kingdom Flag\" loading=\"Lazy\""); 
+      res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/nz.svg\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/nz.svg?1107\" width=\"16\" height=\"12\" class=\"Lazy\" alt=\"New Zealand Flag\" loading=\"Lazy\""); 
       res = replaceAll(res,"https://shopbooster.co/ali/flags/flags/4x3/no.svg", "");
       res = replaceAll(res,"https://shopbooster.co/ali/webf/css/all2.css", "");     
       res = replaceAll(res,"https://shopbooster.co/ali/admin/default/shop-booster-grid.css", "");
@@ -25,7 +25,7 @@ function loadReviews() {
       res = replaceAll(res,"https://www.shopbooster.co/ali/admin/default/templates/loading.gif\"", "https://cdn.shopify.com/s/files/1/0048/8642/9785/files/loading1.gif\" alt=\"Loading image\" loading=\"lazy\"");
       res = replaceAll(res,"https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Burj_Khalifa.jpg/220px-Burj_Khalifa.jpg", "");
       res = replaceAll(res,"https://shopbooster.co/ali/admin/default/templates/p1.jpg", "");
-      res = replaceAll(res,"style=\"width: 16px;\"", "width=\"16\" height=\"12\" class=\"lazy\" alt=\"Review Country Flag\" loading=\"lazy\"");
+      res = replaceAll(res,"style=\"width: 16px;\"", "width=\"16\" height=\"12\" class=\"Lazy\" alt=\"Review Country Flag\" loading=\"Lazy\"");
       res = replaceAll(res,"src=", "data-src=");
 
       
@@ -43,7 +43,7 @@ function loadReviews() {
   
 
      ll2 = new LazyLoad({
-       elements_selector: ".lazy",
+       elements_selector: ".Lazy",
      })   
       
 }
