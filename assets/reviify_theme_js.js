@@ -83,17 +83,6 @@ function booster_loadDoc() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200 && this.responseText!="null" ) {
-      var str = this.responseText;
-      var strToLazy = replaceAll(str,"min-width:90px;margin:0 auto;max-width: 90px;\"", "min-width:90px;margin:0 auto;max-width: 90px;\" class=\"lazy\" loading=\"lazy\"");
-      strToLazy = replaceAll(strToLazy,"max-width:100%;\"", "max-width:100%;\" class=\"lazy\" loading=\"lazy\"");
- 	  strToLazy = replaceAll(strToLazy," src=\"media/2019/", " src=\"//shopbooster.co/ali/admin/default/media/2019/");
-      strToLazy = replaceAll(strToLazy," src=\"media/2020/", " src=\"//shopbooster.co/ali/admin/default/media/2020/");
-      strToLazy = replaceAll(strToLazy,"https://shopbooster.co/ali/webf/css/all2.css", "");
-      strToLazy = replaceAll(strToLazy,"https://shopbooster.co/ali/admin/default/shop-booster-grid.css", "");
-      
-      console.log(strToLazy);
-
-     document.getElementById("shop_booster_social_proof").innerHTML = strToLazy;
      booster_divs = document.getElementsByClassName('shop_booster_sproof_d');
       if (document.getElementById("booset_shop_time_after_loading")) {
      time_booster_time = document.getElementById("booset_shop_time_after_loading").value;
