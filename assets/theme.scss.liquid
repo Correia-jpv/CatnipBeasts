@@ -1387,14 +1387,15 @@ img, video, iframe {
   min-width: 100%;
   height: auto;
   // Hide img when lazy loading
-  .lazyload{
-    visibility: hidden;
-  }
-  .lazyload::before {
-    display: block;
-    content: '';
-    padding-top: calc(100% - 24px);
-  }
+  
+}
+.lazyload {
+  visibility: hidden;
+}
+.lazyload::before {
+  display: block;
+  content: '';
+  padding-top: calc(100% - 24px);
 }
 
 
