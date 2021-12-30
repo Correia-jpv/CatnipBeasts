@@ -16,7 +16,7 @@
       {% capture tabs_data %}{% include 'station-tabs-data', tabs_order: tabs_order %}{% endcapture %}
       {%- if tabs_data contains 'station-tabs-data' -%}{{ tabs_data }}{%- endif -%}
 
-      <script id="station-tabs-product-json" type="module">{"productDescriptionHTML": {{ product.description | json }}}</script>
+      <script id="station-tabs-product-json" type="application/json">{"productDescriptionHTML": {{ product.description | json }}}</script>
       <!-- end station data -->
     </div>
   {%- endif -%}
