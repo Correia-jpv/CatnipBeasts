@@ -216,8 +216,12 @@
   	{% include 'wiser' %}
 
   <script>
+    
+    // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
+      {% if newHash %}
+        $(function() {
         var $jq = jQuery.noConflict();
         $jq(document).ready(function(){
           $jq('#ProductThumbs-product-template').slick({
@@ -227,9 +231,11 @@
             autoplay: true,
             arrows: false,
             mobileFirst: true
-          });
-        });
+          });        });
+      {% endif %}
       })(jq223);
+    });
+
     })
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
