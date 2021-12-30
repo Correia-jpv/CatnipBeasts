@@ -228,11 +228,14 @@
     });
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
-<!--
+
   <script defer src="{{ 'reviify.js' | asset_url }}"></script>
   <script defer src="{{ 'reviify_reviews_js.js' | asset_url }}"></script>
   <script defer src="{{ 'reviify_theme_js.js' | asset_url }}"></script>
--->
+
+  <div id="shop_booster_social_proof"></div>
+<!--   <script defer src="https://shopbooster.co/ali/reviews_js.js"  ></script>
+  <script src="https://shopbooster.co/ali/theme_js.js"></script>   -->
     
 {% endif %}
-</html><div id="shop_booster_social_proof"></div><script src="https://shopbooster.co/ali/reviews_js.js"  ></script><script src="https://shopbooster.co/ali/theme_js.js"></script>  
+</html>
