@@ -42,7 +42,7 @@
       <div class="product_card__image-wrapper" data-bgset="{% include 'bgset', image: image %}">
         {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
         {% include 'theme-rias' %}
-        <img id="{{ img_id }}" class="product_card__image lazyload lazypreload fade-in {% if settings.variant_rollover == true and product.images.size > 1 %}featured{% endif %}"
+        <img id="{{ img_id }}" class="product_card__image fade-in {% if settings.variant_rollover == true and product.images.size > 1 %}featured{% endif %}"
           data-src="{{ image_url_pattern }}"
           data-widths="[{{ image_widths }}]"
           data-aspectratio="{{ image.aspect_ratio }}"
@@ -64,14 +64,14 @@
           {%- assign image = product.images[1] -%}
           {%- assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' -%}
           {% include 'theme-rias' %}
-          <img id="{{ img_id }}" class="product_card__image alt lazyload"
-            data-src="{{ image_url_pattern }}"
-            data-widths="[{{ image_widths }}]"
-            data-aspectratio="{{ image.aspect_ratio }}"
-            data-sizes="auto"
-            data-fallback="{{ image | img_url: '394x' }}"
-            data-expand="600"
-            alt="{{ product.featured_image.alt | escape }}">
+          <img id="{{ img_id }}" class="product_card__image alt"
+               data-src="{{ image_url_pattern }}"
+               data-widths="[{{ image_widths }}]"
+               data-aspectratio="{{ image.aspect_ratio }}"
+               data-sizes="auto"
+               data-expand="600"
+               data-fallback="{{ image | img_url: '394x' }}"
+               alt="{{ product.featured_image.alt | escape }}">
         {%- endif -%}
         {%- if sold_out -%}
           <span class="label sold-out">{{ 'products.product.sold_out' | t }}</span>
