@@ -213,7 +213,7 @@
 {% if template == 'product' %}
   	{% include 'wiser' %}
 
-  <script>
+  <script type="module">
     window.addEventListener('DOMContentLoaded', function() {
       var $jq = jQuery.noConflict();
       $jq('#ProductThumbs-product-template').slick({
