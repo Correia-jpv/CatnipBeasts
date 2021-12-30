@@ -1387,17 +1387,19 @@ img, video, iframe {
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
-  min-width: auto;
+  min-width: 100%;
   height: auto;
   // Hide img when lazy loading
   .lazy{
-    min-width: 100%;
-    visibility: hidden;
-    // img block space before lazy loading
-    &::before {
-      display: block;
-      content: '';
-      padding-top: calc(100% - 24px);
+    height: auto;
+    
+      visibility: hidden;
+      // img block space before lazy loading
+      &::before {
+        display: block;
+        content: '';
+        padding-top: calc(100% - 24px);
+      }
     }
   }
 }
