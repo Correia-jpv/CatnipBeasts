@@ -91,9 +91,9 @@
                       <a href="{{ image_highresolution }}" class="product-single__thumbnail--{{ section.id }} {% if image == active_image %}active{% endif %}" data-image-id="{{ image.id }}">
                         {% assign image_widths = '85,100,200,295,394,590,720,800' %}
                         {% include 'theme-rias' %}
-                        <img class="lazyload"
+                        <img
                           data-default="{{ image | img_url: '295x' }}"
-                          data-src="{{ image_url_pattern }}"
+                          src="{{ image_url_pattern }}"
                           data-src-pattern="{{ image_url_pattern }}"
                           data-widths="[{{ image_widths }}]"
                           data-aspectratio="{{ image.aspect_ratio }}"
