@@ -155,10 +155,11 @@
     StyleHatch.ajaxCartEnable = {{ settings.ajax_cart_enable }};
   </script>
 
-  <!--[if (gt IE 9)|!(IE)]><!--><script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
+      <script async type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script async src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
   
-    <script async type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script async src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
