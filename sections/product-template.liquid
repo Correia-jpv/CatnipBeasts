@@ -92,7 +92,7 @@
                         {% assign image_widths = '85,100,200,295,394,590,720,800' %}
                         {% include 'theme-rias' %}
                         <img class="lazyload"
-                          data-default="{{ image | img_url: '100x' }}"
+                          data-default="{{ image | img_url: '295x' }}"
                           data-src="{{ image_url_pattern }}"
                           data-src-pattern="{{ image_url_pattern }}"
                           data-widths="[{{ image_widths }}]"
@@ -100,15 +100,15 @@
                           data-sizes="auto"
                           data-position="{{ forloop.index0 }}"
                           data-max-width="{{ image.width }}"
-                          width="100"
-                          height="100"
+                          width="295"
+                          height="295"
                           alt="{{ image.alt | escape }}"
                           loading="lazy">
                         <noscript>
-                          <img src="{{ image | img_url: '100x' }}"
+                          <img src="{{ image | img_url: '295x' }}"
                                alt="{{ image.alt | escape }}"
-                               width="100"
-                               height="100"
+                               width="295"
+                               height="295"
                                loading="lazy">
                         </noscript>
                       </a>
