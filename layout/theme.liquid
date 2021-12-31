@@ -163,7 +163,7 @@
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
   
 
-  <script>
+  <script type="module">
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
@@ -220,7 +220,8 @@
   <script type="module">
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
-
+      (function( $ ) {
+        {% if newHash %}
         $(function() {
           var $jq = jQuery.noConflict();
           $jq(document).ready(function(){
@@ -232,7 +233,8 @@
               arrows: false,
               mobileFirst: true
             });        });
-
+        })(jq223);
+        {% endif %}
       });
     })
   </script>
