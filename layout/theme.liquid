@@ -33,6 +33,8 @@
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
+  {% else %}
+  	<meta name="description" content="{{ og_description | escape }}"> 
   {% endif %}
 
   {% include 'social-meta-tags' %}
