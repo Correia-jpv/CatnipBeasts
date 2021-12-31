@@ -215,7 +215,6 @@
     
       
 {% if template == 'product' %}
-  	{% include 'wiser' %}
   <script async type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>  
 
   <script type="module">
@@ -239,10 +238,13 @@
   <script defer src="{{ 'reviify.js' | asset_url }}"></script>
   <script defer src="{{ 'reviify_reviews_js.js' | asset_url }}"></script>
   <script defer src="{{ 'reviify_theme_js.js' | asset_url }}"></script>
+  
 <!-- 
   <div id="shop_booster_social_proof"></div>
   <script defer src="https://shopbooster.co/ali/reviews_js.js"  ></script>
   <script defer src="https://shopbooster.co/ali/theme_js.js"></script>  
      -->
+  
+  	{% include 'wiser' %}
 {% endif %}
 </html>
