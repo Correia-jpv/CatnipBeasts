@@ -93,7 +93,7 @@
                         {% include 'theme-rias' %}
                         <img
                           data-default="{{ image | img_url: '295x' }}"
-                          src="{{ image_url_pattern }}"
+                          src="{{ image | img_url: '295x' }}"
                           data-src-pattern="{{ image_url_pattern }}"
                           data-widths="[{{ image_widths }}]"
                           data-aspectratio="{{ image.aspect_ratio }}"
