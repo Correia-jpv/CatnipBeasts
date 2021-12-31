@@ -144,16 +144,7 @@
   </div>
   
   
-    
-
-  <!--[if (gt IE 9)|!(IE)]><!--><script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
-  <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
-  
-  
-    <script async src="{{ 'vendor.min.js' | asset_url }}"></script>
-  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
-  
-    <script type="module">
+  <script>
     window.lazySizesConfig = window.lazySizesConfig || {};
     window.lazySizesConfig.expand = 1200;
     window.lazySizesConfig.loadMode = 3;
@@ -162,7 +153,17 @@
     {% include 'js-language-strings' %}
     StyleHatch.currencyFormat = {{ shop.money_format | json }};
     StyleHatch.ajaxCartEnable = {{ settings.ajax_cart_enable }};
-    
+  </script>
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script defer src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
+  
+  
+    <script async src="{{ 'vendor.min.js' | asset_url }}"></script>
+  	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
+  
+
+  <script type="module">
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
       (function( $ ) {
