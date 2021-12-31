@@ -155,42 +155,15 @@
     StyleHatch.ajaxCartEnable = {{ settings.ajax_cart_enable }};
   </script>
 
-   <script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!--[if (gt IE 9)|!(IE)]><!--><script async src="{{ 'lazysizes.min.js' | asset_url }}"></script><!--<![endif]-->
   <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
   
+   	<script defer type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script defer src="{{ 'vendor.min.js' | asset_url }}"></script>
   	<!--[if lte IE 9]><script src="{{ 'vendor.min.js' | asset_url }}"></script><![endif] -->
   
-
-  <script type="module">
-    // Post defer
-    window.addEventListener('DOMContentLoaded', function() {
-      (function( $ ) {
-        {% comment %}
-        Add JavaScript fuctionality that relies on jQuery here
-        this will allow jQuery to properly load before the calls are made
-        {% endcomment %}
-        {% if newHash %}
-        $(function() {
-          StyleHatch.updateHash('{{ newHash }}');
-                                });
-          {% endif %}
-          {% if resetPassword %}
-          $(function() {
-            StyleHatch.resetPasswordSuccess();
-          });
-          {% endif %}
-        })(jq223);
-    });
-    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-  </script>
-  
-  {% if settings.show_multiple_currencies %}
-    {% include 'currencies' %}
-  {% endif %} 
     
 <!--   <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.4.0/dist/lazyload.min.js"></script>   -->
 
@@ -246,4 +219,32 @@
   <script defer src="https://shopbooster.co/ali/theme_js.js"></script>  
      -->
 {% endif %}
+  
+  
+    <script type="module">
+    // Post defer
+    window.addEventListener('DOMContentLoaded', function() {
+      (function( $ ) {
+        {% comment %}
+        Add JavaScript fuctionality that relies on jQuery here
+        this will allow jQuery to properly load before the calls are made
+        {% endcomment %}
+        {% if newHash %}
+        $(function() {
+          StyleHatch.updateHash('{{ newHash }}');
+                                });
+          {% endif %}
+          {% if resetPassword %}
+          $(function() {
+            StyleHatch.resetPasswordSuccess();
+          });
+          {% endif %}
+        })(jq223);
+    });
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  </script>
+  
+  {% if settings.show_multiple_currencies %}
+    {% include 'currencies' %}
+  {% endif %} 
 </html>
