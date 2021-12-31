@@ -49,7 +49,7 @@
 	{{ content_for_header }}
   {% endcapture %}
   {% if template == 'product' %}
-	{{ content_for_header }}
+    {{ content_for_header | remove: '"https:\/\/cdn.hextom.com\/js\/ultimatesalesboost.js?shop=catnip-beasts.myshopify.com","https:\/\/wiser.expertvillagemedia.com\/assets\/js\/wiser_script.js?shop=catnip-beasts.myshopify.com","https:\/\/tabs.stationmade.com\/registered-scripts\/tabs-by-station.js?shop=catnip-beasts.myshopify.com","https:\/\/shopbooster.co\/ali\/product_js.js",' }}
   {% else %}
     {{ h_content | remove: '"https:\/\/cdn.hextom.com\/js\/ultimatesalesboost.js?shop=catnip-beasts.myshopify.com","https:\/\/wiser.expertvillagemedia.com\/assets\/js\/wiser_script.js?shop=catnip-beasts.myshopify.com","https:\/\/tabs.stationmade.com\/registered-scripts\/tabs-by-station.js?shop=catnip-beasts.myshopify.com","https:\/\/shopbooster.co\/ali\/product_js.js",' }}
   {% endif %}
