@@ -5030,7 +5030,7 @@ header.collection-header {
       font-family: $navFontStack;
       font-size: 1rem;
       text-transform: $siteHeaderNavTextTransform;
-      height: 1.8rem;
+      height: 1.5rem;
       &:focus {
         outline: 2px solid $primaryAccentColor;
       }
@@ -5040,6 +5040,9 @@ header.collection-header {
       position: relative;
       top: 3px;
       display: inline-block;
+      &>*{
+      	margin: 0.5rem 0;
+      }
     }
     button {
       margin: 0;
