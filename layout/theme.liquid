@@ -217,11 +217,10 @@
 {% if template == 'product' %}
   	{% include 'wiser' %}
 
-  <script>
+  <script type="module">
     // Post defer
     window.addEventListener('DOMContentLoaded', function() {
-      (function( $ ) {
-        {% if newHash %}
+
         $(function() {
           var $jq = jQuery.noConflict();
           $jq(document).ready(function(){
@@ -233,8 +232,7 @@
               arrows: false,
               mobileFirst: true
             });        });
-        })(jq223);
-        {% endif %}
+
       });
     })
   </script>
