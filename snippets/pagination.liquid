@@ -17,7 +17,7 @@
       {% if part.title == '&hellip;' %}
         <li class="ellipsis disabled"><a href="#" onclick="return false;">{{ part.title }}</a></li>
       {% else %}
-        <li class="active">{{ part.title | link_to: part.url }}</li>
+        <li class="active"><a href="#" onclick="return false;">{{ part.title }}</a></li>
       {% endif %}
     {% endif %}
   {% endfor %}
