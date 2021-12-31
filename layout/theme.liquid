@@ -220,7 +220,6 @@
 
   <script type="module">
     // Post defer
-    window.addEventListener('DOMContentLoaded', function() {
         $(function() {
           var $jq = jQuery.noConflict();
           $jq(document).ready(function(){
@@ -231,9 +230,9 @@
               autoplay: true,
               arrows: false,
               mobileFirst: true
-            });        });
-      });
-    })
+            });        
+            });
+      })
   </script>
     {% capture stn_app %}{% include 'station-tabs' %}{% endcapture %}{% if stn_app contains 'Station.Apps' %}{{ stn_app }}{% endif %}
 
