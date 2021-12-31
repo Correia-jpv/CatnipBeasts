@@ -40,7 +40,7 @@
     <a id="{{ wrapper_id }}" href="{{ product.url | within: collection }}" class="product_card">
       {%- assign image = product.featured_image -%}
       <div class="product_card__image-wrapper" data-bgset="{% include 'bgset', image: image %}">
-        {% assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' %}
+        {% assign image_widths = '295,394,590,700,800,1000' %}
         {% include 'theme-rias' %}
         <img id="{{ img_id }}" class="product_card__image lazyload lazypreload fade-in {% if settings.variant_rollover == true and product.images.size > 1 %}featured{% endif %}"
           data-src="{{ image_url_pattern }}"
@@ -62,7 +62,7 @@
         </style>
         {%- if settings.variant_rollover == true and product.images.size > 1 -%}
           {%- assign image = product.images[1] -%}
-          {%- assign image_widths = '295,394,590,700,800,1000,1200,1500,1800,2000,2400' -%}
+          {%- assign image_widths = '295,394,590,700,800,1000' -%}
           {% include 'theme-rias' %}
           <img id="{{ img_id }}" class="product_card__image alt lazyload"
                data-src="{{ image_url_pattern }}"
