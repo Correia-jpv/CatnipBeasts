@@ -102,8 +102,8 @@ function booster_loadDoc() {
       
     }
   };
-  xhttp.open("GET", "//shopbooster.co/ali/admin/sp.php?s="+Shopify.shop, true);
-  xhttp.send();
+//   xhttp.open("GET", "//shopbooster.co/ali/admin/sp.php?s="+Shopify.shop, true);
+//   xhttp.send();
 }
   window.onload = function(e){ 
  booster_loadDoc();
