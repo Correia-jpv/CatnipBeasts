@@ -88,7 +88,7 @@
                     {%- assign image_highresolution = image | img_url: image_width -%}
                     {%- assign active_image = current_variant.featured_image | default: product.featured_image -%}
                     <li>
-                      <a href="{{ image_highresolution }}" class="product-single__thumbnail--{{ section.id }} {% if image == active_image %}active{% endif %}" data-image-id="{{ image.id }}">
+                      <a href="{{ image_highresolution }}" class="product-single__thumbnail--{{ section.id }} {% if image == active_image %}active{% endif %}" data-image-id="{{ image.id }}" title="{{ image.alt | escape }}">
                         {% assign image_widths = '85,100,200,295,394,590,720,800' %}
                         {% include 'theme-rias' %}
                         <img class="lazyload"
