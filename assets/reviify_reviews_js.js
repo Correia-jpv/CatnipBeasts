@@ -36,10 +36,11 @@ function loadReviews() {
       document.getElementById("shopbooster-ali").innerHTML ="" + this.statusText;
     }
   };
-  if(document.getElementById("shopbooster-ali")){
-  var booster_ele = document.getElementById("shopbooster-ali"); 
-  xhttp.open("GET", "https://shopbooster.co/ali/comment.php?idp="+booster_ele.getAttribute("product-id")+"&s="+Shopify.shop, true);
-  xhttp.send();}
+//   if(document.getElementById("shopbooster-ali")){
+//   var booster_ele = document.getElementById("shopbooster-ali"); 
+//   xhttp.open("GET", "https://shopbooster.co/ali/comment.php?idp="+booster_ele.getAttribute("product-id")+"&s="+Shopify.shop, true);
+//   xhttp.send();
+//   }
   
 
 //      const ll2 = new LazyLoad({
