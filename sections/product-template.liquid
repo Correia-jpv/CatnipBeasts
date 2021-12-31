@@ -60,17 +60,17 @@
                     <img id="ProductImage-{{ section.id }}"
                       data-ProductImage
                       data-id="{{ section.id }}"
-                      src="{{ image | img_url: '394x' }}"
+                      src="{{ image | img_url: '590x' }}"
                       data-widths="[{{ image_widths }}]"
                       data-aspectratio="{{ image.aspect_ratio }}"
                       data-sizes="auto"
                       data-position="{{ image.position | minus: 1 }}"
                       data-max-width="{{ image.width }}"
-                      width="394"
-                      height="394"
+                      width="590"
+                      height="590"
                       alt="{{ image.alt | escape }}">
                     <noscript>
-                      <img src="{{ image | img_url: '394x' }}" alt="{{ image.alt | escape }}">
+                      <img src="{{ image | img_url: '590x' }}" alt="{{ image.alt | escape }}">
                     </noscript>
                   </div>
                 </a>
@@ -92,7 +92,7 @@
                         {% assign image_widths = '85,100,200,295,394,590,720,800' %}
                         {% include 'theme-rias' %}
                         <img class="lazyload"
-                          data-default="{{ image | img_url: '394x' }}"
+                          data-default="{{ image | img_url: '100x' }}"
                           data-src="{{ image_url_pattern }}"
                           data-src-pattern="{{ image_url_pattern }}"
                           data-widths="[{{ image_widths }}]"
@@ -285,7 +285,7 @@
                  loading="lazy">
           </div>
           <div class="description rte" itemprop="description">
-            <h2 style="text-align: center;"><b>Why you should buy from us</b></h2><div id="shop_booster_rate_6" product-id="{{ product.id }}"></div>
+            <h2 style="text-align: center;"><b>Why you should buy from us</b></h2>
               <span>✔️ FREE Shipping<br>
                 ✔️ In-Stock and Ships within 24-hours<br>
                 ✔️ Safe Delivery<br>
