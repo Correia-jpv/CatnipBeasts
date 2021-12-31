@@ -223,7 +223,6 @@
     // Post defer
         $(function() {
           var $jq = jQuery.noConflict();
-          $jq(document).ready(function(){
             $jq('#ProductThumbs-product-template').slick({
               infinite: true,
               slidesToShow: 3,
@@ -231,7 +230,6 @@
               autoplay: true,
               arrows: false,
               mobileFirst: true
-            });        
             });
       })
   </script>
