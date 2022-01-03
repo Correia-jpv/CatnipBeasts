@@ -29,7 +29,7 @@ function loadReviews() {
       res = replaceAll(res,"src=", "data-src=");
       res = replaceAll(res,"<i class=\" fa fa-star ratte\"></i>", "⭐");
       res = replaceAll(res,"<i class=\" fa fa-times ratte\"></i>", "❌");
-      res = replaceAll(res,"class=\" fa fa-star  \"></i>", "⭐");
+      res = replaceAll(res,"class=\" fa fa-star  \"></i>", ">⭐</i>");
       
       
 
