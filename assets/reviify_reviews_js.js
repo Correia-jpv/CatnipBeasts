@@ -28,7 +28,7 @@ function loadReviews() {
       res = replaceAll(res,"style=\"width: 16px;\"", "width=\"16\" height=\"12\" class=\"lazyload\" alt=\"Review Country Flag\" loading=\"lazy\"");
       res = replaceAll(res,"src=", "data-src=");
       res = replaceAll(res,"<i class=\" fa fa-star ratte\"></i>", "⭐");
-      res = replaceAll(res,"<i class=\" fa fa-times ratte\"></i>", "❌");
+      res = replaceAll(res,"<i class=\" fa fa-times\"></i>", "❌");
       res = replaceAll(res,"class=\" fa fa-star  \"></i>", ">⭐</i>");
       
       
