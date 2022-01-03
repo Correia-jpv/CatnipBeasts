@@ -185,7 +185,7 @@
                 {%- endcomment -%}
                 {%- capture quantity_selector -%}
                   <div class="selector-wrapper quantity quantity-{{ section.id }}" {% unless current_variant.available or section_onboarding %}style="display:none;"{% endunless %}>
-                    <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                    <label for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
                     <div class="quantity-select quantity-select-{{ section.id }}">
                       <div class="button-wrapper">
                         <button class="adjust adjust-minus">-</button>
