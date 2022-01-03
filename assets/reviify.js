@@ -892,6 +892,6 @@ var referenceNode = document.querySelector(newNode);
     }
   };
    var booster_ele = document.getElementById("shopbooster-ali"); 
-  booster_xhttpss.open("GET", "https://shopbooster.co/ali/rate.php?s="+Shopify.shop+"&idp="+booster_ele.getAttribute("product-id") , true);
-  booster_xhttpss.send();
+//   booster_xhttpss.open("GET", "https://shopbooster.co/ali/rate.php?s="+Shopify.shop+"&idp="+booster_ele.getAttribute("product-id") , true);
+//   booster_xhttpss.send();
 	 
