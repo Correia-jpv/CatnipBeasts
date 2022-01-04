@@ -58,7 +58,7 @@ jobs:
         HOST: https://catnipbeasts.com
         HOST2: https://catnipbeasts.com/collections/popular
         HOST3: https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy
-        PSURL: https://pagespeed-insights.herokuapp.com
+        PSURL: https://pagespeed-insights-svg.openode.dev
         PSRDESKTOP: psresultdesktop
         PSRMOBILE: psresultmobile
         RESULTSFOLDER: reports
@@ -71,12 +71,12 @@ jobs:
       - name: Create local changes
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
-            curl "${PSURL}/?url=${HOST}&theme=dark&categories=30" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
-            curl "${PSURL}/?url=${HOST}&strategy=mobile&theme=dark&categories=30" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
-            curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30" > ./${RESULTSFOLDER}/2${PSRDESKTOP}.svg
-            curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30" > ./${RESULTSFOLDER}/2${PSRMOBILE}.svg
-            curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30" > ./${RESULTSFOLDER}/3${PSRDESKTOP}.svg
-            curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30" > ./${RESULTSFOLDER}/3${PSRMOBILE}.svg
+            curl "${PSURL}/?url=${HOST}&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
+            curl "${PSURL}/?url=${HOST}&strategy=mobile&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
+            curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/2${PSRDESKTOP}.svg
+            curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/2${PSRMOBILE}.svg
+            curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/3${PSRDESKTOP}.svg
+            curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30?tests=3" > ./${RESULTSFOLDER}/3${PSRMOBILE}.svg
       - name: Commit files 
         run: |
           git add .
