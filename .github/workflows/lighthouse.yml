@@ -71,14 +71,15 @@ jobs:
             mkdir -p ${RESULTSFOLDER}
             IFS=',' read -r -a HOSTS <<< $URLS
             for i in "${!HOSTS[@]}"; do
+              position=$(( $i + 1 ))
               while [ ! "$auditDesktop" ]; do
                 auditDesktop=$(curl "${PSURL}/?url=${HOSTS[$i]}&theme=dark&categories=30&tests=3")
               done
-              cat <<< "$auditDesktop" > ./${RESULTSFOLDER}/${PSRDESKTOP}-${i++}.svg
+              cat <<< "$auditDesktop" > ./${RESULTSFOLDER}/${PSRDESKTOP}-${position}.svg
               while [ ! "$auditMobile" ]; do
                 auditMobile=$(curl "${PSURL}/?url=${HOSTS[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
               done
-              cat <<< "$auditMobile" > ./${RESULTSFOLDER}/${PSRMOBILE}-${i++}.svg
+              cat <<< "$auditMobile" > ./${RESULTSFOLDER}/${PSRMOBILE}-${position}.svg
               auditDesktop=NULL
               auditMobile=NULL
             done
