@@ -55,7 +55,7 @@ jobs:
 
   getpsresults:
       env:
-        HOST: https://catnipbeasts.com
+        HOST: (https://catnipbeasts.com, https://catnipbeasts.com/collections/popular, https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy)
         HOST2: https://catnipbeasts.com/collections/popular
         HOST3: https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy
         PSURL: https://pagespeed-insights-svg.openode.dev
@@ -71,36 +71,22 @@ jobs:
       - name: Create local changes
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
-            auditSvg=$(curl "${PSURL}/?url=${HOST}&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
-              auditSvg=NULL
-            fi
-            auditSvg=$(curl "${PSURL}/?url=${HOST}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
-              auditSvg=NULL
-            fi
-            auditSvg=$(curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-2.svg
-              auditSvg=NULL
-            fi
-            auditSvg=$(curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-2.svg
-              auditSvg=NULL
-            fi
-            auditSvg=$(curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-3.svg
-              auditSvg=NULL
-            fi
-            auditSvg=$(curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ "$auditSvg" ]; then
-              cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-3.svg
-              auditSvg=NULL
-            fi
+            
+            for i in "${HOST[@]}"
+            do
+            
+              auditSvg=$(curl "${PSURL}/?url=${HOST[$i]}&theme=dark&categories=30&tests=3")
+              if [ "$auditSvg" ]; then
+                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
+                auditSvg=NULL
+              fi
+              auditSvg=$(curl "${PSURL}/?url=${HOST[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
+              if [ "$auditSvg" ]; then
+                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
+                auditSvg=NULL
+              fi
+              
+            done
       - name: Commit files 
         run: |
           git add .
