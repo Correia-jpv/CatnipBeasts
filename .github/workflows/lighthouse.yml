@@ -71,7 +71,7 @@ jobs:
       - name: Create local changes
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
-            HOSTS=',' read -r -a array <<< $URLS
+            IFS=',' read -r -a HOSTS <<< $URLS
             for HOST in "${HOSTS[@]}"
             do
               auditSvg=$(curl "${PSURL}/?url=${HOST}&theme=dark&categories=30&tests=3")
