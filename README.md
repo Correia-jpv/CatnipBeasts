@@ -21,7 +21,7 @@
 ## Screenshots & PageSpeed Insights scores
 
 ### Homepage (smarthphone)
-![screenshot home phone]
+<img src="/documentation/screenshots/homepage-phone.jpg" height="500"/>
 <details open>
   <summary>PageSpeed Insights scores</summary>
 <details open>
@@ -40,7 +40,7 @@
 </details>
 
 ### Collection page (tablet)
-![screenshot collection tablet]
+<img src="/documentation/screenshots/collection-tablet.jpg" height="500"/>
 <details open>
   <summary>PageSpeed Insights scores</summary>
 <details open>
@@ -59,7 +59,7 @@
 </details>
 
 ### Product page (desktop)
-![screenshot product desktop]
+<img src="/documentation/screenshots/product-desktop.jpg" height="500"/>
 <details open>
   <summary>PageSpeed Insights scores</summary>
 <details open>
@@ -93,11 +93,6 @@
 
   <!-- Demo -->
   [CatnipBeasts.com]:https://catnipbeasts.com
-
-  <!-- Screenshots -->
-  [screenshot home phone]:./documentation/screenshot/homepage-phone.jpg
-  [screenshot collection tablet]:./documentation/screenshot/collection-tablet.jpg
-  [screenshot product desktop]:./documentation/screenshot/product-desktop.jpg
 
   <!-- PSI scores -->
   [PageSpeed Insights score home desktop]:./documentation/reports/psi-audit-desktop.svg
