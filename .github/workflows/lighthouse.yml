@@ -76,13 +76,16 @@ jobs:
             curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRDESKTOP}-2.svg
             curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRMOBILE}-2.svg
             curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRDESKTOP}-3.svg
-            curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRMOBILE}-3.svg
+            auditSvg=${curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3"}
+            if (( [ -s $auditSvg ] )); then
+              $auditSvg > ./${RESULTSFOLDER}/${PSRMOBILE}-3.svg
+            fi
       - name: Commit files 
         run: |
           git add .
           git config --local user.email "actions@github.com"
           git config --local user.name "github-actions[bot]"
-          git diff --quiet && git diff --staged --quiet || git commit -am "Updated Pagespeed results"
+          git diff --quiet && git diff --staged --quiet || git commit -am "🔁 CI" -m "Updated PageSpeed Insights results SVGs"
       - name: Push changes
         uses: ad-m/github-push-action@master # This is a premade github action
         with:
