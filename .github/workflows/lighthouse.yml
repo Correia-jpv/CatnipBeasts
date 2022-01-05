@@ -56,8 +56,6 @@ jobs:
   getpsresults:
       env:
         URLS: https://catnipbeasts.com,https://catnipbeasts.com/collections/popular,https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy
-        HOST2: https://catnipbeasts.com/collections/popular
-        HOST3: https://catnipbeasts.com/collections/popular/products/plush-ball-faux-feather-chew-bell-toy
         PSURL: https://pagespeed-insights-svg.openode.dev
         PSRDESKTOP: psi-audit-desktop
         PSRMOBILE: psi-audit-mobile
@@ -73,16 +71,16 @@ jobs:
             mkdir -p ${RESULTSFOLDER}
             IFS=',' read -r -a HOSTS <<< $URLS
             for i in "${!HOSTS[@]}"; do
-              auditSvg=$(curl "${PSURL}/?url=${HOSTS[$i]}&theme=dark&categories=30&tests=3")
-              if [ "$auditSvg" ]; then
-                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-${i}.svg
-                auditSvg=NULL
-              fi
-              auditSvg=$(curl "${PSURL}/?url=${HOSTS[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
-              if [ "$auditSvg" ]; then
-                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-${i}.svg
-                auditSvg=NULL
-              fi
+              while [ ! "$auditDesktop" ]; do
+                auditDesktop=$(curl "${PSURL}/?url=${HOSTS[$i]}&theme=dark&categories=30&tests=3")
+              done
+              cat <<< "$auditDesktop" > ./${RESULTSFOLDER}/${PSRDESKTOP}-${i++}.svg
+              while [ ! "$auditMobile" ]; do
+                auditMobile=$(curl "${PSURL}/?url=${HOSTS[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
+              done
+              cat <<< "$auditMobile" > ./${RESULTSFOLDER}/${PSRMOBILE}-${i++}.svg
+              auditDesktop=NULL
+              auditMobile=NULL
             done
       - name: Commit files 
         run: |
