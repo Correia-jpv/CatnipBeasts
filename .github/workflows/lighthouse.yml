@@ -72,28 +72,34 @@ jobs:
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
             auditSvg=$(curl "${PSURL}/?url=${HOST}&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
+              auditSvg=NULL
             fi
             auditSvg=$(curl "${PSURL}/?url=${HOST}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
+              auditSvg=NULL
             fi
             auditSvg=$(curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-2.svg
+              auditSvg=NULL
             fi
             auditSvg=$(curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-2.svg
+              auditSvg=NULL
             fi
             auditSvg=$(curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-3.svg
+              auditSvg=NULL
             fi
             auditSvg=$(curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3")
-            if [ ! "$auditSvg" ]; then
+            if [ "$auditSvg" ]; then
               cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-3.svg
+              auditSvg=NULL
             fi
       - name: Commit files 
         run: |
