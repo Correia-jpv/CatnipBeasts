@@ -72,6 +72,8 @@ jobs:
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
             IFS=',' read -r -a HOSTS <<< $URLS
+            echo ${HOSTS[@]}
+            echo ${HOSTS[0]}
             for HOST in "${HOSTS[@]}"
             do
               auditSvg=$(curl "${PSURL}/?url=${HOST}&theme=dark&categories=30&tests=3")
