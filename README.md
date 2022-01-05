@@ -2,6 +2,7 @@
 
 ![Logo]
 
+
 ## Table of Contents
 
 - [Introduction]
@@ -18,24 +19,25 @@
 ## Demo
 [CatnipBeasts.com]
 
+
 ## Screenshots & PageSpeed Insights scores
 
-### Homepage (smarthphone)
-<img src="/documentation/screenshots/homepage-phone.jpg" height="500"/>
+### Product page (desktop)
+<img src="/documentation/screenshots/product-desktop.jpg" height="500"/>
 <details open>
   <summary>PageSpeed Insights scores</summary>
 <details open>
   <summary>Desktop</summary>
   <br/>
 
-  ![PageSpeed Insights score home desktop]
+  ![PageSpeed Insights score product desktop]
 </details>
 
 <details open>
   <summary>Mobile</summary>
   <br/>
 
-  ![PageSpeed Insights score home mobile]
+  ![PageSpeed Insights score product mobile]
 </details>
 </details>
 
@@ -58,24 +60,25 @@
 </details>
 </details>
 
-### Product page (desktop)
-<img src="/documentation/screenshots/product-desktop.jpg" height="500"/>
+### Homepage (smarthphone)
+<img src="/documentation/screenshots/homepage-phone.jpg" height="500"/>
 <details open>
   <summary>PageSpeed Insights scores</summary>
 <details open>
   <summary>Desktop</summary>
   <br/>
 
-  ![PageSpeed Insights score product desktop]
+  ![PageSpeed Insights score home desktop]
 </details>
 
 <details open>
   <summary>Mobile</summary>
   <br/>
 
-  ![PageSpeed Insights score product mobile]
+  ![PageSpeed Insights score home mobile]
 </details>
 </details>
+
 
 ## License
 [Licensed Under MIT]
@@ -95,8 +98,8 @@
   [CatnipBeasts.com]:https://catnipbeasts.com
 
   <!-- PSI scores -->
-  [PageSpeed Insights score home desktop]:./documentation/reports/psi-audit-desktop.svg
-  [PageSpeed Insights score home mobile]:./documentation/reports/psi-audit-mobile.svg
+  [PageSpeed Insights score home desktop]:./documentation/reports/psi-audit-desktop-1.svg
+  [PageSpeed Insights score home mobile]:./documentation/reports/psi-audit-mobile-1.svg
   [PageSpeed Insights score collection desktop]:./documentation/reports/psi-audit-desktop-2.svg
   [PageSpeed Insights score collection mobile]:./documentation/reports/psi-audit-mobile-2.svg
   [PageSpeed Insights score product desktop]:./documentation/reports/psi-audit-desktop-3.svg
