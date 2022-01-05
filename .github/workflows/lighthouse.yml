@@ -38,20 +38,20 @@ jobs:
       uses: foo-software/lighthouse-check-status-action@master
       with:
         lighthouseCheckResults: ${{ steps.lighthouseCheckDesktop.outputs.lighthouseCheckResults }}
+        minPerformanceScore: "60"
         minAccessibilityScore: "80"
         minBestPracticesScore: "60"
-        minPerformanceScore: "70"
-        minProgressiveWebAppScore: "0"
         minSeoScore: "70"
+        minProgressiveWebAppScore: "0"
     - name: Verify Lighthouse Check mobile results
       uses: foo-software/lighthouse-check-status-action@master
       with:
         lighthouseCheckResults: ${{ steps.lighthouseCheckMobile.outputs.lighthouseCheckResults }}
-        minAccessibilityScore: "80"
-        minBestPracticesScore: "60"
-        minPerformanceScore: "30"
+        minPerformanceScore: "40"
+        minAccessibilityScore: "70"
+        minBestPracticesScore: "50"
+        minSeoScore: "60"
         minProgressiveWebAppScore: "0"
-        minSeoScore: "70"
 
   getpsresults:
       env:
