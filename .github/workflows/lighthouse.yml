@@ -80,8 +80,8 @@ jobs:
                 auditMobile=$(curl "${PSURL}/?url=${HOSTS[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
               done
               cat <<< "$auditMobile" > ./${RESULTSFOLDER}/${PSRMOBILE}-${position}.svg
-              auditDesktop=NULL
-              auditMobile=NULL
+              unset auditDesktop
+              unset auditMobile
             done
       - name: Commit files 
         run: |
