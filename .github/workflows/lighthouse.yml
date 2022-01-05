@@ -76,8 +76,8 @@ jobs:
             curl "${PSURL}/?url=${HOST2}&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRDESKTOP}-2.svg
             curl "${PSURL}/?url=${HOST2}&strategy=mobile&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRMOBILE}-2.svg
             curl "${PSURL}/?url=${HOST3}&theme=dark&categories=30&tests=3" > ./${RESULTSFOLDER}/${PSRDESKTOP}-3.svg
-            auditSvg=${curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3"}
-            if (( [ -s $auditSvg ] )); then
+            auditSvg="${curl "${PSURL}/?url=${HOST3}&strategy=mobile&theme=dark&categories=30&tests=3"}"
+            if [[ ! -z "$auditSvg" ]]; then
               $auditSvg > ./${RESULTSFOLDER}/${PSRMOBILE}-3.svg
             fi
       - name: Commit files 
