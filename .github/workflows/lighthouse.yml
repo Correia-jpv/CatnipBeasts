@@ -72,18 +72,15 @@ jobs:
         run: | # Have to be sure a folder is present if not, make it
             mkdir -p ${RESULTSFOLDER}
             IFS=',' read -r -a HOSTS <<< $URLS
-            echo ${HOSTS[@]}
-            echo ${HOSTS[0]}
-            for HOST in "${HOSTS[@]}"
-            do
-              auditSvg=$(curl "${PSURL}/?url=${HOST}&theme=dark&categories=30&tests=3")
+            for i in "${!HOSTS[@]}"; do
+              auditSvg=$(curl "${PSURL}/?url=${HOSTS[$i]}&theme=dark&categories=30&tests=3")
               if [ "$auditSvg" ]; then
-                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}.svg
+                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRDESKTOP}-${i}.svg
                 auditSvg=NULL
               fi
-              auditSvg=$(curl "${PSURL}/?url=${HOST}&strategy=mobile&theme=dark&categories=30&tests=3")
+              auditSvg=$(curl "${PSURL}/?url=${HOSTS[$i]}&strategy=mobile&theme=dark&categories=30&tests=3")
               if [ "$auditSvg" ]; then
-                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}.svg
+                cat <<< "$auditSvg" > ./${RESULTSFOLDER}/${PSRMOBILE}-${i}.svg
                 auditSvg=NULL
               fi
             done
