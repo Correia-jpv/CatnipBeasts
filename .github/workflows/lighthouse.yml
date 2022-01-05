@@ -61,7 +61,7 @@ jobs:
         PSURL: https://pagespeed-insights-svg.openode.dev
         PSRDESKTOP: psi-audit-desktop
         PSRMOBILE: psi-audit-mobile
-        RESULTSFOLDER: reports
+        RESULTSFOLDER: documentation/reports
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
