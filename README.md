@@ -8,6 +8,8 @@
 - [Introduction]
 - [Demo]
 - [Screenshots & PageSpeed Insights scores]
+- [Built With]
+- [Contributing]
 - [License]
 
 
@@ -80,6 +82,25 @@
 </details>
 
 
+## Built With
+- [Shopify](https://www.shopify.com/) - Saas ecommerce platform/CMS.
+- [Oberlo](https://apps.shopify.com/oberlo) - Import AliExpress products with up-to-date stock inventory and prices.
+- [Wiser Recommendations](https://apps.shopify.com/recommended-products-wiser) - Related products recommendations.
+- [Reviify](https://apps.shopify.com/aliexpress-reviews-importer) - Import AliExpress product reviews.
+- [Tabs by Station](https://apps.shopify.com/tabs-by-station) - Product description tabs and accordions.
+- [Parcel Panel](https://apps.shopify.com/parcelpanel) - Order tracker with tracking page.
+- [BOLD Multi-Currency](https://apps.shopify.com/multi-currency) - Currency converter with real-time rates.
+
+
+## Contributing
+
+Contributions are welcome! Follow the contribution guidelines.
+
+Wish there was another feature? Feel free to open an [feature request issue](/../../issues/new?assignees=Correia-jpv&labels=enhancement&template=feature-request.md&title=%5BREQUEST%5D) with your suggestion!
+
+If you find a bug, kindly open an [bug report issue](/../../issues/new?assignees=Correia-jpv&labels=bug&template=bug_report.md&title=%5BBUG%5D) as described in the contribution guidelines.
+
+
 ## License
 [Licensed Under MIT]
 
@@ -91,8 +112,9 @@
   [Introduction]:#Intro
   [Demo]:#demo
   [Screenshots & PageSpeed Insights scores]:#Screenshots-&-PageSpeed-Insights-scores
+  [Built With]:#built-with
+  [Contributing]:#contributing
   [License]:#License
-
 
   <!-- Demo -->
   [CatnipBeasts.com]:https://catnipbeasts.com
