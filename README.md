@@ -1,7 +1,9 @@
 # Catnip Beasts Ecommerce store
 
-![Logo]
+<a href="https://catnipbeasts.com">
 
+  ![Logo]
+</a>
 
 ## Table of Contents
 
@@ -111,7 +113,7 @@ If you find a bug, kindly open an [bug report issue](/../../issues/new?assignees
   <!-- Table of Contents -->
   [Introduction]:#Intro
   [Demo]:#demo
-  [Screenshots & PageSpeed Insights scores]:#Screenshots-&-PageSpeed-Insights-scores
+  [Screenshots & PageSpeed Insights scores]:#Screenshots--PageSpeed-Insights-scores
   [Built With]:#built-with
   [Contributing]:#contributing
   [License]:#License
