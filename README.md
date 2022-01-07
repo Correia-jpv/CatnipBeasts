@@ -130,4 +130,4 @@ If you find a bug, kindly open an [bug report issue](/../../issues/new?assignees
   [PageSpeed Insights score product mobile]:./documentation/reports/psi-audit-mobile-3.svg
 
   <!-- License -->
-  [Licensed Under MIT]:/license
+  [Licensed Under MIT]:/LICENSE
