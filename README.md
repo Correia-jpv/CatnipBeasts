@@ -96,7 +96,7 @@
 
 ## Contributing
 
-Contributions are welcome! Follow the contribution guidelines.
+Contributions are welcome! Read the [contribution guidelines](https://github.com/Correia-jpv/.github/blob/main/CONTRIBUTING.md#contributing) first.
 
 Wish there was another feature? Feel free to open an [feature request issue](/../../issues/new?assignees=Correia-jpv&labels=enhancement&template=feature-request.md&title=%5BREQUEST%5D) with your suggestion!
 
