@@ -348,8 +348,7 @@
             {% include 'related-products' %}
           </div>
 
-        {% when 'product_collection'}
-          {%- assign product_collection_count = '4' -%}
+        {% when 'product_collection' -%}
           {%- assign collection_count = '4' -%}
           <div class="simple-collection layout-{{ collection_count }}">
             <div class="wrapper">
@@ -505,3 +504,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% when 'product_collection'}
+              {%- assign product_collection_count = '4' -%}
+  to: "{% when 'product_collection' -%}"
+  position: 18490..18522
+{% endcomment %}
